@@ -13,3 +13,18 @@ The following examples require the DynexSDK for Python as well as a valid API ke
 - [Example: Computing on the Dynex Platform with Python - Maximum Independent Set](https://github.com/dynexcoin/DynexSDK/blob/main/beginners_guide_example_MIS.ipynb)
 - [Example: Computing on the Dynex Platform with Python - SAT](https://github.com/dynexcoin/DynexSDK/blob/main/beginners_guide_example_SAT.ipynb)
 - [Example: Computing on the Dynex Platform with Python - NAE3SAT](https://github.com/dynexcoin/DynexSDK/blob/main/beginners_guide_example_random_nae3sat.ipynb)
+
+# Advanced Examples
+
+We are working on finalizing the DynexSDK. Come back to check on updates.
+
+# Machine Learning Examples
+
+We are working on finalizing the DynexSDK. Come back to check on updates.
+
+# Further reading
+
+- [Dynex Website](https://dynexcoin.org/)
+- [DynexSolve White Paper](https://dynexcoin.org/wp-content/uploads/2023/02/dynexsolve-paper-v1.0c.pdf)
+- [Neuromorphic Computing](https://dynexcoin.org/neuromorphic-computing/)
+- [Dynex Neuromorphic Chip](https://dynexcoin.org/dynex-neuromorphic-chip/)

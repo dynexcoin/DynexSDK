@@ -23,6 +23,8 @@ We are working on finalizing the DynexSDK. Come back to check on updates.
 ## Machine Learning Examples
 
 - [Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb)
+- []()
+- [Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb)
 
 We are working on finalizing the DynexSDK. Come back to check on updates.
 

@@ -17,14 +17,14 @@ The following examples require the DynexSDK for Python as well as a valid API ke
 ## Advanced Examples
 
 - [Example: RNA Folding of the Tobacco Mild Green Mosaic Virus](https://github.com/dynexcoin/DynexSDK/blob/main/example_rna_folding.ipynb)
+- [Example: Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb)
 
 We are working on finalizing the DynexSDK. Come back to check on updates.
 
 ## Machine Learning Examples
 
 - [Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb)
-- []()
-- [Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb)
+
 
 We are working on finalizing the DynexSDK. Come back to check on updates.
 

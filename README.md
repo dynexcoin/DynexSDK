@@ -40,6 +40,16 @@ Quantum computing algorithms for machine learning harness the power of quantum m
 
 We are working on finalizing the DynexSDK. Come back to check on updates.
 
+## DIMOD: A Shared API for QUBO/ISING Samplers
+Dimod is a shared API for samplers. It provides classes for quadratic models—such as the binary quadratic model (BQM) class that contains Ising and QUBO models used by samplers such as the Dynex Neuromorphic Platform or the D-Wave system—and higher-order (non-quadratic) models, reference examples of samplers and composed samplers and abstract base classes for constructing new samplers and composed samplers:
+
+[Dimod documentation}(https://docs.ocean.dwavesys.com/en/stable/docs_dimod/)
+
+## PyQUBO: QUBOs or Ising Models from Flexible Mathematical Expressions
+PyQUBO allows you to create QUBOs or Ising models from flexible mathematical expressions easily. It is Python based (C++ backend), fully integrated with Ocean SDK, supports automatic validation of constraints and features placeholder for parameter tuning.
+
+[PyQUBO documentation](https://pyqubo.readthedocs.io/)
+
 ## Further reading
 
 - [Dynex Website](https://dynexcoin.org/)

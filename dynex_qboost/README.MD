@@ -4,6 +4,6 @@ The D-Wave quantum computer has been widely studied as a discrete optimization e
 
 This code uses the Dynex Neuromorphic Platform with the Qboost algorithm.
 
-##License
+#License
 
 Released under the Apache License 2.0. See LICENSE file.

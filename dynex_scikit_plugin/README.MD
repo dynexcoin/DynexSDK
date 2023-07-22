@@ -6,4 +6,10 @@ This plugin makes use of the Dynex platform. Developers can get started by signi
 
 The package's main class, SelectFromQuadraticModel, can be used in any existing sklearn pipeline.
 
+## Example
+
 [Example Python Notebook](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb)
+
+## License
+
+Released under the Apache License 2.0. See LICENSE file.

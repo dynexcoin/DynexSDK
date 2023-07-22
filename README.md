@@ -40,6 +40,18 @@ Quantum computing algorithms for machine learning harness the power of quantum m
 - [Example: Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb)
 - [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb)
 
+## Dynex scikit-learn Plugin
+
+This package provides a scikit-learn transformer for feature selection using the Dynex Neuromorphic Computing Platform. It is built to integrate seamlessly with scikit-learn, an industry-standard, state-of-the-art ML library for Python.
+
+The [Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/tree/main/dynex_scikit_plugin) makes it easier to use the Dynex platform for the feature selection piece of ML workflows. Feature selection – a key building block of machine learning – is the problem of determining a small set of the most representative characteristics to improve model training and performance in ML. With this new plug-in, ML developers need not be experts in optimization or hybrid solving to get the business and technical benefits of both. Developers creating feature selection applications can build a pipeline with scikit-learn and then embed the Dynex Platform into this workflow more easily and efficiently. ​
+
+## Dynex QBoost Implementation
+
+The D-Wave quantum computer has been widely studied as a discrete optimization engine that accepts any problem formulated as quadratic unconstrained binary optimization (QUBO). In 2008, Google and D-Wave published a paper, [Training a Binary Classifier with the Quantum Adiabatic Algorithm](https://arxiv.org/pdf/0811.0416.pdf), which describes how the Qboost ensemble method makes binary classification amenable to quantum computing: the problem is formulated as a thresholded linear superposition of a set of weak classifiers and the D-Wave quantum computer is used to optimize the weights in a learning process that strives to minimize the training error and number of weak classifiers
+
+The [Dynex QBoost Implementation](https://github.com/dynexcoin/DynexSDK/tree/main/dynex_qboost) provides a QBoost algorithm plugin to use the Dynex Neuromorphic Platform.
+
 We are working on finalizing the DynexSDK. Come back to check on updates.
 
 ## DIMOD: A Shared API for QUBO/ISING Samplers
@@ -59,3 +71,7 @@ PyQUBO allows you to create QUBOs or Ising models from flexible mathematical exp
 - [Dynex SDK](https://dynexcoin.org/learn/dynex-sdk)
 - [Dynex SDK Beginner Guides](https://dynexcoin.org/learn/beginner-guides)
 - [Dynex SDK Advanced Examples](https://dynexcoin.org/learn/advanced-examples)
+
+## License
+
+Released under the Apache License 2.0. See LICENSE file.

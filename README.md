@@ -46,6 +46,13 @@ Here are some example of these algorithms implemented on the Dynex Platform:
 - [Example: Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb)
 - [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb)
 
+## Dynex Neuromorphic Torch Layers
+
+The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybrid models, neuromorphic-, transfer- and federated-learning with 
+[PyTorch](https://pytorch.org/)
+ 
+- [Turning Neuromorphic Dynex Chips into Torch Layers](https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb)
+
 ## Dynex scikit-learn Plugin
 
 This package provides a scikit-learn transformer for feature selection using the Dynex Neuromorphic Computing Platform. It is built to integrate seamlessly with scikit-learn, an industry-standard, state-of-the-art ML library for Python.

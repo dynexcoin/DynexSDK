@@ -7,4 +7,4 @@ https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorph
 ## Requirements:
 
 - HybridQRBM Files
-- Dynex SD
+- Dynex SDK

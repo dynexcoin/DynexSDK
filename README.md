@@ -4,7 +4,7 @@ Dynex is the world’s first neuromorphic supercomputing blockchain based on the
 Dynex SDK documentation:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
 
-Dynex SDK Professional Community;
+Dynex SDK Professional Community:
 - [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A) 
 
 ## Beginners Guides

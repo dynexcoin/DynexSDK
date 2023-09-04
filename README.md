@@ -93,6 +93,4 @@ PyQUBO allows you to create QUBOs or Ising models from flexible mathematical exp
 
 ## License
 
-GNU GENERAL PUBLIC LICENSE Version 3
-
-Released under the Apache License 2.0. See LICENSE file.
+LICENSED UNDER GNU GENERAL PUBLIC LICENSE Version 3. SEE LICENSE FILE IN THE DYNEX PACKAGE

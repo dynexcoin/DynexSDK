@@ -5,7 +5,10 @@ Dynex SDK documentation:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
 
 Dynex SDK Professional Community:
-- [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A) 
+- [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A)
+
+Guides:
+- [Medium: Computing on the Dynex Neuromorphic Platform: Image Classification](https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c)
 
 ## Beginners Guides
 

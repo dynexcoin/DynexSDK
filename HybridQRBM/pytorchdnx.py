@@ -11,9 +11,10 @@ import numpy.typing as npt
 import logging
 from string import ascii_lowercase as letters
 from pathlib import Path
+from tqdm import tqdm
 
 class dnx(nn.Module):
-    def __init__(self, num_hidden: int, 
+    def __init__(self, num_hidden: int, steps_per_epoch: int,
                  sampler: "Sampler", 
                  optimizer: "RBMOptimizer",
                  rnd: np.random.RandomState=None, 
@@ -33,7 +34,12 @@ class dnx(nn.Module):
         self.num_gibbs_updates = num_gibbs_updates;
         self.debugging = debugging;
         self.minimum_stepsize = minimum_stepsize;
-        self.errors=[];
+        self.errors=[1.0];
+        self.acc=[0.0];
+        
+        self.data = []; # batch collection
+        self.cnt = 0;
+        self.steps_per_epoch = steps_per_epoch;
         
         # default randomizer if not set:
         if rnd is None:
@@ -57,6 +63,13 @@ class dnx(nn.Module):
         self.optimizer.rbm = self;
         self.sampler = sampler;
         self.sampler.rbm = self;
+        
+        # PyTorch buffers:
+        self.register_buffer('model_nodes', torch.tensor(0))
+        self.register_buffer('model_weights', torch.tensor(0))
+        self.register_buffer('model_biases_visible', torch.tensor(0))
+        self.register_buffer('model_biases_hidden', torch.tensor(0))
+        
 
     def _get_logger(self, level=logging.DEBUG):
         """Returns a logger that logs to log/{self.name}.log."""
@@ -145,21 +158,45 @@ class dnx(nn.Module):
         float
             The mean reconstruction error of the batch.
         """
+        
+        error = 0;
+        
+        # Initialise weights with QUBO:
         visible_data = (data > self.rnd.random(data.shape)).astype(np.int0)
         hidden, prob_hidden = self.sampler.infer(visible_data)
         visible, prob_visible = self.sampler.generate(hidden)
         error = ((visible_data - prob_visible) ** 2).mean()
-        
+
         positive_sample = (visible_data, prob_visible, hidden, prob_hidden)
         negative_sample = self.sampler.sample(visible=visible)
-        
+
         delta = self.optimizer.calculate_update(positive_sample, negative_sample)
         self.weights += delta.weights
         self.biases_visible += delta.biases_visible
         self.biases_hidden += delta.biases_hidden
+
+        # Apply sample on batch:
+        print('DynexQRBM PyTorch Layer | applying sampling result...', len(self.data),'x',len(self.data[0]));
+        for i in range(0, data.shape[0]):
+            visible_data = np.array([data[i]]);
+            hidden, prob_hidden = self.sampler.infer(visible_data);
+            visible, prob_visible = self.sampler.generate(hidden);
+            error += ((visible_data - prob_visible) ** 2).mean();
+            positive_sample = (visible_data, prob_visible, hidden, prob_hidden)
+            negative_sample = self.sampler.gibbs_updates(visible)
+            delta = self.optimizer.calculate_update(positive_sample, negative_sample)
+            self.weights += delta.weights
+            self.biases_visible += delta.biases_visible
+            self.biases_hidden += delta.biases_hidden
+        error = error / (data.shape[0] + 1)
+        
         return error
 
     def forward(self, x):
+        
+        # increase counter:
+        self.cnt += 1;
+        
         xnp = x.cpu().detach().numpy(); # convert tensor to numpy
         self.num_visible = np.array(xnp[0].flatten().tolist()).shape[-1];
         error = 0;
@@ -169,29 +206,39 @@ class dnx(nn.Module):
             self.weights = self.rnd.normal(scale=0.001, size=(self.num_visible, self.num_hidden));
             self.biases_visible = np.zeros(self.num_visible);
             self.biases_hidden = np.zeros(self.num_hidden);
-
-        # combined data from all batches:
-        data = [];
+            
+        # combine data from all batches:
         for batch in range(0, len(xnp)):
             # retrieve data from batch:
-            data.append(xnp[batch].flatten().tolist());
-
-        data = np.array(data);
+            self.data.append(xnp[batch].flatten().tolist());
             
-        # sample data: 
-        error += self._fit_batch(data);
-        
-        # batches done, accumulate data:
-        # TODO: total samples / batch_size    
-        # TODO: update error only once per epoch, not once per sample batch
-        error /= 1; 
-        self.errors.append(error);
-        self.logger.info(f"DynexQRBM PyTorch Layer | SME:  {error}")
-        print('DynexQRBM PyTorch Layer | SME:','{:f}'.format(error));
+        self.logger.info(f"DynexQRBM PyTorch Layer | batch data appended:  {self.cnt}")
+        print('DynexQRBM PyTorch Layer | batch data appended:',self.cnt);
+            
+        # end of batch?
+        if self.cnt % self.steps_per_epoch == 0:
+            print('DynexQRBM PyTorch Layer | end of batch, sampling...', len(self.data),'x',len(self.data[0]));
+            self.data = np.array(self.data);
+            error += self._fit_batch(self.data);
+            error /= self.steps_per_epoch; 
+            self.errors.append(error);
+            self.logger.info(f"DynexQRBM PyTorch Layer | SME:  {error}")
+            acc = ((1-error)*100);
+            self.acc.append(acc);
+            self.logger.info(f"DynexQRBM PyTorch Layer | ACCURACY: {acc}%")
+            print('DynexQRBM PyTorch Layer | SME:','{:f}'.format(error),'ACCURACY:','{:f}%'.format(acc));
+            # Update PyTorch buffers:
+            self.model_dmodel_weight = torch.Tensor(self.weights);
+            self.model_biases_visible = torch.Tensor(self.biases_visible);
+            self.model_biases_hidden = torch.Tensor(self.biases_hidden);
+            # reset data container
+            self.data = []; 
+            
+        return torch.Tensor(self.model_biases_hidden);   # hidden nodes are returned for transfer learning
 
-        return torch.Tensor(self.weights);   
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
 # QRBM Experimental class:
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
 class dnx_experimental(nn.Module):
     """ Dynex QRBM Layer """
     def __init__(self, n_visible, n_hidden, batch_size=1, lr=0.1, lr_decay=0.1, mainnet=False, 

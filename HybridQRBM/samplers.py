@@ -117,11 +117,11 @@ class Sampler:
             hidden, prob_hidden = self.infer(visible)
             visible, prob_visible = self.generate(hidden)
         return visible, prob_visible, hidden, prob_hidden
-
+    
     def predict(self, features: npt.NDArray, num_particles: int = 10,
             num_gibbs_updates: int = None, **kwargs) -> npt.NDArray:
         """
-        Predict the labels for the given feature values.
+        Predict the features and labels for the given feature values.
 
         Parameters
         ----------
@@ -138,7 +138,9 @@ class Sampler:
         Returns
         -------
         labels : numpy.ndarray[np.float]
-            The predicted labels. Shape (num_samples, num_label_classes).
+            The predicted labels. Shape (num_samples, num_labels).
+        features : numpy.ndarray[np.float]
+            The predicted features. Shape (num_samples, num_features).
         """
         if num_gibbs_updates is None:
             num_gibbs_updates = self.num_gibbs_updates
@@ -146,18 +148,21 @@ class Sampler:
         num_features = features.shape[1]
         num_labels = self.rbm.num_visible - num_features
         label_predictions = np.zeros((num_samples, num_labels))
+        features_predictions = np.zeros((num_samples, num_features))
         for _ in range(num_particles):
             output = np.zeros(label_predictions.shape)
             for _ in range(num_gibbs_updates):
                 visible = np.hstack((features, output))
                 hidden, _ = self.infer(visible)
                 visible, visible_prob = self.generate(hidden)
+                error = ((visible - visible_prob) ** 2).mean();
                 output_prob = visible_prob[:,-num_labels:]
                 output = visible[:,-num_labels:]
-            label_predictions += output_prob / num_particles
-        return label_predictions
-
-
+            if num_labels>0:
+                label_predictions += output_prob / num_particles
+            features_predictions += visible_prob[:,:num_features] / num_particles
+        return label_predictions, features_predictions
+    
 class ContrastiveDivergenceSampler(Sampler):
     """Implements sampling for contrastive divergence training."""
 
@@ -245,60 +250,63 @@ class NaiveSampler(Sampler):
 
 class DynexSampler(Sampler):
 
-	def __init__(self, num_reads = 100, annealing_time = 300, mainnet=False, minimum_stepsize = 0.00000006, logging=True, debugging=False, num_gibbs_updates=0, **kwargs):
-		super().__init__(num_gibbs_updates=num_gibbs_updates, **kwargs)
-		self.mainnet = mainnet;
-		self.logging = logging;	
-		self.num_reads = num_reads;
-		self.annealing_time = annealing_time;
-		self.debugging = debugging;
-		self.minimum_stepsize = minimum_stepsize;
-		
-	def _sample_dynex(self, qubo, num_particles):
-	
-		# BQM from QUBO:
-		bqm = dimod.BinaryQuadraticModel.from_qubo(qubo, 0);
-		model = dynex.BQM(bqm);
-		dnxsampler = dynex.DynexSampler(model, mainnet=self.mainnet, logging = self.logging, description='Hybrid QRBM');
-		sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize);
-		weights = np.array(list(dnxsampler.dimod_assignments.first.sample.values()));
-		energy = dnxsampler.dimod_assignments.first.energy;
-		
-		num_units = self.rbm.num_visible + self.rbm.num_hidden
-		visible = np.array([weights[:self.rbm.num_visible]]);
-		hidden = np.array([weights[self.rbm.num_visible:num_units]]);
-		
-		self.rbm.logger.info(f"Loaded Dynex response: energy = {energy}")
-		return visible, hidden
-		
-	def sample(self, visible, **kwargs):
-		"""
-		Implements sampling for the Dynex Neuromorphic Platform.
+    def __init__(self, num_reads = 100, annealing_time = 300, mainnet=False, minimum_stepsize = 0.00000006, logging=True, debugging=False, num_gibbs_updates=0, **kwargs):
+        super().__init__(num_gibbs_updates=num_gibbs_updates, **kwargs)
+        self.mainnet = mainnet;
+        self.logging = logging;	
+        self.num_reads = num_reads;
+        self.annealing_time = annealing_time;
+        self.debugging = debugging;
+        self.minimum_stepsize = minimum_stepsize;
 
-		Parameters
-		----------
-		visible : numpy.ndarray
-		    The visible layer values are always passed from the RBM. When
-		    sampling from the model distribution, it is only used to determine
-		    the shape of the sample.
+    def _sample_dynex(self, qubo, num_particles):
 
-		Returns
-		-------
-		visible, prob_visible, hidden, prob_hidden : tuple
-		    visible and hidden are the samples returned by the DWave sampler.
-		    prob_visible and prob_hidden are calculated based on the DWave
-		    sample values.
-		"""
-		qubo = self.rbm.to_qubo_matrix()
-		num_reads = self.num_reads;
-		
-		visible, hidden = self._sample_dynex(qubo, num_reads)
-		_, prob_hidden = self.infer(visible)
-		_, prob_visible = self.generate(hidden)
-		if self.num_gibbs_updates > 0:
-		    visible, prob_visible, hidden, prob_hidden = self.gibbs_updates(visible)
-		return visible, prob_visible, hidden, prob_hidden 
-	
+        # BQM from QUBO:
+        bqm = dimod.BinaryQuadraticModel.from_qubo(qubo, 0);
+        model = dynex.BQM(bqm);
+        dnxsampler = dynex.DynexSampler(model, mainnet=self.mainnet, logging = self.logging, description='PyTorch DNX Layer');
+        sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize, waittime=30);
+        if len(dnxsampler.dimod_assignments)>0:
+            weights = np.array(list(dnxsampler.dimod_assignments.first.sample.values()));
+            energy = dnxsampler.dimod_assignments.first.energy;
+            num_units = self.rbm.num_visible + self.rbm.num_hidden
+            visible = np.array([weights[:self.rbm.num_visible]]);
+            hidden = np.array([weights[self.rbm.num_visible:num_units]]);
+            self.rbm.logger.info(f"Dynex Platform: sampled response: energy = {energy}")
+        else:
+            # an error occured:            
+            visible = self.biases_visible;
+            hidden  = self.biases_hidden;
+            self.rbm.logger.info(f"Dynex Platform: invalid sample returned")
+        return visible, hidden
+
+    def sample(self, visible, **kwargs):
+        """
+        Implements sampling for the Dynex Neuromorphic Platform.
+
+        Parameters
+        ----------
+        visible : numpy.ndarray
+            The visible layer values are always passed from the RBM. When
+            sampling from the model distribution, it is only used to determine
+            the shape of the sample.
+
+        Returns
+        -------
+        visible, prob_visible, hidden, prob_hidden : tuple
+            visible and hidden are the samples returned by the Dynex sampler.
+            prob_visible and prob_hidden are calculated based on the Dynex
+            sample values.
+        """
+        qubo = self.rbm.to_qubo_matrix()
+        num_reads = self.num_reads;
+
+        visible, hidden = self._sample_dynex(qubo, num_reads)
+        _, prob_hidden = self.infer(visible)
+        _, prob_visible = self.generate(hidden)
+        if self.num_gibbs_updates > 0:
+            visible, prob_visible, hidden, prob_hidden = self.gibbs_updates(visible)
+        return visible, prob_visible, hidden, prob_hidden 
 
 class DWaveSampler(Sampler):
     """Implements sampling for the D-Wave machine."""

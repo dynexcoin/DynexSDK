@@ -85,7 +85,7 @@ try:
 	API_KEY = config['DYNEX']['API_KEY'];
 	API_SECRET = config['DYNEX']['API_SECRET'];
 except:
-	raise Exception('ERROR: missing configuration file dynex.ini');
+	print('[DYNEX] ERROR: missing configuration file dynex.ini');
 
 def account_status():
     """

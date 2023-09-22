@@ -53,6 +53,9 @@ Quantum computing algorithms for machine learning harness the power of quantum m
 Here are some example of these algorithms implemented on the Dynex Platform:
 
 - [Example: Quantum-Support-Vector-Machine Implementation on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/example_support_vector_machine.ipynb)
+- [Example: Quantum-Boltzmann-Machine (PyTorch) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/example_neuromorphic_torch_layers%20(1).ipynb)
+- [Example: Quantum-Boltzmann-Machine Implementation (3-step QUBO) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex-Full-QRBM.ipynb)
+- [Example: Quantum-Boltzmann-Machine (Collaborative Filtering) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/example_collaborative_filtering_CFQIRBM.ipynb)
 - [Example: Quantum-Boltzmann-Machine Implementation on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/example_quantum_boltzmann_machine_QBM.ipynb)
 - [Example: Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb)
 - [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb)
@@ -62,7 +65,7 @@ Here are some example of these algorithms implemented on the Dynex Platform:
 The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybrid models, neuromorphic-, transfer- and federated-learning with 
 [PyTorch](https://pytorch.org/)
  
-- [Turning Neuromorphic Dynex Chips into Torch Layers](https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb)
+- [Turning Neuromorphic Dynex Chips into Torch Layers]([https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb](https://github.com/dynexcoin/DynexSDK/blob/main/example_pytorch.ipynb))
 
 ## Dynex scikit-learn Plugin
 

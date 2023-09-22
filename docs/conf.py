@@ -22,16 +22,15 @@ sys.path.insert(0, sdk_directory)
 from dynex import __version__ as version
 from dynex import __version__ as release
 
-setup_cfg = configparser.ConfigParser()
-setup_cfg.read(os.path.join(sdk_directory, 'setup.cfg'))
+#setup_cfg = configparser.ConfigParser()
+#setup_cfg.read(os.path.join(sdk_directory, 'setup.cfg'))
 
-author = setup_cfg['metadata']['author']
-copyright = setup_cfg['metadata']['author']
-
+author = 'Dynex Developers'
+copyright = 'Copyright Dynex Developers'
 project = 'Dynex SDK Documentation'
 
 # Also add our own 'special value', the minimum supported Python version
-rst_prolog = f" .. |python_requires| replace:: {setup_cfg['options']['python_requires']}"
+rst_prolog = f" .. |python_requires| replace:: {'>=3.8'}"
 
 # -- General configuration ------------------------------------------------
 
@@ -81,9 +80,9 @@ copybutton_prompt_is_regexp = True
 copybutton_line_continuation_character = "\\"
 
 doctest_global_setup = """
-
 import dynex
 import dimod
+"""
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -156,56 +155,56 @@ def linkcode_resolve(domain, info):
     # Updated to work on multiple submodules and fall back to next-level
     # module for objects such as properties
 
-    if domain != 'py':
-        return None
+	if domain != 'py':
+		return None
 
-    obj={}
-    obj_inx = 0
-    obj[obj_inx] = sys.modules.get(info['module'])
-    for part in info['fullname'].split('.'):
-        obj_inx += 1
-        try:
-            obj[obj_inx] = getattr(obj[obj_inx - 1], part)
-        except Exception:
-            pass
+	obj={}
+	obj_inx = 0
+	obj[obj_inx] = sys.modules.get(info['module'])
+	for part in info['fullname'].split('.'):
+		obj_inx += 1
+	try:
+		obj[obj_inx] = getattr(obj[obj_inx - 1], part)
+	except Exception:
+		pass
 
     # strip decorators, which would resolve to the source of the decorator
     # https://bugs.python.org/issue34305
-    for i in range(len(obj)):
-        obj[i] = inspect.unwrap(obj[i])
+	for i in range(len(obj)):
+	obj[i] = inspect.unwrap(obj[i])
 
-    fn = None
-    for i in range(len(obj)-1, -1, -1):
-        try:
-            fn = inspect.getsourcefile(obj[i])
-            if fn:
-                obj_inx = i
-                break
-        except:
-            pass
+	fn = None
+	for i in range(len(obj)-1, -1, -1):
+	try:
+		fn = inspect.getsourcefile(obj[i])
+		if fn:
+			obj_inx = i
+			break
+	except:
+		pass
 
-    linespec = ""
-    try:
-        source, lineno = inspect.getsourcelines(obj[obj_inx])
-        if obj_inx != 0:
-            linespec = "#L%d" % (lineno)
-    except Exception:
-        linespec = ""
+	linespec = ""
+	try:
+		source, lineno = inspect.getsourcelines(obj[obj_inx])
+		if obj_inx != 0:
+			linespec = "#L%d" % (lineno)
+	except Exception:
+		linespec = ""
 
-    if not fn or not "site-packages" in fn:
-        return None
+	if not fn or not "site-packages" in fn:
+		return None
 
-    if ".egg" in fn:
-        fn = fn.replace(fn[:fn.index("egg")+len("egg")], "")
-    else:
-        fn = fn.replace(fn[:fn.index("site-packages")+len("site-packages")], "")
+	if ".egg" in fn:
+		fn = fn.replace(fn[:fn.index("egg")+len("egg")], "")
+	else:
+		fn = fn.replace(fn[:fn.index("site-packages")+len("site-packages")], "")
 
-    repo = fn.split("/")[1] if  \
-        (fn.split("/")[1] != "dwave") \
-        else fn.split("/")[2]
+	repo = fn.split("/")[1] if  \
+	(fn.split("/")[1] != "dwave") \
+	else fn.split("/")[2]
 
-    pm_module = github_map[repo]
-    pm_ver = versions[github_map[repo]]
-    fn = "https://github.com/dynexcoin/{}/blob/{}{}".format(pm_module, pm_ver, fn)
+	pm_module = github_map[repo]
+	pm_ver = versions[github_map[repo]]
+	fn = "https://github.com/dynexcoin/{}/blob/{}{}".format(pm_module, pm_ver, fn)
 
-    return fn + linespec
+	return fn + linespec

@@ -172,37 +172,37 @@ def linkcode_resolve(domain, info):
     # strip decorators, which would resolve to the source of the decorator
     # https://bugs.python.org/issue34305
     for i in range(len(obj)):
-           obj[i] = inspect.unwrap(obj[i])
+        obj[i] = inspect.unwrap(obj[i])
 
     fn = None
     for i in range(len(obj)-1, -1, -1):
         try:
-           fn = inspect.getsourcefile(obj[i])
-           if fn:
-              obj_inx = i
-              break
+            fn = inspect.getsourcefile(obj[i])
+            if fn:
+                obj_inx = i
+                break
         except:
-           pass
+            pass
 
     linespec = ""
     try:
         source, lineno = inspect.getsourcelines(obj[obj_inx])
         if obj_inx != 0:
-           linespec = "#L%d" % (lineno)
+            linespec = "#L%d" % (lineno)
     except Exception:
         linespec = ""
 
     if not fn or not "site-packages" in fn:
-       return None
+        return None
 
     if ".egg" in fn:
-       fn = fn.replace(fn[:fn.index("egg")+len("egg")], "")
+        fn = fn.replace(fn[:fn.index("egg")+len("egg")], "")
     else:
-       fn = fn.replace(fn[:fn.index("site-packages")+len("site-packages")], "")
+        fn = fn.replace(fn[:fn.index("site-packages")+len("site-packages")], "")
 
     repo = fn.split("/")[1] if  \
-           (fn.split("/")[1] != "dwave") \
-           else fn.split("/")[2]
+        (fn.split("/")[1] != "dwave") \
+        else fn.split("/")[2]
 
     pm_module = github_map[repo]
     pm_ver = versions[github_map[repo]]

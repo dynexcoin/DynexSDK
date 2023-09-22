@@ -19,7 +19,6 @@ sphinx:
   builder: html
 
 python:
-   version: 3.11
    install:
       - method: pip
         path: .

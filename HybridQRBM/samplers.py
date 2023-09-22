@@ -265,10 +265,10 @@ class DynexSampler(Sampler):
         bqm = dimod.BinaryQuadraticModel.from_qubo(qubo, 0);
         model = dynex.BQM(bqm);
         dnxsampler = dynex.DynexSampler(model, mainnet=self.mainnet, logging = self.logging, description='PyTorch DNX Layer');
-        sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize, waittime=30);
-        if len(dnxsampler.dimod_assignments)>0:
-            weights = np.array(list(dnxsampler.dimod_assignments.first.sample.values()));
-            energy = dnxsampler.dimod_assignments.first.energy;
+        sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize);
+        if len(sampleset)>0:
+            weights = np.array(list(sampleset.first.sample.values()));
+            energy = sampleset.first.energy;
             num_units = self.rbm.num_visible + self.rbm.num_hidden
             visible = np.array([weights[:self.rbm.num_visible]]);
             hidden = np.array([weights[self.rbm.num_visible:num_units]]);

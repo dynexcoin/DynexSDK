@@ -204,8 +204,6 @@ class RBM:
             for callback in callbacks.on_epoch_start:
                 callback(**locals())
 
-            # PARALLEL JOBS REQUIRED - WE CAN DO THIS WITH FEDERAL LEARNING, ALL BATCHES AT THE SAME TIME 
-            
             for batch_num, batch in enumerate(batches):
                 print('    batch',batch_num,len(batches));
                 print('fit loop: data[batch]:',len(data[batch]));

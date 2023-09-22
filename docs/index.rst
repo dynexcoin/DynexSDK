@@ -29,4 +29,17 @@ Index and Dynex Links
 
 * `Guides <https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c>`_: Medium: Computing on the Dynex Neuromorphic Platform: Image Classification
 
+SDK
+===
+
+.. autofunction:: dynex.account_status
+
+.. autofunction:: dynex.test
+
+
+.. autosummary::
+   :toctree: generated
+
+   dynex
+
 

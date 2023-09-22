@@ -18,7 +18,7 @@ DynexSDK for Python as well as a valid API key.
 
    getting_started
    
-Index and D-Wave Links
+Index and Dynex Links
 ======================
 
 * :ref:`genindex`: Index for this site.

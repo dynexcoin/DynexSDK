@@ -143,7 +143,7 @@ github_map = {'Dynex SDK': 'dynex',
               'CFQIQRBM': 'CFQIQRBM',
               }
 
-reqs = pkg_resources.get_distribution('dynex').requires(extras=['all'])
+reqs = pkg_resources.get_distribution('dynex').requires()
 pkgs = [pkg_resources.get_distribution(req) for req in reqs]
 versions = {pkg.project_name: pkg.version for pkg in pkgs}
 

@@ -148,13 +148,6 @@ pkgs = [pkg_resources.get_distribution(req) for req in reqs]
 versions = {pkg.project_name: pkg.version for pkg in pkgs}
 
 def linkcode_resolve(domain, info):
-    """
-    Find the URL of the GitHub source for DynexSDK objects.
-    """
-    # Based on https://github.com/numpy/numpy/blob/main/doc/source/conf.py
-    # Updated to work on multiple submodules and fall back to next-level
-    # module for objects such as properties
-
 	if domain != 'py':
 		return None
 
@@ -168,20 +161,18 @@ def linkcode_resolve(domain, info):
 	except Exception:
 		pass
 
-    # strip decorators, which would resolve to the source of the decorator
-    # https://bugs.python.org/issue34305
 	for i in range(len(obj)):
-	obj[i] = inspect.unwrap(obj[i])
+		obj[i] = inspect.unwrap(obj[i])
 
 	fn = None
 	for i in range(len(obj)-1, -1, -1):
-	try:
-		fn = inspect.getsourcefile(obj[i])
-		if fn:
-			obj_inx = i
-			break
-	except:
-		pass
+		try:
+			fn = inspect.getsourcefile(obj[i])
+			if fn:
+				obj_inx = i
+				break
+		except:
+			pass
 
 	linespec = ""
 	try:

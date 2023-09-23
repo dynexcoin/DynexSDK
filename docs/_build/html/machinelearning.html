@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuromorphic Machine Learning &mdash; Dynex SDK 0.1.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dynex PyTorch Library" href="pytorch.html" />
+    <link rel="prev" title="Problem-Solving Handbook" href="handbook.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Dynex SDK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Dynex SDK Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Dynex SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using the Dynex SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampler.html">Sampler Properties and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handbook.html">Problem-Solving Handbook</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Neuromorphic Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch.html">Dynex PyTorch Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scikit.html">Dynex Scikit-Learn Plugin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dynex SDK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Neuromorphic Machine Learning</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/machinelearning.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="neuromorphic-machine-learning">
+<h1>Neuromorphic Machine Learning<a class="headerlink" href="#neuromorphic-machine-learning" title="Permalink to this headline"></a></h1>
+<p>Demonstrates various examples of neuromorphic enhanced Machine Learning techniques, for example Quantum-Boltzmann-Machines (QRBMs&gt;`_, Quantum-Support-Vector-Machines (QSVM&gt;`_ or feature optimisation with QBoost.</p>
+<p>Quantum computing algorithms for machine learning harness the power of quantum mechanics to enhance various aspects of machine learning tasks. As both, quantum computing and neuromorphic computing are sharing similar features, these algorithms can also be computed efficiently on the Dynex platform – but without the limitations of limited qubits, error correction or availability:</p>
+<p><strong>Quantum Support Vector Machine (QSVM&gt;`_:</strong> QSVM is a quantum-inspired algorithm that aims to classify data using a quantum kernel function. It leverages the concept of quantum superposition and quantum feature mapping to potentially provide computational advantages over classical SVM algorithms in certain scenarios.</p>
+<p><strong>Quantum Principal Component Analysis (QPCA&gt;`_:</strong> QPCA is a quantum version of the classical Principal Component Analysis (PCA&gt;`_ algorithm. It utilizes quantum linear algebra techniques to extract the principal components from high-dimensional data, potentially enabling more efficient dimensionality reduction in quantum machine learning.</p>
+<p><strong>Quantum Neural Networks (QNN&gt;`_:</strong> QNNs are quantum counterparts of classical neural networks. They leverage quantum principles, such as quantum superposition and entanglement, to process and manipulate data. QNNs hold the potential to learn complex patterns and perform tasks like classification and regression, benefiting from quantum parallelism.</p>
+<p><strong>Quantum K-Means Clustering:</strong> Quantum K-means is a quantum-inspired variant of the classical K-means clustering algorithm. It uses quantum algorithms to accelerate the clustering process by exploring multiple solutions simultaneously. Quantum K-means has the potential to speed up clustering tasks for large-scale datasets.</p>
+<p><strong>Quantum Boltzmann Machines (QBMs&gt;`_:</strong> QBMs are quantum analogues of classical Boltzmann Machines, which are generative models used for unsupervised learning. QBMs employ quantum annealing to sample from a probability distribution and learn patterns and structures in the data.</p>
+<p><strong>Quantum Support Vector Regression (QSVR&gt;`_:</strong> QSVR extends the concept of QSVM to regression tasks. It uses quantum computing techniques to perform regression analysis, potentially offering advantages in terms of efficiency and accuracy over classical regression algorithms.</p>
+<p>Here are some example of these algorithms implemented on the Dynex Platform:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/example_support_vector_machine.ipynb">Example: Quantum-Support-Vector-Machine Implementation on Dynex</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/example_neuromorphic_torch_layers%20(1).ipynb">Example: Quantum-Boltzmann-Machine (PyTorch) on Dynex</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/Dynex-Full-QRBM.ipynb">Example: Quantum-Boltzmann-Machine Implementation (3-step QUBO) on Dynex</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/example_collaborative_filtering_CFQIRBM.ipynb">Example: Quantum-Boltzmann-Machine (Collaborative Filtering) on Dynex</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/example_quantum_boltzmann_machine_QBM.ipynb">Example: Quantum-Boltzmann-Machine Implementation on Dynex</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb">Example: Feature Selection - Titanic Survivals</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb">Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin</a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="handbook.html" class="btn btn-neutral float-left" title="Problem-Solving Handbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pytorch.html" class="btn btn-neutral float-right" title="Dynex PyTorch Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Dynex Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

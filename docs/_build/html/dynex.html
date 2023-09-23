@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dynex package &mdash; Dynex SDK 0.1.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started with the Dynex SDK" href="welcome.html" />
+    <link rel="prev" title="dynex" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Dynex SDK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Dynex SDK Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Dynex SDK</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dynex package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-dynex">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using the Dynex SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampler.html">Sampler Properties and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handbook.html">Problem-Solving Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Neuromorphic Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytorch.html">Dynex PyTorch Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scikit.html">Dynex Scikit-Learn Plugin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dynex SDK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">dynex</a> &raquo;</li>
+      <li>dynex package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dynex.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dynex-package">
+<h1>dynex package<a class="headerlink" href="#dynex-package" title="Permalink to this headline"></a></h1>
+<section id="module-dynex">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dynex" title="Permalink to this headline"></a></h2>
+<p>Dynex SDK (beta) Neuromorphic Computing Library
+Copyright (c) 2021-2023, Dynex Developers</p>
+<p>All rights reserved.</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Redistributions of source code must retain the above copyright notice, this list of</dt><dd><p>conditions and the following disclaimer.</p>
+</dd>
+</dl>
+</li>
+<li><p>Redistributions in binary form must reproduce the above copyright notice, this list
+of conditions and the following disclaimer in the documentation and/or other
+materials provided with the distribution.</p></li>
+<li><p>Neither the name of the copyright holder nor the names of its contributors may be
+used to endorse or promote products derived from this software without specific
+prior written permission.</p></li>
+</ol>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dynex.BQM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">BQM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bqm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#BQM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.BQM" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates a model, which can be used by the sampler based on a Binary Quadratic Model (BQM) problem. The Dynex sampler needs a “model” object for sampling. Based on the problem formulation, multiple model classes are supported.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">bqm</dt>
+<dd class="field-odd"><p>The BQM to be used for this model (class:<cite>dimod.BinaryQuadraticModel</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">relabel</dt>
+<dd class="field-odd"><p>Defines if the BQM’s variable names should be relabeled (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">logging</dt>
+<dd class="field-odd"><p>True to show model creation information, False to silence outputs (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>class:<cite>dynex.model</cite></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>Dimod’s <cite>dimod.binary.BinaryQuadraticModel</cite> (BQM) contains linear and quadratic biases for problems formulated as binary quadratic models as well as additional information such as variable labels and offset.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">bqm</span> <span class="o">=</span> <span class="n">dimod</span><span class="o">.</span><span class="n">BinaryQuadraticModel</span><span class="p">({</span><span class="s1">&#39;x1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+                         <span class="p">{(</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">):</span> <span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">):</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">},</span>
+                         <span class="mf">0.0</span><span class="p">,</span> <span class="n">dimod</span><span class="o">.</span><span class="n">BINARY</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">dynex</span><span class="o">.</span><span class="n">BQM</span><span class="p">(</span><span class="n">bqm</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dynex.CQM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">CQM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cqm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#CQM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.CQM" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates a model, which can be used by the sampler based on a Constraint Quadratic Model (CQM) problem. The Dynex sampler needs a “model” object for sampling. Based on the problem formulation, multiple model classes are supported.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">cqm</dt>
+<dd class="field-odd"><p>The BQM to be used for this model (class:<cite>dimod.ConstraintQuadraticModel</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">relabel</dt>
+<dd class="field-odd"><p>Defines if the BQM’s variable names should be relabeled (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">logging</dt>
+<dd class="field-odd"><p>True to show model creation information, False to silence outputs (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>class:<cite>dynex.model</cite></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>Dimod’s <cite>dimod.ConstrainedQuadraticModel</cite> (CQM) contains linear and quadratic biases for problems formulated as constrained quadratic models as well as additional information such as variable labels, offsets, and equality and inequality constraints.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">num_widget_a</span> <span class="o">=</span> <span class="n">dimod</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="s1">&#39;num_widget_a&#39;</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">num_widget_b</span> <span class="o">=</span> <span class="n">dimod</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="s1">&#39;num_widget_b&#39;</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">cqm</span> <span class="o">=</span> <span class="n">dimod</span><span class="o">.</span><span class="n">ConstrainedQuadraticModel</span><span class="p">()</span>
+<span class="n">cqm</span><span class="o">.</span><span class="n">set_objective</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">num_widget_a</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">num_widget_b</span><span class="p">)</span>
+<span class="n">cqm</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="n">num_widget_a</span> <span class="o">+</span> <span class="n">num_widget_b</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;total widgets&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">dynex</span><span class="o">.</span><span class="n">CQM</span><span class="p">(</span><span class="n">cqm</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.Convert">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">Convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#Convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.Convert" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dynex.DynexSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">DynexSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mainnet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Dynex</span> <span class="pre">SDK</span> <span class="pre">Job'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Initialises the sampler object given a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">logging</dt>
+<dd class="field-odd"><p>Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">mainnet</dt>
+<dd class="field-odd"><p>Defines if the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">description</dt>
+<dd class="field-odd"><p>Defines the description for the sampling, which is shown in Dynex job dashboards as well as in the market place  (<cite>string</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>class:<cite>dynex.samper</cite></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span> <span class="o">=</span> <span class="n">dynex</span><span class="o">.</span><span class="n">DynexSampler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="dynex.DynexSampler.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler.clean" title="Permalink to this definition"></a></dt>
+<dd><p>This function should be called after finishing a sampling process on the Mainnet. It ensures that submitted sample-files,
+which have not been parsed and used from the sampler, will be deleted on the FTP server. It is also called automatically
+during __exit___ event of the sampler class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dynex.DynexSampler.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler.print" title="Permalink to this definition"></a></dt>
+<dd><p>Prints summary information about the sampler object:</p>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">Mainnet</dt>
+<dd class="field-odd"><p>If the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">logging</dt>
+<dd class="field-odd"><p>Show progress and status information or be quiet and omit terminal output (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">tmp filename</dt>
+<dd class="field-odd"><p>The filename of the computation file (<cite>string</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">tmp_filehash</dt>
+<dd class="field-odd"><p>The checksum hash of the computation file (<cite>string</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">model type</dt>
+<dd class="field-odd"><p>[cnf, wcnf]: The type of the model: Sat problems (cnf) or QUBU/Ising type problems (wcnf) (<cite>string</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">num_variables</dt>
+<dd class="field-odd"><p>The number of variables of the model (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">num_clauses</dt>
+<dd class="field-odd"><p>The number of clauses of the model (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DynexSampler object
+mainnet? True
+logging? True
+tmp filename: tmp/b8fa34a815f96098438d68142dfb68b6.bin
+tmp filehash: 0ee4a280b9ae5a91f48e8b3c760192dfba5397ae4ff1bd68879914efe829af9a
+model type: BQM
+num variables: 15
+num clauses: 120
+configuration: dynex.ini
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dynex.DynexSampler.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_reads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annealing_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switchfraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debugging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler.sample" title="Permalink to this definition"></a></dt>
+<dd><p>The main sampling function:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">num_reads</dt>
+<dd class="field-odd"><p>Defines the number of parallel samples to be performed (<cite>int</cite> value in the range of [32, MAX_NUM_READS] as defined in your license)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">annealing_time</dt>
+<dd class="field-odd"><p>Defines the number of integration steps for the sampling. Models are being converted into neuromorphic circuits, which are then simulated with ODE integration by the participating workers (<cite>int</cite> value in the range of [1, MAX_ANNEALING_TIME] as defined in your license)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">switchfraction</dt>
+<dd class="field-odd"><p>Defines the percentage of variables which are replaced by random values during warm start samplings (<cite>double</cite> in the range of [0.0, 1.0])</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">alpha</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">beta</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">gamma</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">delta</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">epsilon</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">zeta</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (<cite>double</cite> value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">minimum_stepsize</dt>
+<dd class="field-odd"><p>The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is performig adaptive stepsizes for each ODE integration forward Euler step. This value defines the smallest step size for a single adaptive integration step (<cite>double</cite> value in the range of [0.0000000000000001, 1.0])</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">debugging</dt>
+<dd class="field-odd"><p>Only applicable for test-net sampling. Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (TRUE) (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns a dimod sampleset object class:<cite>dimod.sampleset</cite></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dynex</span>
+<span class="kn">import</span> <span class="nn">dimod</span>
+
+<span class="c1"># Define the QUBU problem:</span>
+<span class="n">bqmodel</span> <span class="o">=</span> <span class="n">dimod</span><span class="o">.</span><span class="n">BinaryQuadraticModel</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dimod</span><span class="o">.</span><span class="n">BINARY</span><span class="p">)</span>
+
+<span class="c1"># Sample the problem:</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">dynex</span><span class="o">.</span><span class="n">BQM</span><span class="p">(</span><span class="n">bqmodel</span><span class="p">)</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">dynex</span><span class="o">.</span><span class="n">DynexSampler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">sampleset</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">num_reads</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">annealing_time</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Output the result:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sampleset</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭────────────┬───────────┬───────────┬─────────┬─────┬─────────┬───────┬─────┬──────────┬──────────╮
+│   DYNEXJOB │   ELAPSED │   WORKERS │   CHIPS │   ✔ │   STEPS │   LOC │   ✔ │   ENERGY │        ✔ │
+├────────────┼───────────┼───────────┼─────────┼─────┼─────────┼───────┼─────┼──────────┼──────────┤
+│       3617 │      0.07 │         1 │       0 │  32 │     100 │     0 │   1 │        0 │ 10000.00 │
+╰────────────┴───────────┴───────────┴─────────┴─────┴─────────┴───────┴─────┴──────────┴──────────╯
+╭─────────────────────────────┬───────────┬─────────┬───────┬──────────┬───────────┬───────────────┬──────────╮
+│                      WORKER │   VERSION │   CHIPS │   LOC │   ENERGY │   RUNTIME │   LAST UPDATE │   STATUS │
+├─────────────────────────────┼───────────┼─────────┼───────┼──────────┼───────────┼───────────────┼──────────┤
+│ *** WAITING FOR WORKERS *** │           │         │       │          │           │               │          │
+╰─────────────────────────────┴───────────┴─────────┴───────┴──────────┴───────────┴───────────────┴──────────╯
+[DYNEX] FINISHED READ AFTER 0.07 SECONDS
+[DYNEX] PARSING 1 VOLTAGE ASSIGNMENT FILES...
+progress: 100%
+1/1 [00:05&lt;00:00, 5.14s/it]
+[DYNEX] SAMPLESET LOADED
+[DYNEX] MALLOB: JOB UPDATED: 3617 STATUS: 2
+   0  1 energy num_oc.
+0  0  1   -1.0       1
+[&#39;BINARY&#39;, 1 rows, 1 samples, 2 variables]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dynex.DynexSampler.sample_to_assignments">
+<span class="sig-name descname"><span class="pre">sample_to_assignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowest_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler.sample_to_assignments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler.sample_to_assignments" title="Permalink to this definition"></a></dt>
+<dd><p>The voltates of a sampling can be retrieved from the sampler with sampler.sampleset</p>
+<p>The sampler.sampleset returns a list of voltages for each variable, ranging from -1.0 to +1.0 and is a double precision value. Sometimes it is required to transform these voltages to binary values 0 (for negative voltages) or 1 (for positive voltages). This function converts a given sampler.sampleset[x] from voltages to binary values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">lowest_set</dt>
+<dd class="field-odd"><p>The class:<cite>dynex.sampler.assignment’ which has to be converted (`list</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns the converted sample as <cite>list</cite></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dynex.DynexSampler.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#DynexSampler.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.DynexSampler.update" title="Permalink to this definition"></a></dt>
+<dd><p>Typically, the sampler object is being initialised with a defined model class. This model can also be updated without
+regenerating a new sampler object by calling the function update(model).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dynex.SAT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">SAT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clauses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#SAT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.SAT" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Creates a model, which can be used by the sampler based on a SAT problem. The Dynex sampler needs a “model” object for sampling. Based on the problem formulation, multiple model classes are supported.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">clauses</dt>
+<dd class="field-odd"><p>List of sat caluses for this model (<cite>list</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">logging</dt>
+<dd class="field-odd"><p>True to show model creation information, False to silence outputs (<cite>bool</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>class:<cite>dynex.model</cite></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>Dimod’s dimod.binary.BinaryQuadraticModel (BQM) contains linear and quadratic biases for problems formulated as binary quadratic models as well as additional information such as variable labels and offset.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">clauses</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">],</span>
+   <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+   <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+   <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span>
+<span class="n">model</span> <span class="o">=</span>  <span class="n">dynex</span><span class="o">.</span><span class="n">SAT</span><span class="p">(</span><span class="n">clauses</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.account_status">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">account_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#account_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.account_status" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the status of the Dynex SDK account:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ACCOUNT</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">YOUR</span> <span class="n">ACCOUNT</span> <span class="n">IDENTIFICATION</span><span class="o">&gt;</span>
+<span class="n">API</span> <span class="n">SUCCESSFULLY</span> <span class="n">CONNECTED</span> <span class="n">TO</span> <span class="n">DYNEX</span>
+<span class="o">-----------------------------------</span>
+<span class="n">ACCOUNT</span> <span class="n">LIMITS</span><span class="p">:</span>
+<span class="n">MAXIMUM</span> <span class="n">NUM_READS</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span>
+<span class="n">MAXIMUM</span> <span class="n">ANNEALING_TIME</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span>
+<span class="n">MAXIMUM</span> <span class="n">JOB</span> <span class="n">DURATION</span><span class="p">:</span> <span class="mi">60</span> <span class="n">MINUTES</span>
+
+<span class="n">USAGE</span><span class="p">:</span>
+<span class="n">TOTAL</span> <span class="n">USAGE</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span><span class="mi">699</span><span class="p">,</span><span class="mi">614</span><span class="p">,</span><span class="mi">400</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="mi">000</span> <span class="p">(</span> <span class="mf">0.976996144</span> <span class="o">%</span><span class="p">)</span> <span class="n">NUM_READS</span> <span class="n">x</span> <span class="n">ANNEALING_TIME</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.aes_encrypt">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">aes_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#aes_encrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.aes_encrypt" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns the encrypted string of ‘raw’ with an AES Key privided by the Dynex platform (<cite>string</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.calculate_sha3_256_hash">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">calculate_sha3_256_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#calculate_sha3_256_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.calculate_sha3_256_hash" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.check_api_status">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">check_api_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#check_api_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.check_api_status" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Dynex API call to output the status of the Dynex SDK account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>TRUE if the API call was successful, FALSE if the API call was not successful (<cite>bool</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.check_list_length">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">check_list_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#check_list_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.check_list_length" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.cleanup_ftp">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">cleanup_ftp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#cleanup_ftp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.cleanup_ftp" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>This function is called on __exit__ of the sampler class or by sampler.clear().
+It ensures that submitted sample-files, which have not been parsed and used from the sampler, will be deleted on the FTP server.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.convert_bqm_to_wcnf">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">convert_bqm_to_wcnf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bqm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#convert_bqm_to_wcnf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.convert_bqm_to_wcnf" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Converts a given Binary Quadratic Model (BQM) problem into a wncf file which is being used by the Dynex platform workers for the sampling process. Every BQM can be converted to a QUBO formulation in polynomial time (and vice-versa) without loss of functionality. During the process, variables are re-labeld and mapped to integer values in the range of [0, NUM_VARIABLES}. The mapping is being made available in sampler.variable_mappings and is used for constructing the returned sampleset object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>The BQM needs to have at least one defined weight, otherwise an exception is thrown</p></li>
+<li><p>Double values of weights are being converted to integer values with the factor ‘PRECISION’</p></li>
+<li><p>The value for PRECISION is determined automatically with function 10 ** (np.floor(np.log10(max_abs_coeff)) - 4)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">bqm</dt>
+<dd class="field-odd"><p>the Binary Quadratic Model to be converted (class:<cite>dimod.BinaryQuadraticModel</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">clauses</dt>
+<dd class="field-odd"><p>A list of all clauses (<cite>list</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">num_variables</dt>
+<dd class="field-odd"><p>number of variables (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">num_clauses</dt>
+<dd class="field-odd"><p>number of clauses (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">mappings</dt>
+<dd class="field-odd"><p>variable mappings original -&gt; integer value (<cite>dict</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">precision</dt>
+<dd class="field-odd"><p>precision of conversion (<cite>double</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">bqm</dt>
+<dd class="field-odd"><p>class:<cite>dimod.BinaryQuadraticModel</cite></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.delete_file_on_ftp">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">delete_file_on_ftp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#delete_file_on_ftp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.delete_file_on_ftp" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Deletes a file on the FTP server as specified in dynex,ini</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.download_file">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.download_file" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Downloads a computed assigment file from the FTP server specified in dynex.ini</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.find_largest_value">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">find_largest_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#find_largest_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.find_largest_value" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>The largest variable in a list of clauses (<cite>int</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.generate_hash">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">generate_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#generate_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.generate_hash" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns the sha3-256 hash of a given file (<cite>string</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.generate_job_api">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">generate_job_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annealing_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switchfraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#generate_job_api"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.generate_job_api" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Dynex API call to generate a new job</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>TRUE if the job was successfully created, FALSE if there was a problem with generating the job (<cite>bool</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.get_status_details_api">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">get_status_details_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">JOB_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_stopped</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#get_status_details_api"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.get_status_details_api" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Dynex API call to retrieve status of the job</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">LOC_MIN</dt>
+<dd class="field-odd"><p>Lowest value of global falsified soft clauses of the problem which is being sampled (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">ENERGY_MIN</dt>
+<dd class="field-odd"><p>Lowest QUBO energy of the problem which is being sampled (<cite>double</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">CHIPS</dt>
+<dd class="field-odd"><p>The number of chips which are currently sampling (<cite>int</cite>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">retval</dt>
+<dd class="field-odd"><p>Tabulated overview of the job status, showing workers, found assignments, etc. (<cite>string</cite>)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.ksat">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">ksat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clauses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#ksat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.ksat" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Converts a k-sat formulation into 3-sat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>List of clauses of the converted 3-sat (<cite>list</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.list_files_with_text">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">list_files_with_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#list_files_with_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.list_files_with_text" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Downloads assignment files from the FTP server specified in dynex.ini and stores them in /tmp as specified in dynex.ini
+Downloaded files are automatically deleted on the FTP server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>List of locally in /tmp saved assignment files for the current sampler model (<cite>list</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.list_files_with_text_local">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">list_files_with_text_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#list_files_with_text_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.list_files_with_text_local" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Scans the temporary directory for assignment files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns a list of all assignment files (filenames) which are locally available in /tmp as specified in dynex.ini for the current sampler model (<cite>list</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.max_value">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">max_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputlist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#max_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.max_value" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.sat_creator">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">sat_creator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clause_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dummy_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_clauses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#sat_creator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.sat_creator" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Converts a k-sat clause to a number of 3-sat clauses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">variables</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">clause_type</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">dummy_number</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">results_clauses</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><dl class="field-list simple">
+<dt class="field-odd">dummy_number</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+<li><dl class="field-list simple">
+<dt class="field-odd">results_clauses</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.save_cnf">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">save_cnf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clauses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mainnet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#save_cnf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.save_cnf" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Saves the model as an encrypted .bin file locally in /tmp as defined in dynex.ini</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.save_wcnf">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">save_wcnf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clauses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_clauses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mainnet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#save_wcnf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.save_wcnf" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Saves the model as an encrypted .bin file locally in /tmp as defined in dynex.ini</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.test">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.test" title="Permalink to this definition"></a></dt>
+<dd><p>Performs test of the dynex.ini settings. Successful completion is required to start using the sampler.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.test_completed">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">test_completed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#test_completed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.test_completed" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Returns TRUE if dynex.test() has been successfully completed, FALSE if dynex.test() was not successfully completed (<cite>bool</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.update_job_api">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">update_job_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">JOB_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowest_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowest_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#update_job_api"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.update_job_api" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Dynex API call to update the status of a job</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>TRUE if the job was successfully updated, FALSE if there was a problem with updating the job (<cite>bool</cite>)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynex.upload_file_to_ftp">
+<span class="sig-prename descclassname"><span class="pre">dynex.</span></span><span class="sig-name descname"><span class="pre">upload_file_to_ftp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynex.html#upload_file_to_ftp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dynex.upload_file_to_ftp" title="Permalink to this definition"></a></dt>
+<dd><p><cite>Internal Function</cite></p>
+<p>Submits a computation file (xxx.bin) to the FTP server as defined in dynex.ini</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Status if successul or failed (<cite>bool</cite>)</p></li>
+</ul>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="dynex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="welcome.html" class="btn btn-neutral float-right" title="Getting Started with the Dynex SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Dynex Developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

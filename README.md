@@ -3,6 +3,7 @@ Dynex is the world’s first neuromorphic supercomputing blockchain based on the
 
 Dynex SDK documentation:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
+- [Dynex SDK on ReadTheDocs](https://dynex-sdk.readthedocs.io/en/latest/index.html#)
 
 Dynex SDK Professional Community:
 - [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A)
@@ -72,6 +73,41 @@ The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybri
 This package provides a scikit-learn transformer for feature selection using the Dynex Neuromorphic Computing Platform. It is built to integrate seamlessly with scikit-learn, an industry-standard, state-of-the-art ML library for Python.
 
 The [Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/tree/main/dynex_scikit_plugin) makes it easier to use the Dynex platform for the feature selection piece of ML workflows. Feature selection – a key building block of machine learning – is the problem of determining a small set of the most representative characteristics to improve model training and performance in ML. With this new plug-in, ML developers need not be experts in optimization or hybrid solving to get the business and technical benefits of both. Developers creating feature selection applications can build a pipeline with scikit-learn and then embed the Dynex Platform into this workflow more easily and efficiently. ​
+
+## Dynex Qiskit class (coming soon)
+
+Thanks to groundbreaking research from [Richard H. Warren](https://arxiv.org/pdf/1405.2354.pdf), it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:
+
+```
+from dynex.qiskit import QuantumRegister, ClassicalRegister
+from dynex.qiskit import QuantumCircuit, execute
+
+# Input Registers: a = qi[0]; b = qi[1]; ci = qi[2]
+qi = QuantumRegister(3)
+ci = ClassicalRegister(3)
+
+# Output Registers: s = qo[0]; co = qo[1]
+qo = QuantumRegister(2)
+co = ClassicalRegister(2)
+circuit = QuantumCircuit(qi,qo,ci,co)
+
+# Define adder circuit
+for idx in range(3):
+    circuit.ccx(qi[idx], qi[(idx+1)%3], qo[1])
+for idx in range(3):
+    circuit.cx(qi[idx], qo[0])
+
+circuit.measure(qo, co)
+
+# Run
+execute(circuit)
+
+# Print
+print(circuit)
+```
+
+
+
 
 ## Dynex QBoost Implementation
 

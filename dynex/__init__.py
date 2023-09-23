@@ -91,16 +91,18 @@ def account_status():
     """
     Shows the status of the Dynex SDK account:
 
-    ACCOUNT: <YOUR ACCOUNT IDENTIFICATION>
-    API SUCCESSFULLY CONNECTED TO DYNEX
-    -----------------------------------
-    ACCOUNT LIMITS:
-    MAXIMUM NUM_READS: 5,000,000
-    MAXIMUM ANNEALING_TIME: 10,000
-    MAXIMUM JOB DURATION: 60 MINUTES
-    
-    USAGE:
-    TOTAL USAGE: 97,699,614,400 / 10,000,000,000,000 ( 0.976996144 %) NUM_READS x ANNEALING_TIME
+    .. code-block:: 
+
+        ACCOUNT: <YOUR ACCOUNT IDENTIFICATION>
+        API SUCCESSFULLY CONNECTED TO DYNEX
+        -----------------------------------
+        ACCOUNT LIMITS:
+        MAXIMUM NUM_READS: 5,000,000
+        MAXIMUM ANNEALING_TIME: 10,000
+        MAXIMUM JOB DURATION: 60 MINUTES
+        
+        USAGE:
+        TOTAL USAGE: 97,699,614,400 / 10,000,000,000,000 ( 0.976996144 %) NUM_READS x ANNEALING_TIME
 
     """
     
@@ -108,15 +110,13 @@ def account_status():
 
 def check_api_status(logging = False):
     """
-    Internal Function
-    -----------------
-
+    `Internal Function`
+    
     Dynex API call to output the status of the Dynex SDK account
 
-    Returns:
-    --------
-    TRUE if the API call was successful
-    FALSE if the API call was not successful
+    :Returns:
+
+    - TRUE if the API call was successful, FALSE if the API call was not successful (`bool`)
     """
     
     global FILE_IV
@@ -156,15 +156,13 @@ def check_api_status(logging = False):
 
 def update_job_api(JOB_ID, status, logging=True, workers=-1, lowest_loc=-1, lowest_energy=-1):
     """
-    Internal Function
-    -----------------
-
+    `Internal Function`
+    
     Dynex API call to update the status of a job
 
-    Returns:
-    --------
-    TRUE if the job was successfully updated
-    FALSE if there was a problem with updating the job
+    :Returns:
+
+    - TRUE if the job was successfully updated, FALSE if there was a problem with updating the job (`bool`)
     """
     
     url = API_ENDPOINT+'?api_key='+API_KEY+'&api_secret='+API_SECRET+'&method=update_job&job_id='+str(JOB_ID)+'&status='+str(status);
@@ -184,15 +182,13 @@ def update_job_api(JOB_ID, status, logging=True, workers=-1, lowest_loc=-1, lowe
 
 def generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, logging=True):
     """
-    Internal Function
-    -----------------
-
+    `Internal Function`
+    
     Dynex API call to generate a new job
 
-    Returns:
-    --------
-    TRUE if the job was successfully created
-    FALSE if there was a problem with generating the job
+    :Returns:
+
+    - TRUE if the job was successfully created, FALSE if there was a problem with generating the job (`bool`)
     """
     
 	# retrieve additional data from sampler class:
@@ -225,24 +221,19 @@ def generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=2
 
 def get_status_details_api(JOB_ID, all_stopped = False):
     """
-    Internal Function
-    -----------------
-
+    `Internal Function`
+    
     Dynex API call to retrieve status of the job
 
-    Returns:
-    --------
-    LOC_MIN:
-    Lowest value of global falsified soft clauses of the problem which is being sampled.
+    :Returns:
+
+    - :LOC_MIN: Lowest value of global falsified soft clauses of the problem which is being sampled (`int`)
     
-    ENERGY_MIN:
-    Lowest QUBO energy of the problem which is being sampled
+    - :ENERGY_MIN: Lowest QUBO energy of the problem which is being sampled (`double`)
     
-    CHIPS:
-    The number of chips which are currently sampling
+    - :CHIPS: The number of chips which are currently sampling (`int`)
     
-    retval:
-    Tabulated overview of the job status, showing workers, found assignments, etc.
+    - :retval: Tabulated overview of the job status, showing workers, found assignments, etc. (`string`)
     """
 
     url = API_ENDPOINT+'?api_key='+API_KEY+'&api_secret='+API_SECRET+'&method=get_status&job_id='+str(JOB_ID)
@@ -295,11 +286,11 @@ def get_status_details_api(JOB_ID, all_stopped = False):
 
 def test_completed():
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Returns TRUE if dynex.test() has been successfully completed
-    Returns FALSE if dynex.test() was not successfully completed
+    :Returns:
+
+    - Returns TRUE if dynex.test() has been successfully completed, FALSE if dynex.test() was not successfully completed (`bool`)
     """
     
     local_path='dynex.test';
@@ -307,9 +298,6 @@ def test_completed():
 
 def test():
     """
-    Internal Function
-    -----------------
-
     Performs test of the dynex.ini settings. Successful completion is required to start using the sampler.
     """
 
@@ -375,11 +363,10 @@ def test():
 
 def check_list_length(lst):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Returns TRUE if the sat problem is k-Sat 
-    Returns FALSE if the problem is 3-sat or 2-sat
+    :Returns:
+    - TRUE if the sat problem is k-Sat, FALSE if the problem is 3-sat or 2-sat (`bool`)
     """
     
     for sublist in lst:
@@ -390,10 +377,11 @@ def check_list_length(lst):
 # find largest variable in clauses:
 def find_largest_value(lst):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Returns the largest variable in a list of clauses.
+    :Returns:
+
+    - The largest variable in a list of clauses (`int`)
     """
     
     largest_value = None
@@ -408,10 +396,22 @@ def find_largest_value(lst):
 # create a substitution clause:
 def sat_creator(variables, clause_type, dummy_number, results_clauses):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Converts a k-sat clause to a number of 3-sat clauses.
+
+    :Parameters:
+
+    - :variables:
+    - :clause_type:
+    - :dummy_number:
+    - :results_clauses:
+
+    :Returns:
+
+    - :dummy_number:
+    - :results_clauses:
+    
     """
     
     if clause_type == 1:
@@ -445,14 +445,13 @@ def sat_creator(variables, clause_type, dummy_number, results_clauses):
 # convert from k-sat to 3sat:
 def ksat(clauses):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Converts a k-sat formulation into 3-sat.
 
-    Returns:
-    --------
-    List of clauses of the converted 3-sat
+    :Returns:
+
+    - List of clauses of the converted 3-sat (`list`)
     """
     
     results_clauses = [];
@@ -490,22 +489,34 @@ def ksat(clauses):
 ################################################################################################################################
 
 def calculate_sha3_256_hash(string):
+    """
+    `Internal Function`
+    """
     sha3_256_hash = hashlib.sha3_256()
     sha3_256_hash.update(string.encode('utf-8'))
     return sha3_256_hash.hexdigest()
 
 def Convert(a):
+    """
+    `Internal Function`
+    """
     it = iter(a)
     res_dct = dict(zip(it, it))
     return res_dct;
 
 def check_list_length(lst):
+    """
+    `Internal Function`
+    """
     for sublist in lst:
         if isinstance(sublist, list) and len(sublist) > 3:
             return True
     return False
 
 def max_value(inputlist):
+    """
+    `Internal Function`
+    """
     return max([sublist[-1] for sublist in inputlist])
 
 ################################################################################################################################
@@ -514,10 +525,13 @@ def max_value(inputlist):
 
 def upload_file_to_ftp(hostname, username, password, local_file_path, remote_directory, logging=True):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Submits a computation file (xxx.bin) to the FTP server as defined in dynex.ini
+
+    :Returns:
+
+    - Status if successul or failed (`bool`)
     """
     
     retval = True;
@@ -562,12 +576,10 @@ def upload_file_to_ftp(hostname, username, password, local_file_path, remote_dir
 ################################################################################################################################
 def cleanup_ftp(sampler, files):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     This function is called on __exit__ of the sampler class or by sampler.clear(). 
-    It ensures that submitted sample-files,
-    which have not been parsed and used from the sampler, will be deleted on the FTP server. 
+    It ensures that submitted sample-files, which have not been parsed and used from the sampler, will be deleted on the FTP server. 
     """
     
     if len(files)>0:
@@ -594,8 +606,7 @@ def cleanup_ftp(sampler, files):
 ################################################################################################################################
 def delete_file_on_ftp(hostname, username, password, local_file_path, remote_directory, logging=True):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Deletes a file on the FTP server as specified in dynex,ini
     """
@@ -615,15 +626,14 @@ def delete_file_on_ftp(hostname, username, password, local_file_path, remote_dir
 
 def list_files_with_text(sampler):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Downloads assignment files from the FTP server specified in dynex.ini and stores them in /tmp as specified in dynex.ini
     Downloaded files are automatically deleted on the FTP server.
 
-    Returns:
-    --------
-    List of locally in /tmp saved assignment files for the current sampler model.
+    :Returns:
+
+    - List of locally in /tmp saved assignment files for the current sampler model (`list`)
     """
     
     host = sampler.solutionurl[6:-1];
@@ -668,11 +678,13 @@ def list_files_with_text(sampler):
 
 def list_files_with_text_local(sampler):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Returns a list of all assignment files (filenames) which are locally available in /tmp as specified in dynex.ini for
-    the current sampler model.
+    Scans the temporary directory for assignment files
+
+    :Returns:
+
+    - Returns a list of all assignment files (filenames) which are locally available in /tmp as specified in dynex.ini for the current sampler model (`list`)
     """
     
     directory = sampler.filepath_full; 
@@ -692,8 +704,7 @@ def list_files_with_text_local(sampler):
 
 def download_file(sampler, filename):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Downloads a computed assigment file from the FTP server specified in dynex.ini 
     """
@@ -724,10 +735,11 @@ def download_file(sampler, filename):
 
 def generate_hash(filename):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Returns the sha3-256 hash of a given file. 
+    :Returns:
+
+    - Returns the sha3-256 hash of a given file (`string`)
     """
     
     with open(filename, 'r') as file:
@@ -740,10 +752,11 @@ def generate_hash(filename):
 
 def aes_encrypt(raw):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
+    
+    :Returns:
 
-    Returns the encrypted string of 'raw' with an AES Key privided by the Dynex platform. 
+    - Returns the encrypted string of 'raw' with an AES Key privided by the Dynex platform (`string`)
     """
     BLOCK_SIZE = 16
     pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
@@ -761,8 +774,7 @@ def aes_encrypt(raw):
 
 def save_cnf(clauses, filename, mainnet):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Saves the model as an encrypted .bin file locally in /tmp as defined in dynex.ini 
     """
@@ -796,8 +808,7 @@ def save_cnf(clauses, filename, mainnet):
 
 def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
     Saves the model as an encrypted .bin file locally in /tmp as defined in dynex.ini 
     """
@@ -829,39 +840,29 @@ def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
 
 def convert_bqm_to_wcnf(bqm, relabel=True, logging=True):
     """
-    Internal Function
-    -----------------
+    `Internal Function`
 
-    Converts a given Binary Quadratic Model (BQM) problem into a wncf file which is being used by the Dynex platform workers
-    for the sampling process. Every BQM can be converted to a QUBO formulation in polynomial time (and vice-versa) without
-    loss of functionality. During the process, variables are re-labeld and mapped to integer values in the range of 
-    [0, NUM_VARIABLES}. The mapping is being made available in sampler.variable_mappings and is used for constructing the
-    returned sampleset object.
+    Converts a given Binary Quadratic Model (BQM) problem into a wncf file which is being used by the Dynex platform workers for the sampling process. Every BQM can be converted to a QUBO formulation in polynomial time (and vice-versa) without loss of functionality. During the process, variables are re-labeld and mapped to integer values in the range of [0, NUM_VARIABLES}. The mapping is being made available in sampler.variable_mappings and is used for constructing the returned sampleset object.
 
-    Note: 
-    * The BQM needs to have at least one defined weight, otherwise an exception is thrown
-    * Double values of weights are being converted to integer values with the factor 'PRECISION' 
-    * The value for PRECISION is determined automatically with function 10 ** (np.floor(np.log10(max_abs_coeff)) - 4)
+    :Notes: 
 
-    Returns:
-    --------
-    clauses:
-    A list of all clauses
-    
-    num_variables:
-    Integer: number of variables
-    
-    num_clauses:
-    Integer: number of clauses
-    
-    mappings:
-    Dictionary: variable mappings original -> integer value
-    
-    precision:
-    Double: precision of conversion
-    
-    bqm:
-    BQM object
+    - The BQM needs to have at least one defined weight, otherwise an exception is thrown
+    - Double values of weights are being converted to integer values with the factor 'PRECISION' 
+    - The value for PRECISION is determined automatically with function 10 ** (np.floor(np.log10(max_abs_coeff)) - 4)
+
+    :Parameters:
+
+    - :bqm: the Binary Quadratic Model to be converted (class:`dimod.BinaryQuadraticModel`)
+
+    :Returns:
+
+    - :clauses: A list of all clauses (`list`)
+    - :num_variables: number of variables (`int`)
+    - :num_clauses: number of clauses (`int`)
+    - :mappings: variable mappings original -> integer value (`dict`)
+    - :precision: precision of conversion (`double`)
+    - :bqm: class:`dimod.BinaryQuadraticModel`
+
     """
     
     # relabel variables to integers:
@@ -937,7 +938,29 @@ def convert_bqm_to_wcnf(bqm, relabel=True, logging=True):
 
 class SAT():
     """
-    Creates a model, which is being used by the sampler based on a SAT problem.
+    Creates a model, which can be used by the sampler based on a SAT problem. The Dynex sampler needs a "model" object for sampling. Based on the problem formulation, multiple model classes are supported.
+
+        :Parameters:
+
+        - :clauses: List of sat caluses for this model (`list`)
+        - :logging: True to show model creation information, False to silence outputs (`bool`)
+        
+        :Returns:
+        
+        - class:`dynex.model`
+
+    :Example:
+
+    Dimod's dimod.binary.BinaryQuadraticModel (BQM) contains linear and quadratic biases for problems formulated as binary quadratic models as well as additional information such as variable labels and offset.
+
+    .. code-block:: Python
+
+        clauses = [[1, -2, 3], [-1, 4, 5], [6, 7, -8], [-9, -10, 11], [12, 13, -14],
+           [-1, 15, -16], [17, -18, 19], [-20, 2, 3], [4, -5, 6], [-7, 8, 9],
+           [10, 11, -12], [-13, -14, 15], [16, 17, -18], [-19, 20, 1], [2, -3, 4],
+           [-5, 6, 7], [8, 9, -10], [-11, -12, 13], [14, 15, -16], [-17, 18, 19]]
+        model =  dynex.SAT(clauses)
+
     """
     def __init__(self, clauses, logging=True):
         self.clauses = clauses;
@@ -948,7 +971,29 @@ class SAT():
 
 class BQM():
     """
-    Creates a model, which is being used by the sampler based on a Binary Quadratic Model (BQM) problem.
+    Creates a model, which can be used by the sampler based on a Binary Quadratic Model (BQM) problem. The Dynex sampler needs a "model" object for sampling. Based on the problem formulation, multiple model classes are supported.
+    
+        :Parameters:
+
+        - :bqm: The BQM to be used for this model (class:`dimod.BinaryQuadraticModel`)
+        - :relabel: Defines if the BQM's variable names should be relabeled (`bool`)
+        - :logging: True to show model creation information, False to silence outputs (`bool`)
+        
+        :Returns:
+        
+        - class:`dynex.model`
+
+    :Example:
+
+    Dimod's `dimod.binary.BinaryQuadraticModel` (BQM) contains linear and quadratic biases for problems formulated as binary quadratic models as well as additional information such as variable labels and offset.
+
+    .. code-block:: Python
+
+        bqm = dimod.BinaryQuadraticModel({'x1': 1.0, 'x2': -1.5, 'x3': 2.0}, 
+                                 {('x1', 'x2'): 1.0, ('x2', 'x3'): -2.0}, 
+                                 0.0, dimod.BINARY)
+        model = dynex.BQM(bqm)
+
     """
     def __init__(self, bqm, relabel=True, logging=True):
         self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_wcnf(bqm, relabel, logging);
@@ -960,7 +1005,32 @@ class BQM():
 
 class CQM():
     """
-    Creates a model, which is being used by the sampler based on a Constraint Quadratic Model (CQM) problem.
+    Creates a model, which can be used by the sampler based on a Constraint Quadratic Model (CQM) problem. The Dynex sampler needs a "model" object for sampling. Based on the problem formulation, multiple model classes are supported.
+
+        :Parameters:
+
+        - :cqm: The BQM to be used for this model (class:`dimod.ConstraintQuadraticModel`)
+        - :relabel: Defines if the BQM's variable names should be relabeled (`bool`)
+        - :logging: True to show model creation information, False to silence outputs (`bool`)
+        
+        :Returns:
+        
+        - class:`dynex.model`
+
+    :Example:
+
+    Dimod's `dimod.ConstrainedQuadraticModel` (CQM) contains linear and quadratic biases for problems formulated as constrained quadratic models as well as additional information such as variable labels, offsets, and equality and inequality constraints.
+
+    .. code-block:: Python
+
+        num_widget_a = dimod.Integer('num_widget_a', upper_bound=7)
+        num_widget_b = dimod.Integer('num_widget_b', upper_bound=3)
+        cqm = dimod.ConstrainedQuadraticModel()
+        cqm.set_objective(-3 * num_widget_a - 4 * num_widget_b)
+        cqm.add_constraint(num_widget_a + num_widget_b <= 5, label='total widgets')
+        model = dynex.CQM(cqm)
+
+
     """
     def __init__(self, cqm, relabel=True, logging=True):
         bqm, self.invert = dimod.cqm_to_bqm(cqm)
@@ -974,27 +1044,28 @@ class CQM():
 ################################################################################################################################
 
 class DynexSampler:
-    def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
-        """
+    """
         Initialises the sampler object given a model.
 
-        logging:
-        [TRUE, FALSE]
-        Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (TRUE)
+        :Parameters:
 
-        mainnet:
-        [TRUE, FALSE]
-        Defines if the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling
+        - :logging: Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (`bool`)
+        - :mainnet: Defines if the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (`bool`)
+        - :description: Defines the description for the sampling, which is shown in Dynex job dashboards as well as in the market place  (`string`)
 
-        description:
-        STRING
-        Defines the description for the sampling, which is shown in Dynex job dashboards as well as in the market place.
+        :Returns:
 
-        test:
-        For internal use only.
+        - class:`dynex.samper`
+
+        :Example:
+
+        .. code-block:: Python
+
+            sampler = dynex.DynexSampler(model)
         
         """
-
+    def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
+        
         if not test and not test_completed():
             raise Exception("CONFIGURATION TEST NOT COMPLETED. PLEASE RUN 'dynex.test()'");
         
@@ -1117,13 +1188,27 @@ class DynexSampler:
         """
         Prints summary information about the sampler object:
 
-        * Mainnet: [TRUE, FALSE] If the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling
-        * logging: [TRUE, FALSE] Show progress and status information or be quiet (not terminal output)
-        * tmp filename: The filename of the computation file
-        * tmp_filehash: The checksum hash of the computation file
-        * model type: [cnf, wcnf]: The type of the model: Sat problems (cnf) or QUBU/Ising type problems (wcnf)
-        * num_variables: The number of variables of the model
-        * num_clauses: The number of clauses of the model
+        - :Mainnet: If the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (`bool`)
+        - :logging: Show progress and status information or be quiet and omit terminal output (`bool`)
+        - :tmp filename: The filename of the computation file (`string`)
+        - :tmp_filehash: The checksum hash of the computation file (`string`)
+        - :model type: [cnf, wcnf]: The type of the model: Sat problems (cnf) or QUBU/Ising type problems (wcnf) (`string`)
+        - :num_variables: The number of variables of the model (`int`)
+        - :num_clauses: The number of clauses of the model (`int`)
+
+        :Example:
+
+        .. code-block:: 
+
+            DynexSampler object
+            mainnet? True
+            logging? True
+            tmp filename: tmp/b8fa34a815f96098438d68142dfb68b6.bin
+            tmp filehash: 0ee4a280b9ae5a91f48e8b3c760192dfba5397ae4ff1bd68879914efe829af9a
+            model type: BQM
+            num variables: 15
+            num clauses: 120
+            configuration: dynex.ini
         """
         print('{DynexSampler object}');
         print('mainnet?', self.mainnet);
@@ -1140,13 +1225,15 @@ class DynexSampler:
         """
         The voltates of a sampling can be retrieved from the sampler with sampler.sampleset
 
-        The sampler.sampleset returns a list of voltages for each variable, ranging from -1.0 to +1.0 and is a double precision value.
-        Sometimes it is required to transform these voltages to binary values 0 (for negative voltages) or 1 (for positive voltages).
-        This function converts a given sampler.sampleset[x] from voltages to binary values.
+        The sampler.sampleset returns a list of voltages for each variable, ranging from -1.0 to +1.0 and is a double precision value. Sometimes it is required to transform these voltages to binary values 0 (for negative voltages) or 1 (for positive voltages). This function converts a given sampler.sampleset[x] from voltages to binary values.
 
-        Returns:
-        --------
-        Returns the converted sample as list
+        :Parameters:
+
+        - :lowest_set: The class:`dynex.sampler.assignment' which has to be converted (`list`)
+
+        :Returns:
+
+        - Returns the converted sample as `list`
         """
         sample = {};
         i = 0;
@@ -1162,37 +1249,73 @@ class DynexSampler:
         """
         The main sampling function:
 
-        num_reads: 
-        Integer value in the range of [32, MAX_NUM_READS] as defined in your license.
-        Defines the number of parallel samples to be performed.
+        :Parameters:
 
-        annealing_time:
-        Integer value in the range of [1, MAX_ANNEALING_TIME] as defined in your license.
-        Defines the number of integration steps for the sampling. Models are being converted into neuromorphic circuits, which are then
-        simulated with ODE integration by the participating workers.
+        - :num_reads: Defines the number of parallel samples to be performed (`int` value in the range of [32, MAX_NUM_READS] as defined in your license)
 
-        switchfraction:
-        Double value in the range of [0.0, 1.0] 
-        Defines the percentage of variables which are replaced by random values during warm start samplings. 
+        - :annealing_time: Defines the number of integration steps for the sampling. Models are being converted into neuromorphic circuits, which are then simulated with ODE integration by the participating workers (`int` value in the range of [1, MAX_ANNEALING_TIME] as defined in your license)
 
-        alpha, beta, gamma, delta, epsilon, zeta
-        Double values in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon.
-        The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters
-        for the ODE integration. Setting values defines the upper bound for the automated parameter tuning.
+        - :switchfraction: Defines the percentage of variables which are replaced by random values during warm start samplings (`double` in the range of [0.0, 1.0])
 
-        minimum_stepsize:
-        Double value in the range of [0.0000000000000001, 1.0]
-        The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is performig adaptive stepsizes for each
-        ODE integration forward Euler step. This value defines the smallest step size for a single adaptive integration step.
+        - :alpha: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
 
-        debugging:
-        [TRUE, FALSE]
-        Only applicable for test-net sampling. Defines if the sampling process should be quiet with no terminal output (FALSE) 
-        or if process updates are to be shown (TRUE)
+        - :beta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
 
-        Returns:
-        --------
-        Returns a dimod sampleset object
+        - :gamma: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :delta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :epsilon: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :zeta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :minimum_stepsize: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is performig adaptive stepsizes for each ODE integration forward Euler step. This value defines the smallest step size for a single adaptive integration step (`double` value in the range of [0.0000000000000001, 1.0])
+
+        - :debugging: Only applicable for test-net sampling. Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (TRUE) (`bool`)
+
+        :Returns:
+
+        - Returns a dimod sampleset object class:`dimod.sampleset`
+
+        :Example:
+
+        .. code-block:: 
+
+            import dynex
+            import dimod
+
+            # Define the QUBU problem:
+            bqmodel = dimod.BinaryQuadraticModel({0: -1, 1: -1}, {(0, 1): 2}, 0.0, dimod.BINARY)  
+
+            # Sample the problem:
+            model = dynex.BQM(bqmodel)
+            sampler = dynex.DynexSampler(model)
+            sampleset = sampler.sample(num_reads=32, annealing_time = 100)
+
+            # Output the result:
+            print(sampleset)
+
+        .. code-block:: 
+
+            ╭────────────┬───────────┬───────────┬─────────┬─────┬─────────┬───────┬─────┬──────────┬──────────╮
+            │   DYNEXJOB │   ELAPSED │   WORKERS │   CHIPS │   ✔ │   STEPS │   LOC │   ✔ │   ENERGY │        ✔ │
+            ├────────────┼───────────┼───────────┼─────────┼─────┼─────────┼───────┼─────┼──────────┼──────────┤
+            │       3617 │      0.07 │         1 │       0 │  32 │     100 │     0 │   1 │        0 │ 10000.00 │
+            ╰────────────┴───────────┴───────────┴─────────┴─────┴─────────┴───────┴─────┴──────────┴──────────╯
+            ╭─────────────────────────────┬───────────┬─────────┬───────┬──────────┬───────────┬───────────────┬──────────╮
+            │                      WORKER │   VERSION │   CHIPS │   LOC │   ENERGY │   RUNTIME │   LAST UPDATE │   STATUS │
+            ├─────────────────────────────┼───────────┼─────────┼───────┼──────────┼───────────┼───────────────┼──────────┤
+            │ *** WAITING FOR WORKERS *** │           │         │       │          │           │               │          │
+            ╰─────────────────────────────┴───────────┴─────────┴───────┴──────────┴───────────┴───────────────┴──────────╯
+            [DYNEX] FINISHED READ AFTER 0.07 SECONDS
+            [DYNEX] PARSING 1 VOLTAGE ASSIGNMENT FILES...
+            progress: 100%
+            1/1 [00:05<00:00, 5.14s/it]
+            [DYNEX] SAMPLESET LOADED
+            [DYNEX] MALLOB: JOB UPDATED: 3617 STATUS: 2
+               0  1 energy num_oc.
+            0  0  1   -1.0       1
+            ['BINARY', 1 rows, 1 samples, 2 variables]
         """
         
         mainnet = self.mainnet;

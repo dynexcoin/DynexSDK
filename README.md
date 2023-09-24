@@ -79,8 +79,8 @@ The [Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/tree/main/
 Thanks to groundbreaking research from [Richard H. Warren](https://arxiv.org/pdf/1405.2354.pdf), it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:
 
 ```
-from dynex.qiskit import QuantumRegister, ClassicalRegister
-from dynex.qiskit import QuantumCircuit, execute
+from dynexsdk.qiskit import QuantumRegister, ClassicalRegister
+from dynexsdk.qiskit import QuantumCircuit, execute
 
 # Input Registers: a = qi[0]; b = qi[1]; ci = qi[2]
 qi = QuantumRegister(3)

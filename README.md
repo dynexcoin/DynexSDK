@@ -79,7 +79,7 @@ The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybri
  
 - [Turning Neuromorphic Dynex Chips into Torch Layers]([https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb](https://github.com/dynexcoin/DynexSDK/blob/main/example_pytorch.ipynb))
 
-## Dynex Qiskit class
+## Dynex Qiskit Package
 
 Thanks to groundbreaking research from [Richard H. Warren](https://arxiv.org/pdf/1405.2354.pdf), it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:
 
@@ -110,6 +110,8 @@ execute(circuit)
 # Print
 print(circuit)
 ```
+
+- [Dynex Qiskit Package (Github)](https://github.com/dynexcoin/Dynex-Qiskit)
 
 ## Dynex scikit-learn Plugin
 

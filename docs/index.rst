@@ -101,12 +101,15 @@ Details how to work with Dynex Neuromorphic torch layers, which can be used in a
 
 Dynex Qiskit class
 =====================================
+
+Recent advances in quantum hardware have resulted in the first systems becoming publicly available. On one hand, gate-based quantum computers have been designed, such as the IBM Q, Rigetti’s Aspen, or IonQ’s systems using using superconducting transmons or ion tubes. On the other hand, adibiatic quantum computing and neuromorphic computing has emerged as another possibility to leverage physics inspired computations. It was shown that adiabatic quantum computing can solve the same problems as gate-based (universal) quantum computing given at least two degrees of freedom for 2-local Hamiltonian [3,4,5]. The Dynex Neuromorphic platform supports a 2-local Ising Hamiltonian with a single degree of freedom, which is why it is believed to only solve a subset of the problems that can be expressed by gate-based (universal) quantum machines. In 2014, Warren outlined how a set of universal quantum gates could be realized in adiabatic form using D-Wave’s annealing abstraction [1]. This is demonstrated, among others, for C-NOT, Toffoli (CC-NOT), Swap and C-Swap (Fredkin) gates in a {0, 1} base of qubit states, and for the Hadamard gate in a two-vector 0i,1i base.
+
 Thanks to groundbreaking research from Richard H. Warren, it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:
 
 .. code-block:: Python
 
-   from dynex.qiskit import QuantumRegister, ClassicalRegister
-   from dynex.qiskit import QuantumCircuit, execute
+   from dynexsdk.qiskit import QuantumRegister, ClassicalRegister
+   from dynexsdk.qiskit import QuantumCircuit, execute
 
    # Input Registers: a = qi[0]; b = qi[1]; ci = qi[2]
    qi = QuantumRegister(3)
@@ -130,6 +133,9 @@ Thanks to groundbreaking research from Richard H. Warren, it is possible to dire
 
    # Print
    print(circuit)
+
+- `Dynex Qiskit Package <https://github.com/dynexcoin/Dynex-Qiskit>`_
+
 
 Dynex Scikit-Learn Plugin
 =====================================

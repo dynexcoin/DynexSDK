@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="handbook.html">Problem-Solving Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Neuromorphic Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytorch.html">Dynex PyTorch Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit.html">Dynex Qiskit class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scikit.html">Dynex Scikit-Learn Plugin</a></li>
 </ul>
 
@@ -89,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="handbook.html">Problem-Solving Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Neuromorphic Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pytorch.html">Dynex PyTorch Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit.html">Dynex Qiskit class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scikit.html">Dynex Scikit-Learn Plugin</a></li>
 </ul>
 </div>
@@ -166,6 +168,37 @@
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb">Using a Dynex PyTorch layer</a></p></li>
 </ul>
+</section>
+<section id="dynex-qiskit-class">
+<h1>Dynex Qiskit class<a class="headerlink" href="#dynex-qiskit-class" title="Permalink to this headline"></a></h1>
+<p>Thanks to groundbreaking research from Richard H. Warren, it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dynex.qiskit</span> <span class="kn">import</span> <span class="n">QuantumRegister</span><span class="p">,</span> <span class="n">ClassicalRegister</span>
+<span class="kn">from</span> <span class="nn">dynex.qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">execute</span>
+
+<span class="c1"># Input Registers: a = qi[0]; b = qi[1]; ci = qi[2]</span>
+<span class="n">qi</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="n">ClassicalRegister</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Output Registers: s = qo[0]; co = qo[1]</span>
+<span class="n">qo</span> <span class="o">=</span> <span class="n">QuantumRegister</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">co</span> <span class="o">=</span> <span class="n">ClassicalRegister</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">qi</span><span class="p">,</span><span class="n">qo</span><span class="p">,</span><span class="n">ci</span><span class="p">,</span><span class="n">co</span><span class="p">)</span>
+
+<span class="c1"># Define adder circuit</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">ccx</span><span class="p">(</span><span class="n">qi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">qi</span><span class="p">[(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">3</span><span class="p">],</span> <span class="n">qo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="n">qi</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">qo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">circuit</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">qo</span><span class="p">,</span> <span class="n">co</span><span class="p">)</span>
+
+<span class="c1"># Run</span>
+<span class="n">execute</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+
+<span class="c1"># Print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="dynex-scikit-learn-plugin">
 <h1>Dynex Scikit-Learn Plugin<a class="headerlink" href="#dynex-scikit-learn-plugin" title="Permalink to this headline"></a></h1>

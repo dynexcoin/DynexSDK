@@ -111,7 +111,7 @@ execute(circuit)
 print(circuit)
 ```
 
-- [Dynex Qiskit Package (Github)](https://github.com/dynexcoin/Dynex-Qiskit)
+[Dynex Qiskit Package (Github)](https://github.com/dynexcoin/Dynex-Qiskit)
 
 ## Dynex scikit-learn Plugin
 

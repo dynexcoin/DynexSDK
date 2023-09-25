@@ -53,8 +53,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'sphinx_rtd_theme'
 
+html_logo = 'https://raw.githubusercontent.com/dynexcoin/website/main/White%20logo%20-%20no%20background.png'
+
 html_theme_options = {
     'style_external_links': True,
+    'logo_only': True,
+    'style_nav_header_background': '#051A2B'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

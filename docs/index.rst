@@ -136,6 +136,8 @@ Thanks to groundbreaking research from Richard H. Warren, it is possible to dire
 
 - `Dynex Qiskit Package <https://github.com/dynexcoin/Dynex-Qiskit>`_
 
+- `Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit <https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd>`_ 
+
 
 Dynex Scikit-Learn Plugin
 =====================================

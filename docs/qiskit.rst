@@ -2,6 +2,14 @@ Dynex Qiskit class
 =====================================
 Recent advances in quantum hardware have resulted in the first systems becoming publicly available. On one hand, gate-based quantum computers have been designed, such as the IBM Q, Rigetti’s Aspen, or IonQ’s systems using using superconducting transmons or ion tubes. On the other hand, adibiatic quantum computing and neuromorphic computing has emerged as another possibility to leverage physics inspired computations. It was shown that adiabatic quantum computing can solve the same problems as gate-based (universal) quantum computing given at least two degrees of freedom for 2-local Hamiltonian [3,4,5]. The Dynex Neuromorphic platform supports a 2-local Ising Hamiltonian with a single degree of freedom, which is why it is believed to only solve a subset of the problems that can be expressed by gate-based (universal) quantum machines. In 2014, Warren outlined how a set of universal quantum gates could be realized in adiabatic form using D-Wave’s annealing abstraction [1]. This is demonstrated, among others, for C-NOT, Toffoli (CC-NOT), Swap and C-Swap (Fredkin) gates in a {0, 1} base of qubit states, and for the Hadamard gate in a two-vector 0i,1i base.
 
+- `Dynex Qiskit Package <https://github.com/dynexcoin/Dynex-Qiskit>`_
+
+- `Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit <https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd>`_ 
+
+
+Example
+=====================================
+
 Thanks to groundbreaking research from Richard H. Warren, it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:
 
 .. code-block:: Python
@@ -39,16 +47,23 @@ The Dynex Qiskit Package automatically translates quantum programs (Qiskit based
 Given a circuits (in Qiskit format):
 
 1. Construct equivalent QUBO (quadratic unconstrained binary opt.)
+    
     1.1 Each gate -> QUBO
+    
     1.2 Compose QUBOs into single Hamiltonian
 
 2. Find embedding
+    
     2.1 In 16x16 bi-partite graphs (K4,4) sparsely connected as Chimera
+    
     2.2 Project per-gate QUBO -> bi-partite unit graph K4,4
+    
     2.3 Connect constraints b/w QUBOs of units graphs -> “wires”
 
 3. In Python: Transform IBM Qiskit program
+    
     3.1 Replace gates
+    
     3.2 Run, but instead of IBM Q exec., sample on the Dynex Neuromorphic sampler
 
 Given 'n' gates and 'q' qubits (IBM), the resulting QUBO/Ising problem translates to ~ 23n qubits (Dynex), but often just to 5-6n due to complex (Toffoli) gates.

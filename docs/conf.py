@@ -58,7 +58,7 @@ html_logo = 'https://raw.githubusercontent.com/dynexcoin/website/main/White%20lo
 html_theme_options = {
     'style_external_links': True,
     'logo_only': True,
-    'style_nav_header_background': '#051A2B'
+    'style_nav_header_background': '#303030'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

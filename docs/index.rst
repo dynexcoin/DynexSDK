@@ -41,6 +41,9 @@ Computing on Quantum or neuromorphic systems is fundamentally different than usi
 
 - `Medium: Computing on the Dynex Neuromorphic Platform: Image Classification <https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c>`_
 
+- `Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit <https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd>`_ 
+
+
 Using the Dynex SDK 
 =====================================
 Introduces the Dynex SDK and provides references to usage information. The Dynex Platform is intended to solve arbitrary application problems formulated as quadratic models. Problems submitted directly to the Dynex Platform are in the **binary quadratic model** (BQM>`_ format, unconstrained with binary-valued variables and structured for the topology of the Dynex Chips. They also accept arbitrarily structured quadratic models (QM>`_, constrained or unconstrained, with real, integer, and binary variables. The Dynex Platform, which implement state-of-the-art neuromorphic computations, is designed to accommodate even very large problems.
@@ -136,7 +139,6 @@ Thanks to groundbreaking research from Richard H. Warren, it is possible to dire
 
 - `Dynex Qiskit Package <https://github.com/dynexcoin/Dynex-Qiskit>`_
 
-- `Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit <https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd>`_ 
 
 
 Dynex Scikit-Learn Plugin

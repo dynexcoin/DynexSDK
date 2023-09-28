@@ -22,6 +22,7 @@ class DYNEX_QRBM:
                  n_hidden,
                  num_reads = 1000, 
                  annealing_time = 300, 
+                 clones = 1,
                  mainnet=False, 
                  minimum_stepsize = 0.00000006, 
                  logging=False, 
@@ -34,6 +35,7 @@ class DYNEX_QRBM:
         self.n_hidden = n_hidden
         self.num_reads = num_reads
         self.annealing_time = annealing_time
+        self.clones = clones
         self.mainnet = mainnet
         self.minimum_stepsize = minimum_stepsize
         self.logging = logging
@@ -95,6 +97,7 @@ class DYNEX_QRBM:
         dnxsampler = dynex.DynexSampler(dnxmodel, logging = self.logging, mainnet = self.mainnet, description = self.description);
         sampleset = dnxsampler.sample(num_reads = self.num_reads, 
                                       annealing_time = self.annealing_time, 
+                                      clones = self.clones,
                                       debugging = self.debugging, 
                                       minimum_stepsize = self.minimum_stepsize);
         
@@ -154,6 +157,7 @@ class DYNEX_QRBM:
         dnxsampler = dynex.DynexSampler(dnxmodel, logging = self.logging, mainnet = self.mainnet, description = self.description);
         sampleset = dnxsampler.sample(num_reads = self.num_reads, 
                                       annealing_time = self.annealing_time, 
+                                      clones = self.clones,
                                       debugging = self.debugging, 
                                       minimum_stepsize = self.minimum_stepsize);
 

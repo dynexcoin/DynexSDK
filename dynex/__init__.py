@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -66,6 +66,10 @@ import sys
 import urllib.request, json
 import base64
 
+# Clone sampling:
+import multiprocessing
+from multiprocessing import Process, Queue
+
 ################################################################################################################################
 # API FUNCTION CALLS
 ################################################################################################################################
@@ -76,16 +80,17 @@ MAX_CHIPS = 0;
 MAX_ANNEALING_TIME = 0;
 MAX_DURATION = 0;
 TOTAL_USAGE = False;
+NUM_RETRIES = 10;
 
 # parse config file:
 try:
-	config = configparser.ConfigParser();
-	config.read('dynex.ini', encoding='UTF-8');
-	API_ENDPOINT = config['DYNEX']['API_ENDPOINT']
-	API_KEY = config['DYNEX']['API_KEY'];
-	API_SECRET = config['DYNEX']['API_SECRET'];
+    config = configparser.ConfigParser();
+    config.read('dynex.ini', encoding='UTF-8');
+    API_ENDPOINT = config['DYNEX']['API_ENDPOINT']
+    API_KEY = config['DYNEX']['API_KEY'];
+    API_SECRET = config['DYNEX']['API_SECRET'];
 except:
-	print('[DYNEX] ERROR: missing configuration file dynex.ini');
+    print('[DYNEX] ERROR: missing configuration file dynex.ini');
 
 def account_status():
     """
@@ -281,7 +286,7 @@ def get_status_details_api(JOB_ID, all_stopped = False):
     return LOC_MIN, ENERGY_MIN, CHIPS, retval;
 
 ################################################################################################################################
-# TEST FTP ACCESS
+# TEST dynex.ini CONFIGURATION
 ################################################################################################################################
 
 def test_completed():
@@ -307,10 +312,10 @@ def test():
     model = BQM(bqm, logging=False);
     print('[DYNEX] PASSED');
     print('[DYNEX] TEST: Dynex Sampler object...')
-    sampler = DynexSampler(model,  mainnet=False, logging=False, test=True);
+    sampler = _DynexSampler(model,  mainnet=False, logging=False, test=True);
     print('[DYNEX] PASSED');
     print('[DYNEX] TEST: uploading computing file...')
-    ret = upload_file_to_ftp(sampler.ftp_hostname, sampler.ftp_username, sampler.ftp_password, sampler.filepath+sampler.filename, sampler.ftp_path, sampler.logging);
+    ret = sampler.upload_file_to_ftp(sampler.ftp_hostname, sampler.ftp_username, sampler.ftp_password, sampler.filepath+sampler.filename, sampler.ftp_path, sampler.logging);
     if ret==False:
         allpassed=False;
         print('[DYNEX] FAILED');
@@ -321,7 +326,7 @@ def test():
     print('[DYNEX] TEST: submitting sample file...')
     worker_user = sampler.solutionuser.split(':')[0]
     worker_pass = sampler.solutionuser.split(':')[1]
-    ret = upload_file_to_ftp(sampler.solutionurl[6:-1], worker_user, worker_pass, sampler.filepath+sampler.filename, '', sampler.logging);
+    ret = sampler.upload_file_to_ftp(sampler.solutionurl[6:-1], worker_user, worker_pass, sampler.filepath+sampler.filename, '', sampler.logging);
     if ret==False:
         allpassed=False;
         print('[DYNEX] FAILED');
@@ -331,7 +336,7 @@ def test():
     time.sleep(1)
     print('[DYNEX] TEST: retrieving samples...')
     try:
-        files = list_files_with_text(sampler);
+        files = sampler.list_files_with_text();
         print('[DYNEX] PASSED');
     except:
         allpassed=False;
@@ -519,215 +524,50 @@ def max_value(inputlist):
     """
     return max([sublist[-1] for sublist in inputlist])
 
+def _getCoreCount():
+    """
+    `Internal Function`
+    """
+    if sys.platform == 'win32':
+        return (int)(os.environ['NUMBER_OF_PROCESSORS'])
+    else:
+        return (int)(os.popen('grep -c cores /proc/cpuinfo').read())
+
 ################################################################################################################################
 # upload file to an FTP server
 ################################################################################################################################
 
-def upload_file_to_ftp(hostname, username, password, local_file_path, remote_directory, logging=True):
-    """
-    `Internal Function`
-
-    Submits a computation file (xxx.bin) to the FTP server as defined in dynex.ini
-
-    :Returns:
-
-    - Status if successul or failed (`bool`)
-    """
-    
-    retval = True;
-    try:
-        ftp = FTP(hostname)
-        ftp.login(username, password)
-        # Change to the remote directory
-        ftp.cwd(remote_directory)
-    
-        # Open the local file in binary mode for reading
-        with open(local_file_path, 'rb') as file:
-            total = os.path.getsize(local_file_path); # file size
-            # sanity check:
-            if total > 104857600:
-                print("[ERROR] PROBLEM FILE TOO LARGE (MAX 104,857,600 BYTES)");
-                raise Exception('PROBLEM FILE TOO LARGE (MAX 104,857,600 BYTES)');
-    
-            if logging:
-                with tqdm(total=total, unit='B', unit_scale=True, unit_divisor=1024, desc='file upload progress') as pbar:
-                    
-                    def cb(data):
-                        pbar.update(len(data))
-                    
-                    # Upload the file to the FTP server
-                    ftp.storbinary(f'STOR {local_file_path.split("/")[-1]}', file, 1024, cb)
-            else:
-                # Upload the file to the FTP server
-                ftp.storbinary(f'STOR {local_file_path.split("/")[-1]}', file)
-    
-        if logging:
-            print(f"[DYNEX] File '{local_file_path}' sent successfully to '{hostname}/{remote_directory}'")
-
-    except Exception as e:
-        print(f"[DYNEX] An error occurred while sending the file: {str(e)}")
-        retval = False;
-    finally:
-        ftp.quit();
-    return retval;
+# Moved into _DynexSampler class
 
 ################################################################################################################################
 # Cleanup FTP on sampler exit or clean()
 ################################################################################################################################
-def cleanup_ftp(sampler, files):
-    """
-    `Internal Function`
 
-    This function is called on __exit__ of the sampler class or by sampler.clear(). 
-    It ensures that submitted sample-files, which have not been parsed and used from the sampler, will be deleted on the FTP server. 
-    """
-    
-    if len(files)>0:
-        try:
-            host = sampler.solutionurl[6:-1];
-            username = sampler.solutionuser.split(":")[0];
-            password = sampler.solutionuser.split(":")[1]; 
-            directory = "";
-            ftp = FTP(host);
-            ftp.login(username, password);
-            ftp.cwd(directory);
-            for file in files:
-                ftp.delete(file);
-            if sampler.logging:
-                print("[ÐYNEX] FTP DATA CLEANED");
-        except Exception as e:
-            print(f"[DYNEX] An error occurred while deleting file: {str(e)}")
-        finally:
-            ftp.quit();
-    return;
+# Moved into _DynexSampler class
 
 ################################################################################################################################
 # delete computing file on an FTP server
 ################################################################################################################################
-def delete_file_on_ftp(hostname, username, password, local_file_path, remote_directory, logging=True):
-    """
-    `Internal Function`
 
-    Deletes a file on the FTP server as specified in dynex,ini
-    """
-    
-    ftp = FTP(hostname)
-    ftp.login(username, password)
-    # Change to the remote directory
-    ftp.cwd(remote_directory)
-    ftp.delete(local_file_path.split("/")[-1]);
-    if logging:
-        print("[DYNEX] COMPUTING FILE", local_file_path.split("/")[-1],'REMOVED');
-    return
+# Moved into _DynexSampler class
 
 ################################################################################################################################
 # retrieve all files starting with "sampler.filename" from an FTP server
 ################################################################################################################################
 
-def list_files_with_text(sampler):
-    """
-    `Internal Function`
-
-    Downloads assignment files from the FTP server specified in dynex.ini and stores them in /tmp as specified in dynex.ini
-    Downloaded files are automatically deleted on the FTP server.
-
-    :Returns:
-
-    - List of locally in /tmp saved assignment files for the current sampler model (`list`)
-    """
-    
-    host = sampler.solutionurl[6:-1];
-    username = sampler.solutionuser.split(":")[0];
-    password = sampler.solutionuser.split(":")[1]; 
-    directory = "";
-    text = sampler.filename;
-    # Connect to the FTP server
-    ftp = FTP(host)
-    ftp.login(username, password)
-    
-    # Change to the specified directory
-    ftp.cwd(directory)
-    
-    # List all (fully uploaded) files in the directory (minimum size)
-    target_size = 97 + sampler.num_variables;
-    filtered_files = [];
-    for name, facts in ftp.mlsd(): 
-        if 'size' in facts:
-            if int(facts['size'])>=target_size and name.startswith(text):
-                filtered_files.append(name);
-                # download file if not already local:
-                local_path = sampler.filepath+name;
-                if os.path.isfile(local_path)==False:	
-                    with open(local_path, 'wb') as file:
-                        ftp.retrbinary('RETR ' + name, file.write); 
-                        file.close();
-                        # we delete downloaded files from FTP:
-                        ftp.delete(name); 
-    
-    # Close the FTP connection
-    ftp.quit()
-
-    # In our status view, we show the local, downloaded and available files:
-    filtered_files = list_files_with_text_local(sampler);
-    
-    return filtered_files
+# Moved into _DynexSampler class
 
 ################################################################################################################################
 # retrieve all files starting with "sampler.filename" from test-net
 ################################################################################################################################
 
-def list_files_with_text_local(sampler):
-    """
-    `Internal Function`
-
-    Scans the temporary directory for assignment files
-
-    :Returns:
-
-    - Returns a list of all assignment files (filenames) which are locally available in /tmp as specified in dynex.ini for the current sampler model (`list`)
-    """
-    
-    directory = sampler.filepath_full; 
-    fn = sampler.filename+".";
-    # list to store files
-    filtered_files = []
-
-    for filename in os.listdir(directory):
-        if filename.startswith(fn):
-            filtered_files.append(filename)
-
-    return filtered_files;    
+# Moved into _DynexSampler class   
     
 ################################################################################################################################
 # Download file from FTP to sampler.filepath / filename
 ################################################################################################################################
 
-def download_file(sampler, filename):
-    """
-    `Internal Function`
-
-    Downloads a computed assigment file from the FTP server specified in dynex.ini 
-    """
-    
-    host = sampler.solutionurl[6:-1];
-    username = sampler.solutionuser.split(":")[0];
-    password = sampler.solutionuser.split(":")[1]; 
-    directory = "";
-    local_path = sampler.filepath+filename;
-    # Connect to the FTP server
-    ftp = FTP(host)
-    ftp.login(username, password)
-    
-    # Change to the specified directory
-    ftp.cwd(directory)
-    
-    # Download the file
-    with open(local_path, 'wb') as file:
-        ftp.retrbinary('RETR ' + filename, file.write); # download file locally
-        ftp.delete(filename); # remove file from FTP
-    
-    # Close the FTP connection
-    ftp.quit()
+# Obsolete
 
 ################################################################################################################################
 # generate filehash for worker
@@ -835,10 +675,10 @@ def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
 
         
 ################################################################################################################################
-# functions to convert BQM to wcnf
+# functions to convert BQM to QUBO
 ################################################################################################################################
 
-def convert_bqm_to_wcnf(bqm, relabel=True, logging=True):
+def convert_bqm_to_qubo(bqm, relabel=True, logging=True):
     """
     `Internal Function`
 
@@ -996,7 +836,7 @@ class BQM():
 
     """
     def __init__(self, bqm, relabel=True, logging=True):
-        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_wcnf(bqm, relabel, logging);
+        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_qubo(bqm, relabel, logging);
         if self.num_clauses == 0 or self.num_variables == 0:
             return;
         self.type = 'wcnf';
@@ -1034,36 +874,206 @@ class CQM():
     """
     def __init__(self, cqm, relabel=True, logging=True):
         bqm, self.invert = dimod.cqm_to_bqm(cqm)
-        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_wcnf(bqm, relabel, logging);
+        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_qubo(bqm, relabel, logging);
         self.type = 'wcnf';
         self.logging = logging;
         self.typestr = 'CQM';
 
 ################################################################################################################################
-# Dynex Sampler class
+# Thread runner: sample clones
 ################################################################################################################################
-
+def sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize):
+    """
+    `Internal Function` which creates a thread for clone sampling
+    """
+    if logging:
+        print('[DYNEX] Clone '+str(x)+' started...'); 
+    _sampler = _DynexSampler(model, False, True, description, False);
+    _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, False);
+    if logging:
+        print('[DYNEX] Clone '+str(x)+' finished'); 
+    q.put(_sampleset);
+    return
+    
+        
+################################################################################################################################
+# Dynex Sampler (public class)
+################################################################################################################################
 class DynexSampler:
     """
-        Initialises the sampler object given a model.
+    Initialises the sampler object given a model.
+
+    :Parameters:
+
+    - :logging: Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (`bool`)
+    - :mainnet: Defines if the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (`bool`)
+    - :description: Defines the description for the sampling, which is shown in Dynex job dashboards as well as in the market place  (`string`)
+
+    :Returns:
+
+    - class:`dynex.samper`
+
+    :Example:
+
+    .. code-block:: Python
+
+        sampler = dynex.DynexSampler(model)
+
+    """
+    def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
+        self.state = 'initialised';
+        self.model = model;
+        self.logging = logging;
+        self.mainnet = mainnet;
+        self.description = description;
+        self.test = test;
+        self.dimod_assignments = {};
+        
+    def sample(self, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False):
+        """
+        The main sampling function:
 
         :Parameters:
 
-        - :logging: Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (`bool`)
-        - :mainnet: Defines if the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (`bool`)
-        - :description: Defines the description for the sampling, which is shown in Dynex job dashboards as well as in the market place  (`string`)
+        - :num_reads: Defines the number of parallel samples to be performed (`int` value in the range of [32, MAX_NUM_READS] as defined in your license)
+
+        - :annealing_time: Defines the number of integration steps for the sampling. Models are being converted into neuromorphic circuits, which are then simulated with ODE integration by the participating workers (`int` value in the range of [1, MAX_ANNEALING_TIME] as defined in your license)
+        
+        - :clones: Defines the number of clones being used for sampling. Default value is 1 which means that no clones are being sampled. Especially when all requested num_reads will fit on one worker, it is desired to also retrieve the optimum ground states found from more than just one worker. The number of clones runs the sampler for n clones in parallel and aggregates the samples. This ensures a broader spectrum of retrieved samples. Please note, it the number of clones is set higher than the number of available threads on your local machine, then the number of clones processed in parallel is being processed in batches. Clone sampling is only available when sampling on the mainnet. (`integer` value in the range of [1,128])
+
+        - :switchfraction: Defines the percentage of variables which are replaced by random values during warm start samplings (`double` in the range of [0.0, 1.0])
+
+        - :alpha: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :beta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :gamma: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :delta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :epsilon: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :zeta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
+
+        - :minimum_stepsize: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is performig adaptive stepsizes for each ODE integration forward Euler step. This value defines the smallest step size for a single adaptive integration step (`double` value in the range of [0.0000000000000001, 1.0])
+
+        - :debugging: Only applicable for test-net sampling. Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (TRUE) (`bool`)
 
         :Returns:
 
-        - class:`dynex.samper`
+        - Returns a dimod sampleset object class:`dimod.sampleset`
 
         :Example:
 
-        .. code-block:: Python
+        .. code-block:: 
 
+            import dynex
+            import dimod
+
+            # Define the QUBU problem:
+            bqmodel = dimod.BinaryQuadraticModel({0: -1, 1: -1}, {(0, 1): 2}, 0.0, dimod.BINARY)  
+
+            # Sample the problem:
+            model = dynex.BQM(bqmodel)
             sampler = dynex.DynexSampler(model)
-        
+            sampleset = sampler.sample(num_reads=32, annealing_time = 100)
+
+            # Output the result:
+            print(sampleset)
+
+        .. code-block:: 
+
+            ╭────────────┬───────────┬───────────┬─────────┬─────┬─────────┬───────┬─────┬──────────┬──────────╮
+            │   DYNEXJOB │   ELAPSED │   WORKERS │   CHIPS │   ✔ │   STEPS │   LOC │   ✔ │   ENERGY │        ✔ │
+            ├────────────┼───────────┼───────────┼─────────┼─────┼─────────┼───────┼─────┼──────────┼──────────┤
+            │       3617 │      0.07 │         1 │       0 │  32 │     100 │     0 │   1 │        0 │ 10000.00 │
+            ╰────────────┴───────────┴───────────┴─────────┴─────┴─────────┴───────┴─────┴──────────┴──────────╯
+            ╭─────────────────────────────┬───────────┬─────────┬───────┬──────────┬───────────┬───────────────┬──────────╮
+            │                      WORKER │   VERSION │   CHIPS │   LOC │   ENERGY │   RUNTIME │   LAST UPDATE │   STATUS │
+            ├─────────────────────────────┼───────────┼─────────┼───────┼──────────┼───────────┼───────────────┼──────────┤
+            │ *** WAITING FOR WORKERS *** │           │         │       │          │           │               │          │
+            ╰─────────────────────────────┴───────────┴─────────┴───────┴──────────┴───────────┴───────────────┴──────────╯
+            [DYNEX] FINISHED READ AFTER 0.07 SECONDS
+            [DYNEX] PARSING 1 VOLTAGE ASSIGNMENT FILES...
+            progress: 100%
+            1/1 [00:05<00:00, 5.14s/it]
+            [DYNEX] SAMPLESET LOADED
+            [DYNEX] MALLOB: JOB UPDATED: 3617 STATUS: 2
+               0  1 energy num_oc.
+            0  0  1   -1.0       1
+            ['BINARY', 1 rows, 1 samples, 2 variables]
         """
+        
+        # assert parameters:
+        if clones < 1:
+            raise Exception("[DYNEX] ERROR: Value of clones must be in range [1,128]");
+        if clones > 128:
+            raise Exception("[DYNEX] ERROR: Value of clones must be in range [1,128]");
+        if self.mainnet==False and clones > 1:
+            raise Exception("[DYNEX] ERROR: Clone sampling is only supported on the mainnet");
+        
+        # sampling without clones: -------------------------------------------------------------------------------------------
+        if clones == 1:
+            _sampler = _DynexSampler(self.model, self.logging, self.mainnet, self.description, self.test);
+            _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging);
+            return _sampleset;
+        
+        # sampling with clones: ----------------------------------------------------------------------------------------------
+        else:
+            supported_threads = _getCoreCount() * 2;
+            if clones > supported_threads:
+                print('[DYNEX] WARNING: number of clones > CPU cores: clones:',clones,' threads available:',supported_threads);
+                
+            jobs = [];
+            results = [];
+
+            if self.logging:
+                print('[DYNEX] STARTING SAMPLING (',clones,'CLONES )...');
+    
+            # define n samplers:
+            for i in range(clones):
+                q = Queue()
+                results.append(q)
+                p = multiprocessing.Process(target=sample_thread, args=(q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize,))
+                jobs.append(p)
+                p.start()
+
+            # wait for samplers to finish:
+            for job in jobs:
+                job.join()
+    
+            # collect samples for each job:
+            assignments_cum = [];
+            for result in results:
+                assignments = result.get();
+                assignments_cum.append(assignments);
+    
+            # accumulate and aggregate all results:
+            r = None;
+            for assignment in assignments_cum:
+                if len(assignment)>0:
+                    if r == None:
+                        r = assignment;
+                    else:
+                        r = dimod.concatenate((r,assignment))
+
+            # aggregate samples:
+            r = r.aggregate() 
+            
+            self.dimod_assignments = r;
+            
+            return r
+
+    
+
+################################################################################################################################
+# Dynex Sampler class (private)
+################################################################################################################################
+
+class _DynexSampler:
+    """
+    `Internal Class` which is called by public class `DynexSampler`
+    """
     def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
         
         if not test and not test_completed():
@@ -1131,30 +1141,212 @@ class DynexSampler:
         self.assignments = {};
         self.dimod_assignments = {};
         self.bqm = model.bqm;
+        self.model = model;
 
         if self.logging:
             print("[DYNEX] SAMPLER INITIALISED")
-
-    def clean(self):
+            
+    # deletes all assignment files on FTP
+    def cleanup_ftp(self, files):
         """
-        This function should be called after finishing a sampling process on the Mainnet. It ensures that submitted sample-files,
+        `Internal Function`
+
+        This function is called on __exit__ of the sampler class or by sampler.clear(). 
+        It ensures that submitted sample-files, which have not been parsed and used from the sampler, will be deleted on the FTP server. 
+        """
+
+        if len(files)>0:
+            try:
+                host = self.solutionurl[6:-1];
+                username = self.solutionuser.split(":")[0];
+                password = self.solutionuser.split(":")[1]; 
+                directory = "";
+                ftp = FTP(host);
+                ftp.login(username, password);
+                ftp.cwd(directory);
+                for file in files:
+                    ftp.delete(file);
+                if self.logging:
+                    print("[ÐYNEX] FTP DATA CLEANED");
+            except Exception as e:
+                print(f"[DYNEX] An error occurred while deleting file: {str(e)}")
+                raise Exception("ERROR: An error occurred while deleting file");
+            finally:
+                ftp.quit();
+        return;
+     
+    # delete file from FTP server
+    def delete_file_on_ftp(self, hostname, username, password, local_file_path, remote_directory, logging=True):
+        """
+        `Internal Function`
+
+        Deletes a file on the FTP server as specified in dynex,ini
+        """
+
+        ftp = FTP(hostname)
+        ftp.login(username, password)
+        # Change to the remote directory
+        ftp.cwd(remote_directory)
+        ftp.delete(local_file_path.split("/")[-1]);
+        if logging:
+            print("[DYNEX] COMPUTING FILE", local_file_path.split("/")[-1],'REMOVED');
+        return
+            
+    # upload file to ftp server
+    def upload_file_to_ftp(self, hostname, username, password, local_file_path, remote_directory, logging=True):
+        """
+        `Internal Function`
+
+        Submits a computation file (xxx.bin) to the FTP server as defined in dynex.ini
+
+        :Returns:
+
+        - Status if successul or failed (`bool`)
+        """
+
+        retval = True;
+        try:
+            ftp = FTP(hostname)
+            ftp.login(username, password)
+            # Change to the remote directory
+            ftp.cwd(remote_directory)
+
+            # Open the local file in binary mode for reading
+            with open(local_file_path, 'rb') as file:
+                total = os.path.getsize(local_file_path); # file size
+                # sanity check:
+                if total > 104857600:
+                    print("[ERROR] PROBLEM FILE TOO LARGE (MAX 104,857,600 BYTES)");
+                    raise Exception('PROBLEM FILE TOO LARGE (MAX 104,857,600 BYTES)');
+
+                # upload:
+                with tqdm(total=total, unit='B', unit_scale=True, unit_divisor=1024, desc='file upload progress') as pbar:
+
+                    def cb(data):
+                        pbar.update(len(data))
+
+                    # Upload the file to the FTP server
+                    ftp.storbinary(f'STOR {local_file_path.split("/")[-1]}', file, 1024, cb)
+                
+            if logging:
+                print(f"[DYNEX] File '{local_file_path}' sent successfully to '{hostname}/{remote_directory}'")
+
+        except Exception as e:
+            print(f"[DYNEX] An error occurred while sending the file: {str(e)}")
+            raise Exception("ERROR: An error occurred while sending the file");
+            retval = False;
+        finally:
+            ftp.quit();
+        return retval;
+            
+    # list local available (downloaded) iles in /tmp =================================================================================
+    def list_files_with_text_local(self):
+        """
+        `Internal Function`
+
+        Scans the temporary directory for assignment files
+
+        :Returns:
+
+        - Returns a list of all assignment files (filenames) which are locally available in /tmp as specified in dynex.ini for the current sampler model (`list`)
+        """
+
+        directory = self.filepath_full; 
+        fn = self.filename+".";
+        # list to store files
+        filtered_files = []
+
+        # search for current solution files:
+        for filename in os.listdir(directory):
+            if filename.startswith(fn):
+                if os.path.getsize(directory+'/'+filename)>0:
+                    filtered_files.append(filename)
+
+        return filtered_files; 
+
+    # list and download solution files ================================================================================================
+    def list_files_with_text(self):
+        """
+        `Internal Function`
+
+        Downloads assignment files from the FTP server specified in dynex.ini and stores them in /tmp as specified in dynex.ini
+        Downloaded files are automatically deleted on the FTP server.
+
+        :Returns:
+
+        - List of locally in /tmp saved assignment files for the current sampler model (`list`)
+        """
+
+        host = self.solutionurl[6:-1];
+        username = self.solutionuser.split(":")[0];
+        password = self.solutionuser.split(":")[1]; 
+        directory = "";
+        text = self.filename;
+        # Connect to the FTP server
+        ftp = FTP(host)
+        ftp.login(username, password)
+
+        # Change to the specified directory
+        ftp.cwd(directory)
+
+        # List all (fully uploaded) files in the directory (minimum size)
+        target_size = 97 + self.num_variables;
+        for name, facts in ftp.mlsd(): 
+            if 'size' in facts:
+                if int(facts['size'])>=target_size and name.startswith(text):
+                    # download file if not already local:
+                    local_path = self.filepath+name;
+                    if os.path.isfile(local_path)==False or os.path.getsize(local_path)==0:
+                        with open(local_path, 'wb') as file:
+                            ftp.retrbinary('RETR ' + name, file.write); 
+                            file.close();
+                        # correctly downloaded?
+                        cnt = 0;
+                        while os.path.getsize(local_path)==0:
+                            time.sleep(1);
+                            with open(local_path, 'wb') as file:
+                                if self.logging:
+                                    print('[DYNEX] REDOWNLOADING FILE',name);
+                                ftp.retrbinary('RETR ' + name, file.write);
+                                file.close();
+                            cnt += 1;
+                            if cnt>=10:
+                                break;
+                        # finally we delete downloaded files from FTP:
+                        ftp.delete(name); 
+        
+        # Close the FTP connection
+        ftp.quit()
+
+        # In our status view, we show the local, downloaded and available files:
+        filtered_files = self.list_files_with_text_local();
+
+        return filtered_files
+    
+    # clean function ======================================================================================================================
+    def _clean(self):
+        """
+        `Internal Function` 
+        This function can be called after finishing a sampling process on the Mainnet. It ensures that submitted sample-files,
         which have not been parsed and used from the sampler, will be deleted on the FTP server. It is also called automatically 
         during __exit___ event of the sampler class.
         """
         if self.mainnet:
-            files = list_files_with_text(self); 
-            cleanup_ftp(self, files);
+            files = self.list_files_with_text(); 
+            self.cleanup_ftp(files);
 
+    # on exit ==============================================================================================================================
     def __exit__(self, exc_type, exc_value, traceback):
         """
+        `Internal Function` 
         Upon __exit__, the function clean() is being called.
         """
-    	# delete remaining, not parsed files on FTP server:
-        self.clean();
         print('[DYNEX] SAMPLER EXIT');
         
-    def update(self, model, logging=True):
+    # update function: =====================================================================================================================
+    def _update(self, model, logging=True):
         """
+        `Internal Function` 
         Typically, the sampler object is being initialised with a defined model class. This model can also be updated without
         regenerating a new sampler object by calling the function update(model).
         """
@@ -1183,9 +1375,10 @@ class DynexSampler:
         self.dimod_assignments = {};
         self.bqm = model.bqm;
 
-    # print summary of sampler:
-    def print(self):
+    # print summary of sampler: =============================================================================================================
+    def _print(self):
         """
+        `Internal Function` 
         Prints summary information about the sampler object:
 
         - :Mainnet: If the mainnet (Dynex platform sampling) or the testnet (local sampling) is being used for sampling (`bool`)
@@ -1220,9 +1413,10 @@ class DynexSampler:
         print('num clauses:', self.num_clauses);
         print('configuration: dynex.ini');
 
-    # convert a sampler.sampleset[x]['sample'] into an assignment:
-    def sample_to_assignments(self, lowest_set):
+    # convert a sampler.sampleset[x]['sample'] into an assignment: ==========================================================================
+    def _sample_to_assignments(self, lowest_set):
         """
+        `Internal Function` 
         The voltates of a sampling can be retrieved from the sampler with sampler.sampleset
 
         The sampler.sampleset returns a list of voltages for each variable, ranging from -1.0 to +1.0 and is a double precision value. Sometimes it is required to transform these voltages to binary values 0 (for negative voltages) or 1 (for positive voltages). This function converts a given sampler.sampleset[x] from voltages to binary values.
@@ -1243,79 +1437,48 @@ class DynexSampler:
                 sample[var] = 0;
             i = i + 1
         return sample;
-        
-    # sampling process:
+    
+    # sampling entry point: =================================================================================================================
     def sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False):
         """
-        The main sampling function:
+        `Internal Function` which is called by public function `DynexSampler.sample` 
+        """
+        
+        retval = {};
+        
+        # In a malleable environment, it is possible that a worker is submitting an inconsistent solution file. If the job
+        # is small, we need to re-sample again. This routine samples up to NUM_RETRIES (10) times. If an error occurs, or
+        # a keyboard interrupt was triggered, the return value is a dict containing key 'error'
+        
+        for i in range(0, NUM_RETRIES):
+            retval = self._sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging);
+            if len(retval)>0:
+                break;
+            print("[DYNEX] NO VALID SAMPLE RESULT FOUND. RESAMPLING...", i+1,'/',NUM_RETRIES)
+            time.sleep(2);
+            # generate a fresh sampling file:
+            self.filename = secrets.token_hex(16)+".bin";
+            if self.model.type == 'cnf':
+                # convert to 3sat?
+                if (check_list_length(self.model.clauses)):
+                    self.clauses = ksat(self.model.clauses);
+                else:
+                    self.clauses = self.model.clauses;
+                save_cnf(self.clauses, self.filepath+self.filename);
+            if self.model.type == 'wcnf':
+                save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
+            self.filehash = generate_hash(self.filepath+self.filename);
 
-        :Parameters:
-
-        - :num_reads: Defines the number of parallel samples to be performed (`int` value in the range of [32, MAX_NUM_READS] as defined in your license)
-
-        - :annealing_time: Defines the number of integration steps for the sampling. Models are being converted into neuromorphic circuits, which are then simulated with ODE integration by the participating workers (`int` value in the range of [1, MAX_ANNEALING_TIME] as defined in your license)
-
-        - :switchfraction: Defines the percentage of variables which are replaced by random values during warm start samplings (`double` in the range of [0.0, 1.0])
-
-        - :alpha: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :beta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :gamma: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :delta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :epsilon: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :zeta: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is using automatic tuning of these parameters for the ODE integration. Setting values defines the upper bound for the automated parameter tuning (`double` value in the range of of [0.00000001, 100.0] for alpha and beta, and [0.0 and 1.0] for gamma, delta and epsilon)
-
-        - :minimum_stepsize: The ODE integration of the QUBU/Ising or SAT model based neuromorphic circuits is performig adaptive stepsizes for each ODE integration forward Euler step. This value defines the smallest step size for a single adaptive integration step (`double` value in the range of [0.0000000000000001, 1.0])
-
-        - :debugging: Only applicable for test-net sampling. Defines if the sampling process should be quiet with no terminal output (FALSE) or if process updates are to be shown (TRUE) (`bool`)
-
-        :Returns:
-
-        - Returns a dimod sampleset object class:`dimod.sampleset`
-
-        :Example:
-
-        .. code-block:: 
-
-            import dynex
-            import dimod
-
-            # Define the QUBU problem:
-            bqmodel = dimod.BinaryQuadraticModel({0: -1, 1: -1}, {(0, 1): 2}, 0.0, dimod.BINARY)  
-
-            # Sample the problem:
-            model = dynex.BQM(bqmodel)
-            sampler = dynex.DynexSampler(model)
-            sampleset = sampler.sample(num_reads=32, annealing_time = 100)
-
-            # Output the result:
-            print(sampleset)
-
-        .. code-block:: 
-
-            ╭────────────┬───────────┬───────────┬─────────┬─────┬─────────┬───────┬─────┬──────────┬──────────╮
-            │   DYNEXJOB │   ELAPSED │   WORKERS │   CHIPS │   ✔ │   STEPS │   LOC │   ✔ │   ENERGY │        ✔ │
-            ├────────────┼───────────┼───────────┼─────────┼─────┼─────────┼───────┼─────┼──────────┼──────────┤
-            │       3617 │      0.07 │         1 │       0 │  32 │     100 │     0 │   1 │        0 │ 10000.00 │
-            ╰────────────┴───────────┴───────────┴─────────┴─────┴─────────┴───────┴─────┴──────────┴──────────╯
-            ╭─────────────────────────────┬───────────┬─────────┬───────┬──────────┬───────────┬───────────────┬──────────╮
-            │                      WORKER │   VERSION │   CHIPS │   LOC │   ENERGY │   RUNTIME │   LAST UPDATE │   STATUS │
-            ├─────────────────────────────┼───────────┼─────────┼───────┼──────────┼───────────┼───────────────┼──────────┤
-            │ *** WAITING FOR WORKERS *** │           │         │       │          │           │               │          │
-            ╰─────────────────────────────┴───────────┴─────────┴───────┴──────────┴───────────┴───────────────┴──────────╯
-            [DYNEX] FINISHED READ AFTER 0.07 SECONDS
-            [DYNEX] PARSING 1 VOLTAGE ASSIGNMENT FILES...
-            progress: 100%
-            1/1 [00:05<00:00, 5.14s/it]
-            [DYNEX] SAMPLESET LOADED
-            [DYNEX] MALLOB: JOB UPDATED: 3617 STATUS: 2
-               0  1 energy num_oc.
-            0  0  1   -1.0       1
-            ['BINARY', 1 rows, 1 samples, 2 variables]
+        # aggregate sampleset:
+        if len(retval)>0 and ('error' in retval) == False:
+            retval = retval.aggregate();
+            
+        return retval
+    
+    # main sampling function =================================================================================================================
+    def _sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False):
+        """
+        `Internal Function` which is called by private function `DynexSampler.sample`. This functions performs the sampling. 
         """
         
         mainnet = self.mainnet;
@@ -1329,7 +1492,7 @@ class DynexSampler:
                 # upload job:
                 if self.logging:
                     print("[ÐYNEX] SUBMITTING JOB - UPLOADING JOB FILE...");
-                ret = upload_file_to_ftp(self.ftp_hostname, self.ftp_username, self.ftp_password, self.filepath+self.filename, self.ftp_path, self.logging);
+                ret = self.upload_file_to_ftp(self.ftp_hostname, self.ftp_username, self.ftp_password, self.filepath+self.filename, self.ftp_path, self.logging);
                 if ret == False:
                     raise Exception("[DYNEX] ERROR: FILE UPLOAD FAILED.");
 
@@ -1387,14 +1550,14 @@ class DynexSampler:
                 # retrieve solutions
                 if mainnet:
                     try:
-                        files = list_files_with_text(self);
+                        files = self.list_files_with_text();
                         cnt_workers = len(files);
                     except Exception as e:
                         print('[DYNEX] CONNECTION TO FTP ENDPOINT FAILED:',e);
-                        raise Exception('ERROR: ONNECTION TO FTP ENDPOINT FAILED')
+                        raise Exception('ERROR: CONNECTION TO FTP ENDPOINT FAILED')
                         files = []; 
                 else:
-                    files = list_files_with_text_local(self); 
+                    files = self.list_files_with_text_local(); 
                     time.sleep(1);
 
                 for file in files:
@@ -1506,6 +1669,7 @@ class DynexSampler:
                     energy = float(info.split(".")[3]+"."+info.split(".")[4]);
                 else:
                     energy = float(info.split(".")[3]);
+                    
                 total_chips = total_chips + chips;
                 total_steps = steps;
 
@@ -1549,13 +1713,13 @@ class DynexSampler:
 
                 else:
                     print('[DYNEX] OMITTED SOLUTION FILE:',file,' - INCORRECT DATA');
-
+                    
             sampleset.append(['sample',lowest_set,'chips',total_chips,'steps',total_steps,'falsified softs',lowest_loc,'energy',lowest_energy]);
             elapsed_time = time.process_time() - t;
 
             # delete computing file: ---------------------------------------------------------------------------------------------------
             if mainnet:
-            	delete_file_on_ftp(self.ftp_hostname, self.ftp_username, self.ftp_password, self.filepath+self.filename, self.ftp_path, self.logging);
+                self.delete_file_on_ftp(self.ftp_hostname, self.ftp_username, self.ftp_password, self.filepath+self.filename, self.ftp_path, self.logging);
             
             # build sample dict "assignments" with 0/1 and dimod_sampleset ------------------------------------------------------------------
             if self.type == 'wcnf' and len(lowest_set) == self.num_variables:
@@ -1573,7 +1737,7 @@ class DynexSampler:
                 
 
             if self.logging:
-                print("[DYNEX] SAMPLESET LOADED");
+                print("[DYNEX] SAMPLESET READY");
             
             # create return sampleset: ------------------------------------------------------------------------------------------------------
             sampleset_clean = [];
@@ -1585,13 +1749,13 @@ class DynexSampler:
             if mainnet:
                 update_job_api(JOB_ID, 2, self.logging);
             print("[DYNEX] Keyboard interrupt");
-            return {};
+            return {'error': 'Keyboard interrupt'};
 
         except Exception as e:
             if mainnet:
                 update_job_api(JOB_ID, 2, self.logging);
             print("[DYNEX] Exception encountered:", e);
-            return {};
+            return {'error':'Exception encountered', 'details':e};
 
         self.sampleset = sampleset_clean;
 

@@ -10,7 +10,7 @@ Welcome to Dynex SDK's documentation!
    :maxdepth: 2
    :caption: Dynex SDK Modules:
 
-   Dynex SDK <modules>
+   Dynex Packages <modules>
    Getting started <welcome>
    Guides <guides>
    Using the Dynex SDK <using>
@@ -20,6 +20,8 @@ Welcome to Dynex SDK's documentation!
    Dynex PyTorch Library <pytorch>
    Dynex Qiskit class <qiskit>
    Dynex Scikit-Learn Plugin <scikit>
+
+Note: The latest files are availabe in our `GitHub DynexSDK <https://github.com/dynexcoin/DynexSDK>`_
  
 Getting Started with the Dynex SDK
 =====================================

@@ -1,4 +1,4 @@
-dynex package
+Dynex SDK
 =============
 
 Module contents

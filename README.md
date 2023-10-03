@@ -13,7 +13,7 @@ Then follow the steps explained in [Installing the Dynex SDK](https://github.com
 
 Dynex SDK documentation:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
-- [Dynex SDK on ReadTheDocs](https://dynex-sdk.readthedocs.io/en/latest/index.html#)
+- [Dynex SDK Documentation](https://docs.dynexcoin.org/)
 
 Dynex SDK Professional Community:
 - [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A)

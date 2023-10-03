@@ -577,12 +577,6 @@ class MARBM(nn.Module):
         Returns:
         - torch.Tensor: A tensor of the reconstructed visible layer. Shape is (batch_size, visible_units).
 
-        Example:
-        ```
-        rbm = MARBM(visible_units=784, hidden_units=500)
-        input_tensor = torch.rand((32, 784))
-        reconstructed_tensor = rbm.reconstruct(input_tensor)
-        ```
         """
         h = self.sample_hidden(input_data)
         v = self.sample_visible(h)

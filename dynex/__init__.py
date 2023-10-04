@@ -26,9 +26,22 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
+
+# Changelog 0.1.7:
+# - all internal funtions: prepend '_x' (and rebuild docs) 
+# - don't throw exeception on missing ini, just warning (import dynex issue) 
+# - test-net: automatically use max fitting chips; ignore num_reads 
+# - remove "boost job priority" for now 
+
+# Upcoming 0.1.8:
+# - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
+
+# Upcoming 0.1.9:
+# - API call: encrypt file
+# - new encrypt / compress function
 
 ################################################################################################################################
 # IMPORTS
@@ -90,7 +103,7 @@ try:
     API_KEY = config['DYNEX']['API_KEY'];
     API_SECRET = config['DYNEX']['API_SECRET'];
 except:
-    print('[DYNEX] ERROR: missing configuration file dynex.ini');
+    print('[DYNEX] WARNING: missing configuration file dynex.ini. Please follow the installation instructions at \nhttps://github.com/dynexcoin/DynexSDK/wiki/Installing-the-Dynex-SDK');
 
 def account_status():
     """
@@ -111,9 +124,9 @@ def account_status():
 
     """
     
-    check_api_status(logging = True);
+    _check_api_status(logging = True);
 
-def check_api_status(logging = False):
+def _check_api_status(logging = False):
     """
     `Internal Function`
     
@@ -159,7 +172,7 @@ def check_api_status(logging = False):
         raise Exception('INVALID API CREDENTIALS');
     return retval;
 
-def update_job_api(JOB_ID, status, logging=True, workers=-1, lowest_loc=-1, lowest_energy=-1):
+def _update_job_api(JOB_ID, status, logging=True, workers=-1, lowest_loc=-1, lowest_energy=-1):
     """
     `Internal Function`
     
@@ -185,7 +198,7 @@ def update_job_api(JOB_ID, status, logging=True, workers=-1, lowest_loc=-1, lowe
         raise Exception('ERROR DURING UPDATING JOB ON MALLOB');
     return retval;
 
-def generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, logging=True):
+def _generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, logging=True):
     """
     `Internal Function`
     
@@ -224,7 +237,7 @@ def generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=2
         raise Exception(data['message']);
     return retval;
 
-def get_status_details_api(JOB_ID, all_stopped = False):
+def _get_status_details_api(JOB_ID, all_stopped = False):
     """
     `Internal Function`
     
@@ -276,7 +289,7 @@ def get_status_details_api(JOB_ID, all_stopped = False):
         i = i + 1;
     # not worked on:
     if i==0:
-        table.append(['*** WAITING FOR WORKERS ***','','','','','','','']);
+        table.append(['*** WAITING FOR WORKERS ***\nBoost job priority: <coming soon>','','','','','','','']);
         LOC_MIN = 0;
         ENERGY_MIN = 0;
         CHIPS = 0;
@@ -289,7 +302,7 @@ def get_status_details_api(JOB_ID, all_stopped = False):
 # TEST dynex.ini CONFIGURATION
 ################################################################################################################################
 
-def test_completed():
+def _test_completed():
     """
     `Internal Function`
 
@@ -366,7 +379,7 @@ def test():
 # conversation of k-sat to 3sat
 ################################################################################################################################
 
-def check_list_length(lst):
+def _check_list_length(lst):
     """
     `Internal Function`
 
@@ -380,7 +393,7 @@ def check_list_length(lst):
     return False
 
 # find largest variable in clauses:
-def find_largest_value(lst):
+def _find_largest_value(lst):
     """
     `Internal Function`
 
@@ -399,7 +412,7 @@ def find_largest_value(lst):
     return largest_value
 
 # create a substitution clause:
-def sat_creator(variables, clause_type, dummy_number, results_clauses):
+def _sat_creator(variables, clause_type, dummy_number, results_clauses):
     """
     `Internal Function`
 
@@ -448,7 +461,7 @@ def sat_creator(variables, clause_type, dummy_number, results_clauses):
     return dummy_number, results_clauses
 
 # convert from k-sat to 3sat:
-def ksat(clauses):
+def _ksat(clauses):
     """
     `Internal Function`
 
@@ -461,7 +474,7 @@ def ksat(clauses):
     
     results_clauses = [];
     results_clauses.append([1])
-    variables = find_largest_value(clauses);
+    variables = _find_largest_value(clauses);
     dummy_number = variables + 1;
     for values in clauses:
         total_variables = len(values)
@@ -479,13 +492,13 @@ def ksat(clauses):
             #Case more than 3 variable
             else:
                 first_clause = values[:2]
-                dummy_number, results_clauses = sat_creator(first_clause, 1, dummy_number, results_clauses)
+                dummy_number, results_clauses = _sat_creator(first_clause, 1, dummy_number, results_clauses)
 
                 middle_clauses = values[2:len(values)-2]
-                dummy_number, results_clauses = sat_creator(middle_clauses, 2, dummy_number, results_clauses)
+                dummy_number, results_clauses = _sat_creator(middle_clauses, 2, dummy_number, results_clauses)
 
                 last_clause = values[len(values)-2:]
-                dummy_number, results_clauses = sat_creator(last_clause, 3, dummy_number, results_clauses)
+                dummy_number, results_clauses = _sat_creator(last_clause, 3, dummy_number, results_clauses)
 
     return results_clauses
 
@@ -493,7 +506,7 @@ def ksat(clauses):
 # utility functions
 ################################################################################################################################
 
-def calculate_sha3_256_hash(string):
+def _calculate_sha3_256_hash(string):
     """
     `Internal Function`
     """
@@ -501,7 +514,7 @@ def calculate_sha3_256_hash(string):
     sha3_256_hash.update(string.encode('utf-8'))
     return sha3_256_hash.hexdigest()
 
-def Convert(a):
+def _Convert(a):
     """
     `Internal Function`
     """
@@ -509,16 +522,7 @@ def Convert(a):
     res_dct = dict(zip(it, it))
     return res_dct;
 
-def check_list_length(lst):
-    """
-    `Internal Function`
-    """
-    for sublist in lst:
-        if isinstance(sublist, list) and len(sublist) > 3:
-            return True
-    return False
-
-def max_value(inputlist):
+def _max_value(inputlist):
     """
     `Internal Function`
     """
@@ -534,46 +538,10 @@ def _getCoreCount():
         return (int)(os.popen('grep -c cores /proc/cpuinfo').read())
 
 ################################################################################################################################
-# upload file to an FTP server
-################################################################################################################################
-
-# Moved into _DynexSampler class
-
-################################################################################################################################
-# Cleanup FTP on sampler exit or clean()
-################################################################################################################################
-
-# Moved into _DynexSampler class
-
-################################################################################################################################
-# delete computing file on an FTP server
-################################################################################################################################
-
-# Moved into _DynexSampler class
-
-################################################################################################################################
-# retrieve all files starting with "sampler.filename" from an FTP server
-################################################################################################################################
-
-# Moved into _DynexSampler class
-
-################################################################################################################################
-# retrieve all files starting with "sampler.filename" from test-net
-################################################################################################################################
-
-# Moved into _DynexSampler class   
-    
-################################################################################################################################
-# Download file from FTP to sampler.filepath / filename
-################################################################################################################################
-
-# Obsolete
-
-################################################################################################################################
 # generate filehash for worker
 ################################################################################################################################
 
-def generate_hash(filename):
+def _generate_hash(filename):
     """
     `Internal Function`
 
@@ -584,13 +552,13 @@ def generate_hash(filename):
     
     with open(filename, 'r') as file:
         data = file.read().replace('\n', '');
-    return calculate_sha3_256_hash(data);
+    return _calculate_sha3_256_hash(data);
 
 ################################################################################################################################
 # AES Encryption / Decryption class
 ################################################################################################################################
 
-def aes_encrypt(raw):
+def _aes_encrypt(raw):
     """
     `Internal Function`
     
@@ -612,7 +580,7 @@ def aes_encrypt(raw):
 # save clauses to SAT cnf file
 ################################################################################################################################
 
-def save_cnf(clauses, filename, mainnet):
+def _save_cnf(clauses, filename, mainnet):
     """
     `Internal Function`
 
@@ -626,7 +594,7 @@ def save_cnf(clauses, filename, mainnet):
         line = "p cnf %d %d" % (num_variables, num_clauses);
         
         if mainnet:
-            line_enc = aes_encrypt(line);
+            line_enc = _aes_encrypt(line);
         else:
             line_enc = line;
         
@@ -636,7 +604,7 @@ def save_cnf(clauses, filename, mainnet):
             line = ' '.join(str(int(lit)) for lit in clause) + ' 0';
         
             if mainnet:
-                line_enc = aes_encrypt(line);
+                line_enc = _aes_encrypt(line);
             else:
                 line_enc = line;
         
@@ -646,7 +614,7 @@ def save_cnf(clauses, filename, mainnet):
 # save wcnf file
 ################################################################################################################################
 
-def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
+def _save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
     """
     `Internal Function`
 
@@ -657,7 +625,7 @@ def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
         line = "p wcnf %d %d" % (num_variables, num_clauses);
         
         if mainnet:
-            line_enc = aes_encrypt(line);
+            line_enc = _aes_encrypt(line);
         else:
             line_enc = line;
 
@@ -667,7 +635,7 @@ def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
             line = ' '.join(str(int(lit)) for lit in clause) + ' 0';
         
             if mainnet:
-                line_enc = aes_encrypt(line);
+                line_enc = _aes_encrypt(line);
             else:
                 line_enc = line;
         
@@ -678,7 +646,7 @@ def save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
 # functions to convert BQM to QUBO
 ################################################################################################################################
 
-def convert_bqm_to_qubo(bqm, relabel=True, logging=True):
+def _convert_bqm_to_qubo(bqm, relabel=True, logging=True):
     """
     `Internal Function`
 
@@ -836,7 +804,7 @@ class BQM():
 
     """
     def __init__(self, bqm, relabel=True, logging=True):
-        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_qubo(bqm, relabel, logging);
+        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = _convert_bqm_to_qubo(bqm, relabel, logging);
         if self.num_clauses == 0 or self.num_variables == 0:
             return;
         self.type = 'wcnf';
@@ -874,7 +842,7 @@ class CQM():
     """
     def __init__(self, cqm, relabel=True, logging=True):
         bqm, self.invert = dimod.cqm_to_bqm(cqm)
-        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = convert_bqm_to_qubo(bqm, relabel, logging);
+        self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = _convert_bqm_to_qubo(bqm, relabel, logging);
         self.type = 'wcnf';
         self.logging = logging;
         self.typestr = 'CQM';
@@ -882,7 +850,7 @@ class CQM():
 ################################################################################################################################
 # Thread runner: sample clones
 ################################################################################################################################
-def sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize):
+def _sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize):
     """
     `Internal Function` which creates a thread for clone sampling
     """
@@ -921,6 +889,14 @@ class DynexSampler:
 
     """
     def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
+        
+        # multi-model parallel sampling
+        if isinstance(model, list):
+            if mainnet==False:
+                raise Exception("[ÐYNEX] ERROR: Multi model parallel sampling is only supported on mainnet");
+            if logging:
+                print("[ÐYNEX] MULTI-MODEL PARALLEL SAMPLING:",len(model),'MODELS');
+
         self.state = 'initialised';
         self.model = model;
         self.logging = logging;
@@ -1034,7 +1010,7 @@ class DynexSampler:
             for i in range(clones):
                 q = Queue()
                 results.append(q)
-                p = multiprocessing.Process(target=sample_thread, args=(q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize,))
+                p = multiprocessing.Process(target=_sample_thread, args=(q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize,))
                 jobs.append(p)
                 p.start()
 
@@ -1076,7 +1052,7 @@ class _DynexSampler:
     """
     def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False):
         
-        if not test and not test_completed():
+        if not test and not _test_completed():
             raise Exception("CONFIGURATION TEST NOT COMPLETED. PLEASE RUN 'dynex.test()'");
         
         self.description = description;
@@ -1086,7 +1062,7 @@ class _DynexSampler:
         config.read('dynex.ini', encoding='UTF-8');
         
         # SDK Authenticaton:
-        if not check_api_status():
+        if not _check_api_status():
             raise Exception("API credentials invalid");
 
         # FTP & HTTP GET data where miners are accessing problem files:
@@ -1111,37 +1087,98 @@ class _DynexSampler:
         # path to testnet
         self.solverpath = 'testnet/';
 
-        # auto generated temp filename:
-        self.filename = secrets.token_hex(16)+".bin";
-        self.logging = logging;
-        self.mainnet = mainnet;
-        self.typestr = model.typestr;
-        
-        if model.type == 'cnf':
-            # convert to 3sat?
-            if (check_list_length(model.clauses)):
-                # we need to convert to 3sat:
-                self.clauses = ksat(model.clauses);
-            else:
-                self.clauses = model.clauses;
-            save_cnf(self.clauses, self.filepath+self.filename, mainnet);
-            self.num_clauses = len(self.clauses);
-            self.num_variables = max_value(self.clauses) - 1;
-        
-        if model.type == 'wcnf':
-            self.clauses = model.clauses;
-            self.num_variables = model.num_variables;
-            self.num_clauses = model.num_clauses;
-            self.var_mappings = model.var_mappings;
-            self.precision = model.precision;
-            save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, mainnet); 
+        # multi-model parallel sampling?
+        multi_model_mode = False;
+        if isinstance(model, list):
+            if mainnet == False:
+                raise Exception("[ÐYNEX] ERROR: Multi model parallel sampling is only supported on mainnet");
+            multi_model_mode = True;
 
-        self.filehash     = generate_hash(self.filepath+self.filename);
-        self.type = model.type;
-        self.assignments = {};
-        self.dimod_assignments = {};
-        self.bqm = model.bqm;
-        self.model = model;
+        self.multi_model_mode = multi_model_mode;
+            
+        #single model sampling:
+        if multi_model_mode == False:
+            # auto generated temp filename:
+            self.filename = secrets.token_hex(16)+".bin";
+            self.logging = logging;
+            self.mainnet = mainnet;
+            self.typestr = model.typestr;
+            
+            if model.type == 'cnf':
+                # convert to 3sat?
+                if (_check_list_length(model.clauses)):
+                    # we need to convert to 3sat:
+                    self.clauses = _ksat(model.clauses);
+                else:
+                    self.clauses = model.clauses;
+                _save_cnf(self.clauses, self.filepath+self.filename, mainnet);
+                self.num_clauses = len(self.clauses);
+                self.num_variables = _max_value(self.clauses) - 1;
+            
+            if model.type == 'wcnf':
+                self.clauses = model.clauses;
+                self.num_variables = model.num_variables;
+                self.num_clauses = model.num_clauses;
+                self.var_mappings = model.var_mappings;
+                self.precision = model.precision;
+                _save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, mainnet); 
+
+            self.filehash     = _generate_hash(self.filepath+self.filename);
+            self.type = model.type;
+            self.assignments = {};
+            self.dimod_assignments = {};
+            self.bqm = model.bqm;
+            self.model = model;
+
+        # multi model sampling:
+        else:
+            _filename = [];
+            _typestr = [];
+            _clauses = [];
+            _num_clauses = [];
+            _num_variables = [];
+            _var_mappings = [];
+            _precision = [];
+            _filehash = [];
+            _type = [];
+            _assignments = [];
+            _dimod_assignments = [];
+            _bqm = [];
+            _model = [];
+            for m in model:
+                _filename.append(secrets.token_hex(16)+".bin");
+                _typestr.append(m.type);
+                if m.type == 'cnf':
+                    raise Exception("[ÐYNEX] ERROR: Multi model parallel sampling is currently not implemented for SAT");
+                if m.type == 'wcnf':
+                    _clauses.append(m.clauses);
+                    _num_clauses.append(m.num_clauses);
+                    _num_variables.append(m.num_variables);
+                    _var_mappings.append(m.var_mappings);
+                    _precision.append(m.precision);
+                    _save_wcnf(_clauses[-1], self.filepath+_filename[-1], _num_variables[-1], _num_clauses[-1], mainnet); 
+                _filehash.append(_generate_hash(self.filepath+_filename[-1]));
+                _type.append(m.type);
+                _assignments.append({});
+                _dimod_assignments.append({});
+                _bqm.append(m.bqm);
+                _model.append(m);
+            self.filename = _filename;
+            self.typestr = _typestr;
+            self.clauses = _clauses;
+            self.num_clauses = _num_clauses;
+            self.num_variables = _num_variables;
+            self.var_mappings = _var_mappings;
+            self.precision = _precision;
+            self.filehash = _filehash;
+            self.type = _type;
+            self.assignments = _assignments;
+            self.dimod_assignments = _dimod_assignments;
+            self.bqm = _bqm;
+            self.model = _model;
+            self.logging = logging;
+            self.mainnet = mainnet;
+
 
         if self.logging:
             print("[DYNEX] SAMPLER INITIALISED")
@@ -1355,11 +1392,11 @@ class _DynexSampler:
         
         if model.type == 'cnf':
             # convert to 3sat?
-            if (check_list_length(model.clauses)):
-                self.clauses = ksat(model.clauses);
+            if (_check_list_length(model.clauses)):
+                self.clauses = _ksat(model.clauses);
             else:
                 self.clauses = model.clauses;
-            save_cnf(self.clauses, self.filepath+self.filename);
+            _save_cnf(self.clauses, self.filepath+self.filename);
         
         if model.type == 'wcnf':
             self.clauses = model.clauses;
@@ -1367,9 +1404,9 @@ class _DynexSampler:
             self.num_clauses = model.num_clauses;
             self.var_mappings = model.var_mappings;
             self.precision = model.precision;
-            save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
+            _save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
         
-        self.filehash     = generate_hash(self.filepath+self.filename);
+        self.filehash     = _generate_hash(self.filepath+self.filename);
         self.type = model.type;
         self.assignments = {};
         self.dimod_assignments = {};
@@ -1454,20 +1491,22 @@ class _DynexSampler:
             retval = self._sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging);
             if len(retval)>0:
                 break;
+            
+            # TODO: support multi-model sampling
             print("[DYNEX] NO VALID SAMPLE RESULT FOUND. RESAMPLING...", i+1,'/',NUM_RETRIES)
             time.sleep(2);
             # generate a fresh sampling file:
             self.filename = secrets.token_hex(16)+".bin";
             if self.model.type == 'cnf':
                 # convert to 3sat?
-                if (check_list_length(self.model.clauses)):
-                    self.clauses = ksat(self.model.clauses);
+                if (_check_list_length(self.model.clauses)):
+                    self.clauses = _ksat(self.model.clauses);
                 else:
                     self.clauses = self.model.clauses;
-                save_cnf(self.clauses, self.filepath+self.filename);
+                _save_cnf(self.clauses, self.filepath+self.filename);
             if self.model.type == 'wcnf':
-                save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
-            self.filehash = generate_hash(self.filepath+self.filename);
+                _save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
+            self.filehash = _generate_hash(self.filepath+self.filename);
 
         # aggregate sampleset:
         if len(retval)>0 and ('error' in retval) == False:
@@ -1481,6 +1520,9 @@ class _DynexSampler:
         `Internal Function` which is called by private function `DynexSampler.sample`. This functions performs the sampling. 
         """
         
+        if self.multi_model_mode == True:
+            raise Exception('ERROR: Multi-model parallel sampling is not implemented yet');
+
         mainnet = self.mainnet;
 
         try:
@@ -1488,7 +1530,7 @@ class _DynexSampler:
             # step 1: upload problem file to Dynex Platform: ---------------------------------------------------------------------------------
             if mainnet:
                 # create job on mallob system:
-                JOB_ID = generate_job_api(self, annealing_time, switchfraction, num_reads, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, self.logging);
+                JOB_ID = _generate_job_api(self, annealing_time, switchfraction, num_reads, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, self.logging);
                 # upload job:
                 if self.logging:
                     print("[ÐYNEX] SUBMITTING JOB - UPLOADING JOB FILE...");
@@ -1499,7 +1541,7 @@ class _DynexSampler:
                 # now set the job as ready to be worked on:
                 if self.logging:
                     print("[ÐYNEX] SUBMITTING START COMMAND...");
-                if not update_job_api(JOB_ID, 0, self.logging):
+                if not _update_job_api(JOB_ID, 0, self.logging):
                     raise Exception('ERROR: CANNOT START JOB')
                 
                 if self.logging:
@@ -1511,7 +1553,10 @@ class _DynexSampler:
                 if self.type == 'cnf':
                     localtype = 0;
                 JOB_ID = -1;
-                command = self.solverpath+"np -t="+str(localtype)+" -ms="+str(annealing_time)+" -st=1 -msz="+str(minimum_stepsize)+" -c="+str(num_reads)+" --file='"+self.filepath_full+"/"+self.filename+"'";
+                #command = self.solverpath+"np -t="+str(localtype)+" -ms="+str(annealing_time)+" -st=1 -msz="+str(minimum_stepsize)+" -c="+str(num_reads)+" --file='"+self.filepath_full+"/"+self.filename+"'";
+                # in test-net, we use the maximum fitting chips:
+                num_reads = 0;
+                command = self.solverpath+"np -t="+str(localtype)+" -ms="+str(annealing_time)+" -st=1 -msz="+str(minimum_stepsize)+" --file='"+self.filepath_full+"/"+self.filename+"'";
 
                 if alpha!=0:
                     command = command + " --alpha=" + str(alpha);
@@ -1586,7 +1631,7 @@ class _DynexSampler:
                         if mainnet:
                         	clear_output(wait=True);
                         if mainnet:
-                            LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = get_status_details_api(JOB_ID);
+                            LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID);
                         else:
                             LOC_MIN, ENERGY_MIN, MALLOB_CHIPS = 0,0,0;
                             details = "";
@@ -1604,7 +1649,7 @@ class _DynexSampler:
                         if mainnet:
                         	clear_output(wait=True);
                         if mainnet:
-                            LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = get_status_details_api(JOB_ID);
+                            LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID);
                         else:
                             LOC_MIN, ENERGY_MIN, MALLOB_CHIPS = 0,0,0;
                             details = "";
@@ -1617,20 +1662,20 @@ class _DynexSampler:
 
                         # update mallob - job running: -------------------------------------------------------------------------------------------------
                         if runupdated==False and mainnet:
-                            update_job_api(JOB_ID, 1, self.logging);
+                            _update_job_api(JOB_ID, 1, self.logging);
                             runupdated = True;
                     time.sleep(2);
 
             # update mallob - job finished: -------------------------------------------------------------------------------------------------
             if mainnet:
-                update_job_api(JOB_ID, 2, self.logging, workers=cnt_workers, lowest_loc=lowest_loc, lowest_energy=lowest_energy);
+                _update_job_api(JOB_ID, 2, self.logging, workers=cnt_workers, lowest_loc=lowest_loc, lowest_energy=lowest_energy);
 
             # update final output (display all workers as stopped as well):
             if cnt_workers>0 and self.logging:
                 if mainnet:
                 	clear_output(wait=True);
                 if mainnet:
-                    LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = get_status_details_api(JOB_ID, all_stopped = True);
+                    LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID, all_stopped = True);
                 else:
                     LOC_MIN, ENERGY_MIN, MALLOB_CHIPS = 0,0,0;
                     details = "";
@@ -1742,18 +1787,18 @@ class _DynexSampler:
             # create return sampleset: ------------------------------------------------------------------------------------------------------
             sampleset_clean = [];
             for sample in sampleset:
-                sample_dict = Convert(sample);
+                sample_dict = _Convert(sample);
                 sampleset_clean.append(sample_dict);
 
         except KeyboardInterrupt:
             if mainnet:
-                update_job_api(JOB_ID, 2, self.logging);
+                _update_job_api(JOB_ID, 2, self.logging);
             print("[DYNEX] Keyboard interrupt");
             return {'error': 'Keyboard interrupt'};
 
         except Exception as e:
             if mainnet:
-                update_job_api(JOB_ID, 2, self.logging);
+                _update_job_api(JOB_ID, 2, self.logging);
             print("[DYNEX] Exception encountered:", e);
             return {'error':'Exception encountered', 'details':e};
 

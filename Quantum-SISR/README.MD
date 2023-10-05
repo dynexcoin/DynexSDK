@@ -21,6 +21,8 @@ pip install -U scikit-image
 python run.py
 ``` 
 
+Note: This is an example implementation to showcase the core functionality and efficiacy of the implemented algorithm. In real world applications, all QUBOs would be sampled in 1 batch in parallel on the platform, reducing sampling time to 1 run of a few seconds.
+
 ## Training
 
 ```

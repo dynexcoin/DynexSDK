@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -36,10 +36,13 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # - test-net: automatically use max fitting chips; ignore num_reads 
 # - remove "boost job priority" for now 
 
-# Upcoming 0.1.8:
-# - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
+# Changelog 0.1.8:
+# - improved accuracy by validating solution file's reported energies with voltages and omitting incorrect reads
+# - improved sampling display (showing ground state and decluttered)
+# - default logging=False for CQM/BQM/SAT models
 
-# Upcoming 0.1.9:
+# Upcoming:
+# - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
 # - API call: encrypt file
 # - new encrypt / compress function
 
@@ -209,7 +212,7 @@ def _generate_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=
     - TRUE if the job was successfully created, FALSE if there was a problem with generating the job (`bool`)
     """
     
-	# retrieve additional data from sampler class:
+    # retrieve additional data from sampler class:
     sampler_type = sampler.type;
     sampler_num_clauses = sampler.num_clauses;
     filehash = sampler.filehash;
@@ -287,7 +290,8 @@ def _get_status_details_api(JOB_ID, all_stopped = False):
         if result['energy'] < ENERGY_MIN:
             ENERGY_MIN = result['energy'];
         i = i + 1;
-    # not worked on:
+    
+    # if job not worked on:
     if i==0:
         table.append(['*** WAITING FOR WORKERS ***\nBoost job priority: <coming soon>','','','','','','','']);
         LOC_MIN = 0;
@@ -641,7 +645,84 @@ def _save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
         
             f.write(line_enc+"\n"); 
 
+################################################################################################################################
+# calculate number of falsified clauses (loc) & Energy based on assignment and model
+################################################################################################################################
+
+def _energy(model, sample, mapping=True):
+    """
+    `Internal Function`
+    
+    Takes a model and dimod samples and calculates the energy and loc.
+    
+    Input: 
+    ======
+    
+    - dimod sample (dict) with mapping = True
+      example: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0}
+      
+    or
+      
+    - assignments (list) with mapping = False (raw solution file)
+      example: [1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1]
+    """
+    # convert dimod sample to wcnf mapping:
+    wcnf_vars = []; 
+    if mapping:
+        for v in sample:
+            if v in model.var_mappings:
+                v_mapped = model.var_mappings[v];
+            else:
+                v_mapped = v;
+            wcnf_vars.append(sample[v_mapped])
+    # or convert solution file to 0/1:
+    else:
+        for v in sample:
+            if v>0:
+                wcnf_vars.append(1);
+            else:
+                wcnf_vars.append(0);
         
+    loc = 0;
+    energy = 0.0;
+    for clause in model.clauses:
+        # 2 clause:
+        if len(clause)==2:
+            w = clause[0];
+            i = abs(clause[1]);
+            i_dir = np.sign(clause[1]);
+            if i_dir == -1:
+                i_dir = 0;
+            i_assign = wcnf_vars[i-1];
+            sat = False;
+            if (i_dir == i_assign):
+                sat = True;
+            if sat == False:
+                loc += 1;
+                energy += w;
+            
+        # 3 clause:
+        if len(clause)==3:
+            w = clause[0];
+            i = abs(clause[1]);
+            i_dir = np.sign(clause[1]);
+            if i_dir == -1:
+                i_dir = 0;
+            i_assign = wcnf_vars[i-1];
+            j = abs(clause[2]);
+            j_dir = np.sign(clause[2]);
+            if j_dir == -1:
+                j_dir = 0;
+            j_assign = wcnf_vars[j-1];
+            sat = False;
+            if (i_dir == i_assign) or (j_dir == j_assign):
+                sat = True;
+            if sat == False:
+                loc += 1;
+                energy += w;
+            
+    return loc, energy
+            
 ################################################################################################################################
 # functions to convert BQM to QUBO
 ################################################################################################################################
@@ -712,9 +793,9 @@ def _convert_bqm_to_qubo(bqm, relabel=True, logging=True):
 
     for i in range(0, len(Q_list)):
         touple = Q_list[i];
-        i = int(touple[0])+1; # +1 because vars need to start with 1
-        j = int(touple[1])+1; # +1 because vars need to start with 1
-        w = Q[0][touple];
+        i = int(touple[0])+1; # var i; +1 because vars start with 1
+        j = int(touple[1])+1; # var j; +1 because vars start with 1
+        w = Q[0][touple];     # weight
         w_int = int(np.round(w/precision));
         
         # linear term:
@@ -770,7 +851,7 @@ class SAT():
         model =  dynex.SAT(clauses)
 
     """
-    def __init__(self, clauses, logging=True):
+    def __init__(self, clauses, logging=False):
         self.clauses = clauses;
         self.type = 'cnf';
         self.bqm = "";
@@ -803,7 +884,7 @@ class BQM():
         model = dynex.BQM(bqm)
 
     """
-    def __init__(self, bqm, relabel=True, logging=True):
+    def __init__(self, bqm, relabel=True, logging=False):
         self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = _convert_bqm_to_qubo(bqm, relabel, logging);
         if self.num_clauses == 0 or self.num_variables == 0:
             return;
@@ -840,7 +921,7 @@ class CQM():
 
 
     """
-    def __init__(self, cqm, relabel=True, logging=True):
+    def __init__(self, cqm, relabel=True, logging=False):
         bqm, self.invert = dimod.cqm_to_bqm(cqm)
         self.clauses, self.num_variables, self.num_clauses, self.var_mappings, self.precision, self.bqm = _convert_bqm_to_qubo(bqm, relabel, logging);
         self.type = 'wcnf';
@@ -1300,6 +1381,55 @@ class _DynexSampler:
                     filtered_files.append(filename)
 
         return filtered_files; 
+    
+    # verify correctness of downloaded file (loc and energy) ==========================================================================
+    def validate_file(self, file):
+        """
+        `Internal Function`
+        
+        Validates loc and energy provided in filename with voltages. File not matching will be deleted on FTP and locally.
+        """
+        valid = False;
+        
+        # format: xxx.bin.32.1.0.0.000000
+        # jobfile chips steps loc energy
+        info = file[len(self.filename)+1:];
+        chips = int(info.split(".")[0]);
+        steps = int(info.split(".")[1]);
+        loc = int(info.split(".")[2]);
+
+        # energy can also be non decimal:
+        if len(info.split("."))>4:
+            energy = float(info.split(".")[3]+"."+info.split(".")[4]);
+        else:
+            energy = float(info.split(".")[3]);
+        
+        with open(self.filepath+file, 'r') as ffile:
+            data = ffile.read();
+            # enough data?
+            if self.mainnet:
+                if len(data)>96:
+                    wallet = data.split("\n")[0];
+                    tmp = data.split("\n")[1];
+                    voltages = tmp.split(", ")[:-1];
+                else:
+                    voltages = ['NaN']; # invalid file received
+            else: # test-net is not returning wallet
+                voltages = data.split(", ")[:-1];
+                
+            # convert string voltages to list of floats:
+            voltages = list(map(float, voltages));
+
+            # valid result? ignore Nan values and other incorrect data
+            if len(voltages)>0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
+                val_loc, val_energy = _energy(self.model, voltages, mapping=False);
+                
+                # from later versions onwards, enforce also correctness of LOC (TBD):
+                if energy == val_energy:
+                    valid = True;
+                        
+        return valid;
+        
 
     # list and download solution files ================================================================================================
     def list_files_with_text(self):
@@ -1337,20 +1467,33 @@ class _DynexSampler:
                         with open(local_path, 'wb') as file:
                             ftp.retrbinary('RETR ' + name, file.write); 
                             file.close();
-                        # correctly downloaded?
-                        cnt = 0;
-                        while os.path.getsize(local_path)==0:
-                            time.sleep(1);
-                            with open(local_path, 'wb') as file:
-                                if self.logging:
-                                    print('[DYNEX] REDOWNLOADING FILE',name);
-                                ftp.retrbinary('RETR ' + name, file.write);
-                                file.close();
-                            cnt += 1;
-                            if cnt>=10:
-                                break;
-                        # finally we delete downloaded files from FTP:
-                        ftp.delete(name); 
+                        # correct file?
+                        if self.validate_file(name)==False:
+                            if self.logging:
+                                print('[DYNEX] REMOVING SOLUTION FILE',name,'(WRONG ENERGY REPORTED OR INCORRECT VOLTAGES)');
+                            os.remove(local_path);
+                            ftp.delete(name);
+                        else:
+                            # correctly downloaded?
+                            cnt = 0;
+                            while os.path.getsize(local_path)==0:
+                                time.sleep(1);
+                                with open(local_path, 'wb') as file:
+                                    if self.logging:
+                                        print('[DYNEX] REDOWNLOADING FILE',name);
+                                    ftp.retrbinary('RETR ' + name, file.write);
+                                    file.close();
+                                # correct file?
+                                if self.validate_file(name) == False:
+                                    if self.logging:
+                                        print('[DYNEX] REMOVING SOLUTION FILE',name,'(WRONG ENERGY REPORTED OR INCORRECT VOLTAGES)');
+                                    os.remove(local_path);
+                                    break;
+                                cnt += 1;
+                                if cnt>=10:
+                                    break;
+                            # finally we delete downloaded files from FTP:
+                            ftp.delete(name); 
         
         # Close the FTP connection
         ftp.quit()
@@ -1483,7 +1626,7 @@ class _DynexSampler:
         
         retval = {};
         
-        # In a malleable environment, it is possible that a worker is submitting an inconsistent solution file. If the job
+        # In a malleable environment, it is rarely possible that a worker is submitting an inconsistent solution file. If the job
         # is small, we need to re-sample again. This routine samples up to NUM_RETRIES (10) times. If an error occurs, or
         # a keyboard interrupt was triggered, the return value is a dict containing key 'error'
         
@@ -1629,7 +1772,7 @@ class _DynexSampler:
                 if cnt_workers<1:
                     if self.logging:
                         if mainnet:
-                        	clear_output(wait=True);
+                            clear_output(wait=True);
                         if mainnet:
                             LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID);
                         else:
@@ -1637,8 +1780,8 @@ class _DynexSampler:
                             details = "";
                         elapsed_time = time.process_time() - t;
                         # display:
-                        table = ([['DYNEXJOB','ELAPSED','WORKERS','CHIPS','✔','STEPS','LOC','✔','ENERGY','✔']]);
-                        table.append(['','','*** WAITING FOR READS ***','','','','','','','']);
+                        table = ([['DYNEXJOB','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
+                        table.append(['','','*** WAITING FOR READS ***','','','']);
                         ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                         print(ta+'\n'+details);
                         
@@ -1647,7 +1790,7 @@ class _DynexSampler:
                 else:
                     if self.logging:
                         if mainnet:
-                        	clear_output(wait=True);
+                            clear_output(wait=True);
                         if mainnet:
                             LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID);
                         else:
@@ -1655,8 +1798,9 @@ class _DynexSampler:
                             details = "";
                         elapsed_time = time.process_time() - t;
                         # display:
-                        table = ([['DYNEXJOB','ELAPSED','WORKERS','CHIPS','✔','STEPS','LOC','✔','ENERGY','✔']]);
-                        table.append([JOB_ID, elapsed_time, cnt_workers, MALLOB_CHIPS, total_chips, total_steps, LOC_MIN, lowest_loc, ENERGY_MIN, lowest_energy]);
+                        table = ([['DYNEXJOB','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
+                        table.append([JOB_ID, elapsed_time, cnt_workers, total_chips, total_steps, lowest_energy]);
+                        
                         ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                         print(ta+'\n'+details);
 
@@ -1673,7 +1817,7 @@ class _DynexSampler:
             # update final output (display all workers as stopped as well):
             if cnt_workers>0 and self.logging:
                 if mainnet:
-                	clear_output(wait=True);
+                    clear_output(wait=True);
                 if mainnet:
                     LOC_MIN, ENERGY_MIN, MALLOB_CHIPS, details = _get_status_details_api(JOB_ID, all_stopped = True);
                 else:
@@ -1682,8 +1826,8 @@ class _DynexSampler:
                 elapsed_time = time.process_time() - t;
                 if mainnet:
                     # display:
-                    table = ([['DYNEXJOB','ELAPSED','WORKERS','CHIPS','✔','STEPS','LOC','✔','ENERGY','✔']]);
-                    table.append([JOB_ID, elapsed_time, cnt_workers, MALLOB_CHIPS, total_chips, total_steps, LOC_MIN, lowest_loc, ENERGY_MIN, lowest_energy]);
+                    table = ([['DYNEXJOB','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
+                    table.append([JOB_ID, elapsed_time, cnt_workers, total_chips, total_steps, lowest_energy]);
                     ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                     print(ta+'\n'+details);
                 

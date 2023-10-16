@@ -1,4 +1,4 @@
-# Dynex QRBM (full)
+# Dynex QRBM (3-step Qubo)
 
 Implementation of the Quantum-Boltzmann-Machine (QRBM), utilising Dynex' Neuromorphic Computing platform. All training samples are being sampled on the Dynex platform with no Gibbs or CD steps (full QRBM). It is based on https://cmst.eu/articles/applying-a-quantum-annealing-based-restricted-boltzmann-machine-for-mnist-handwritten-digit-classification/
 

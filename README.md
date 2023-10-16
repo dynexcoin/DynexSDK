@@ -95,7 +95,9 @@ Here are some example of these algorithms implemented on the Dynex Platform:
 The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybrid models, neuromorphic-, transfer- and federated-learning with 
 [PyTorch](https://pytorch.org/)
  
-- [Turning Neuromorphic Dynex Chips into Torch Layers]([https://github.com/dynexcoin/DynexSDK/blob/main/dynex_pytorch/example_neuromorphic_torch_layers.ipynb](https://github.com/dynexcoin/DynexSDK/blob/main/example_pytorch.ipynb))
+- [Example: Quantum-Boltzmann-Machine (PyTorch) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/example_neuromorphic_torch_layers%20(1).ipynb) | Scientific background: Dixit V, Selvarajan R, Alam MA, Humble TS and Kais S (2021) Training Restricted Boltzmann Machines With a D-Wave Quantum Annealer. Front. Phys. 9:589626. doi: 10.3389/fphy.2021.589626; Sleeman, Jennifer, John E. Dorband and Milton Halem. “A Hybrid Quantum enabled RBM Advantage: Convolutional Autoencoders For Quantum Image Compression and Generative Learning.” Defense + Commercial Sensing (2020)
+
+- [Example: Quantum-Support-Vector-Machine (PyTorch) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/Example_SVM_pytorch.ipynb) | Scientific background: Rounds, Max and Phil Goddard. “Optimal feature selection in credit scoring and classification using a quantum annealer.” (2017)
 
 ## Dynex Qiskit Package
 

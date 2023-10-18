@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.9"
+__version__ = "0.1.10"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -35,12 +35,10 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # + don't throw exeception on missing ini, just warning (import dynex issue) 
 # + test-net: automatically use max fitting chips; ignore num_reads 
 # + remove "boost job priority" for now 
-
 # Changelog 0.1.8:
 # + improved accuracy by validating solution file's reported energies with voltages and omitting incorrect reads
 # + improved sampling display (showing ground state and decluttered)
 # + default logging=False for CQM/BQM/SAT models
-
 # Changelog 0.1.9:
 # + moved energy ground state calculation into _DynexSampler class
 # + improved debugging=True option for sampling
@@ -52,7 +50,8 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 #    - faster: direct conversion from bqm (qubo step omitted)
 #    - rydberg hamiltonian formulation
 #    - reduction of linear terms
-    
+# Changelog 0.1.10:
+# + np.float64 conversion bugfix
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -1673,7 +1672,7 @@ class _DynexSampler:
             if len(clause)==2:
                 # 2-lit clause:
                 w = clause[0];
-                i = abs(clause[1]);
+                i = int(abs(clause[1]));
                 i_dir = np.sign(clause[1]);
                 if i_dir == -1:
                     i_dir = 0;
@@ -1684,12 +1683,12 @@ class _DynexSampler:
             else:
                 # 3-lit clause:
                 w = clause[0];
-                i = abs(clause[1]);
+                i = int(abs(clause[1]));
                 i_dir = np.sign(clause[1]);
                 if i_dir == -1:
                     i_dir = 0;
                 i_assign = wcnf_vars[i-1];
-                j = abs(clause[2]);
+                j = int(abs(clause[2]));
                 j_dir = np.sign(clause[2]);
                 if j_dir == -1:
                     j_dir = 0;

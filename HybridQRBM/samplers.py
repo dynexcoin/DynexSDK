@@ -250,7 +250,7 @@ class NaiveSampler(Sampler):
 
 class DynexSampler(Sampler):
 
-    def __init__(self, num_reads = 100, annealing_time = 300, mainnet=False, clones=1, minimum_stepsize = 0.00000006, logging=True, debugging=False, num_gibbs_updates=0, **kwargs):
+    def __init__(self, num_reads = 100, annealing_time = 300, mainnet=False, minimum_stepsize = 0.00000006, logging=True, debugging=False, num_gibbs_updates=0, **kwargs):
         super().__init__(num_gibbs_updates=num_gibbs_updates, **kwargs)
         self.mainnet = mainnet;
         self.logging = logging;	
@@ -258,7 +258,6 @@ class DynexSampler(Sampler):
         self.annealing_time = annealing_time;
         self.debugging = debugging;
         self.minimum_stepsize = minimum_stepsize;
-        self.clones = clones;
 
     def _sample_dynex(self, qubo, num_particles):
 
@@ -266,7 +265,7 @@ class DynexSampler(Sampler):
         bqm = dimod.BinaryQuadraticModel.from_qubo(qubo, 0);
         model = dynex.BQM(bqm);
         dnxsampler = dynex.DynexSampler(model, mainnet=self.mainnet, logging = self.logging, description='PyTorch DNX Layer');
-        sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, clones = self.clones, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize);
+        sampleset = dnxsampler.sample(num_reads=self.num_reads, annealing_time = self.annealing_time, debugging=self.debugging, minimum_stepsize = self.minimum_stepsize);
         if len(sampleset)>0:
             weights = np.array(list(sampleset.first.sample.values()));
             energy = sampleset.first.energy;

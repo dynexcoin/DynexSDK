@@ -3,6 +3,13 @@ Dynex is the world’s first neuromorphic supercomputing blockchain based on the
 
 - [Dynex SDK Repository in Chinese (Community contributed)](https://github.com/DynexCN/DynexCaseCollection)
 
+## Videos
+
+The following videos are available to explain how to use the Dynex SDK:
+
+- [Tutorial: Compute on Dynex: "Hello, world" (using Github CodeSpace)](https://www.youtube.com/watch?v=V46_cOUb9Vo)
+- [Tutorial: Compute on Dynex: "Hello, world" (using pip install dynex)](https://www.youtube.com/watch?v=HNUOwEYyTJA)
+
 ## Getting Started
 
 Download and install the Dynex SDK with the following command:

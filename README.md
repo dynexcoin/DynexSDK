@@ -32,6 +32,10 @@ Guides:
 - [Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit](https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd)
 - [Medium: Benchmarking the Dynex Neuromorphic Platform with the Q-Score](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)
 
+## Pricing
+
+Using Dynex technology for computations on the local machine (mainnet=False) is free. It allows sampling computing problems on the local machine before computing on the Dynex Neuromorphic Computing cloud and is mainly used for prototyping and testing of code. Computing on the mainnet is being charged in DNX based on usage. Users can maintain their balances in the [Dynex Market Place](https://live.dynexcoin.org). The cost for compute on Dynex is based on supply & demand, whereas higher paid compute jobs are being prioritized by the workers. The value "CURRENT AVG BLOCK FEE" shows the current average price for compute. It defines the amount to be paid for each block, which is being produced every 2 minutes. Depending on the number of chips (num_reads), duration (annealing_time), size and complexity of your computational problem, only a fraction of the entire network is being used. The price charged for compute is being calculated as a fraction of the base "block fee" and is being displayed during computing in the Python interface as well as in the "Usage" section of the Dynex market place.
+
 ## Beginners Guides
 
 To get familiar with the computing possibilities on the Dynex Platform, we have prepared a number of Python Jupyter Notebooks. Here are some of our beginner guides demonstrating the use of the Dynex SDK.

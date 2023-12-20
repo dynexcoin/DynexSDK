@@ -154,7 +154,7 @@ def account_status():
     _check_api_status(logging = True);
 
 
-def _price_oracle(logging=False):
+def _price_oracle(logging = False):
     """
     `Internal Function`
 
@@ -186,7 +186,7 @@ def _price_oracle(logging=False):
         print('[ERROR] Reason: ', e.reason)
 
 
-def _check_api_status(logging=False):
+def _check_api_status(logging = False):
     """
     `Internal Function`
 

@@ -153,10 +153,11 @@ def account_status():
     
     _check_api_status(logging = True);
 
-def _price_oracle(logging = False):
+
+def _price_oracle(logging=False):
     """
     `Internal Function`
-    
+
     Dynex API call to output the current average price for compute on Dynex
 
     :Returns:
@@ -164,60 +165,80 @@ def _price_oracle(logging = False):
     - TRUE if the API call was successful, FALSE if the API call was not successful (`bool`)
     """
     global AVG_BLOCK_FEE
-    url = API_ENDPOINT+'/v2/sdk/price_oracle?api_key='+API_KEY+'&api_secret='+API_SECRET;
-    with urllib.request.urlopen(url) as ret:
-        data = json.load(ret);
+    url = API_ENDPOINT + '/v2/sdk/price_oracle?api_key=' + API_KEY + '&api_secret=' + API_SECRET;
     retval = 0;
-    if 'error' not in data:
-        AVG_BLOCK_FEE = data['avg_block_fee'];
-        if logging:
-            print('AVERAGE BLOCK FEE:','{:,}'.format(AVG_BLOCK_FEE/1000000000),'DNX');
-        retval = AVG_BLOCK_FEE;
-    else:
-        raise Exception('INVALID API CREDENTIALS');
-    return retval;
+    try:
+        ret = requests.get(url).text
+        data = json.loads(ret)
+
+        if 'error' not in data:
+            AVG_BLOCK_FEE = data['avg_block_fee'];
+            if logging:
+                print('AVERAGE BLOCK FEE:',
+                      '{:,}'.format(AVG_BLOCK_FEE / 1000000000), 'DNX');
+            retval = AVG_BLOCK_FEE;
+        else:
+            raise Exception('INVALID API CREDENTIALS');
+        return retval;
+    except HTTPError as e:
+        print('[ERROR] Error code: ', e.code)
+    except URLError as e:
+        print('[ERROR] Reason: ', e.reason)
 
 
-def _check_api_status(logging = False):
+def _check_api_status(logging=False):
     """
     `Internal Function`
-    
+
     Dynex API call to output the status of the Dynex SDK account
 
     :Returns:
 
     - TRUE if the API call was successful, FALSE if the API call was not successful (`bool`)
     """
-    
+
     AVG_BLOCK_FEE = _price_oracle();
-    url = API_ENDPOINT+'/v2/sdk/status?api_key='+API_KEY+'&api_secret='+API_SECRET;
-    with urllib.request.urlopen(url) as ret:
-        data = json.load(ret);
+    url = API_ENDPOINT + '/v2/sdk/status?api_key=' + API_KEY + '&api_secret=' + API_SECRET;
+    headers = {
+        'Content-Type': 'application/json'
+    }
     retval = False;
-    if 'error' not in data:
-        MAX_CHIPS = data['max_chips'];
-        MAX_ANNEALING_TIME = data['max_steps'];
-        MAX_DURATION = data['max_duration'];
-        TOTAL_USAGE = data['total_usage'];
-        CONFIRMED_BALANCE = data['confirmed_balance'];
-        ACCOUNT_NAME = data['account_name'];
-        if logging:
-            print('ACCOUNT:',ACCOUNT_NAME);
-            print('API SUCCESSFULLY CONNECTED TO DYNEX');
-            print('-----------------------------------');
-            print('ACCOUNT LIMITS:');
-            print('MAXIMUM NUM_READS:','{:,}'.format(MAX_CHIPS));
-            print('MAXIMUM ANNEALING_TIME:','{:,}'.format(MAX_ANNEALING_TIME));
-            print('MAXIMUM JOB DURATION:','{:,}'.format(MAX_DURATION),'MINUTES')
-            print('COMPUTE:');
-            print('CURRENT AVG BLOCK FEE:','{:,}'.format(AVG_BLOCK_FEE/1000000000),'DNX');
-            print('USAGE:');
-            print('AVAILABLE BALANCE:','{:,}'.format(CONFIRMED_BALANCE/1000000000),'DNX');
-            print('USAGE TOTAL:','{:,}'.format(TOTAL_USAGE/1000000000),'DNX');
-        retval = True;
-    else:
-        raise Exception('INVALID API CREDENTIALS');
-    return retval;
+    try:
+        ret = requests.get(url, headers=headers).text
+        data = json.loads(ret)
+        if 'error' not in data:
+            MAX_CHIPS = data['max_chips'];
+            MAX_ANNEALING_TIME = data['max_steps'];
+            MAX_DURATION = data['max_duration'];
+            TOTAL_USAGE = data['total_usage'];
+            CONFIRMED_BALANCE = data['confirmed_balance'];
+            ACCOUNT_NAME = data['account_name'];
+            if logging:
+                print('ACCOUNT:', ACCOUNT_NAME);
+                print('API SUCCESSFULLY CONNECTED TO DYNEX');
+                print('-----------------------------------');
+                print('ACCOUNT LIMITS:');
+                print('MAXIMUM NUM_READS:', '{:,}'.format(MAX_CHIPS));
+                print('MAXIMUM ANNEALING_TIME:',
+                      '{:,}'.format(MAX_ANNEALING_TIME));
+                print('MAXIMUM JOB DURATION:', '{:,}'.format(MAX_DURATION),
+                      'MINUTES')
+                print('COMPUTE:');
+                print('CURRENT AVG BLOCK FEE:',
+                      '{:,}'.format(AVG_BLOCK_FEE / 1000000000), 'DNX');
+                print('USAGE:');
+                print('AVAILABLE BALANCE:',
+                      '{:,}'.format(CONFIRMED_BALANCE / 1000000000), 'DNX');
+                print('USAGE TOTAL:', '{:,}'.format(TOTAL_USAGE / 1000000000),
+                      'DNX');
+            retval = True;
+        else:
+            raise Exception('INVALID API CREDENTIALS')
+    except HTTPError as e:
+        print('[ERROR] Error code: ', e.code)
+    except URLError as e:
+        print('[ERROR] Reason: ', e.reason)
+    return retval
 
 def _cancel_job_api(JOB_ID, logging = False):
     """

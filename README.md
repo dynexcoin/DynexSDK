@@ -53,6 +53,8 @@ To get familiar with the computing possibilities on the Dynex Platform, we have 
 
 Here are some advanced code examples and notebooks to be used to compute them on the Dynex neuromorphic computing platform:
 
+- [Example: Quantum Computation of Fluid Dynamics (CFD](https://github.com/dynexcoin/QCFD) | Scientific background: An Introduction to Algorithms in Quantum Computation of Fluid Dynamics, Sachin S. Bharadwaj and Katepalli R. Sreenivasan, Department of Mechanical and Aerospace Engineering, STO - Educational Notes Paper, 2022
+
 - [Example: RNA Folding of the Tobacco Mild Green Mosaic Virus](https://github.com/dynexcoin/DynexSDK/blob/main/example_rna_folding.ipynb) | Scientific background: Fox DM, MacDermaid CM, Schreij AMA, Zwierzyna M, Walker RC. RNA folding using quantum computers,. PLoS Comput Biol. 2022 Apr 11;18(4):e1010032. doi: 10.1371/journal.pcbi.1010032. PMID: 35404931; PMCID: PMC9022793
 
 - [Example: Quantum Single Image Super-Resolution](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR) | Scientific background: Choong HY, Kumar S, Van Gool L. Quantum Annealing for Single Image Super-Resolution. InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 2023 (pp. 1150-1159).

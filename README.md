@@ -114,6 +114,13 @@ The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybri
 
 - [Example: Quantum-Support-Vector-Machine (PyTorch) on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/Example_SVM_pytorch.ipynb) | Scientific background: Rounds, Max and Phil Goddard. “Optimal feature selection in credit scoring and classification using a quantum annealer.” (2017)
 
+## Dynex Neuromorphic TensorFlow Layers
+
+The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybrid models, neuromorphic-, transfer- and federated-learning with 
+[TensorFlow](https://www.tensorflow.org/)
+
+- [Example: Quantum-Support-Vector-Machine (TensorFlow) on Dynex](https://github.com/dynexcoin/QSVM_Tensorflow/blob/main/Example_SVM_Tensorflow.ipynb) | Scientific background: Rounds, Max and Phil Goddard. “Optimal feature selection in credit scoring and classification using a quantum annealer.” (2017)
+
 ## Dynex Qiskit Package
 
 Thanks to groundbreaking research from [Richard H. Warren](https://arxiv.org/pdf/1405.2354.pdf), it is possible to directly translate Qiskit quantum circuits into Dynex Neuromorphic chips. The concept behind is a direct translation of Qiskit objects, but instead of running on IBM Q, the circuits are executed on the Dynex Neuromorphic platform. Here is an example of a one-qubit adder circuit using this approach:

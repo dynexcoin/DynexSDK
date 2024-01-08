@@ -10,7 +10,9 @@ The following videos are available to explain how to use the Dynex SDK:
 - [Tutorial: Compute on Dynex: "Hello, world" (using Github CodeSpace)](https://www.youtube.com/watch?v=V46_cOUb9Vo)
 - [Tutorial: Compute on Dynex: "Hello, world" (using pip install dynex)](https://www.youtube.com/watch?v=HNUOwEYyTJA)
 
-## Book: Neuromorphic Computing for Computer Scientists: A complete guide to Neuromorphic Computing on the Dynex Neuromorphic Cloud Computing Platform
+## Guide Book
+
+"Neuromorphic Computing for Computer Scientists: A complete guide to Neuromorphic Computing on the Dynex Neuromorphic Cloud Computing Platform"
 
 - [Amazon.com](https://www.amazon.com/dp/B0CRQQPBB5)
 - [Amazon.co.uk](https://www.amazon.co.uk/dp/B0CRQQPBB5)

@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.11"
+__version__ = "0.1.12"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -68,6 +68,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # + validation clauses
 # + progress % and steps during compute
 # + new dnx encryption format 
+
+# Changelog 0.1.12:
+# Compression of compute file for mainnet sampling
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -114,6 +117,9 @@ import requests
 # Clone sampling:
 import multiprocessing
 from multiprocessing import Process, Queue
+
+# Compression:
+import zipfile
 
 ################################################################################################################################
 # API FUNCTION CALLS
@@ -371,8 +377,14 @@ def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20
     # file:
     file_path = sampler.filepath+sampler.filename;
 
+    # compress:
+    file_zip = sampler.filepath+sampler.filename+'.zip';
+    with zipfile.ZipFile(file_zip, 'w', zipfile.ZIP_DEFLATED) as f:
+        f.write(file_path, arcname=sampler.filename)
+
     try:
-        response = _post_request(url, opts, file_path);
+        print('[DYNEX] SUBMITTING FILE FOR WORLDIWDE DISTRIBUTION...');
+        response = _post_request(url, opts, file_zip);
         jsondata = response.json();
         # error?
         if 'error' in jsondata:

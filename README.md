@@ -114,6 +114,8 @@ Here are some example of these algorithms implemented on the Dynex Platform:
 
 - [Example: Mode-assisted unsupervised learning of restricted Boltzmann machines (MA-QRBM for Pytorch)](https://github.com/dynexcoin/DynexSDK/tree/main/MAQRBM) | Scientific background: Mode-assisted unsupervised learning of restricted Boltzmann machines, Communications Physics volume 3, Article number:105 (2020)
 
+- [Example: Mode-assisted unsupervised learning of restricted Boltzmann machines (MA-QRBM for Tensorflow)](https://github.com/dynexcoin/QRBM_Tensorflow) | Scientific background: Mode-assisted unsupervised learning of restricted Boltzmann machines, Communications Physics volume 3, Article number:105 (2020)
+
 - [Example: Feature Selection - Titanic Survivals](https://github.com/dynexcoin/DynexSDK/blob/main/example_feature_selection_titanic_survivals.ipynb) | Scientific background: Xuan Vinh Nguyen, Jeffrey Chan, Simone Romano, and James Bailey. 2014. Effective global approaches for mutual information based feature selection. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining (KDD '14). Association for Computing Machinery, New York, NY, USA, 512–521
 
 - [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb) | Scientific background: Bhatia, H.S., Phillipson, F. (2021). Performance Analysis of Support Vector Machine Implementations on the D-Wave Quantum Annealer. In: Paszynski, M., Kranzlmüller, D., Krzhizhanovskaya, V.V., Dongarra, J.J., Sloot, P.M.A. (eds) Computational Science – ICCS 2021. ICCS 2021. Lecture Notes in Computer Science(), vol 12747. Springer, Cham
@@ -133,6 +135,8 @@ The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybri
 [TensorFlow](https://www.tensorflow.org/)
 
 - [Example: Quantum-Support-Vector-Machine (TensorFlow) on Dynex](https://github.com/dynexcoin/QSVM_Tensorflow/blob/main/Example_SVM_Tensorflow.ipynb) | Scientific background: Rounds, Max and Phil Goddard. “Optimal feature selection in credit scoring and classification using a quantum annealer.” (2017)
+
+- [Example: Mode-assisted unsupervised learning of restricted Boltzmann machines (MA-QRBM for Tensorflow)](https://github.com/dynexcoin/QRBM_Tensorflow) | Scientific background: Mode-assisted unsupervised learning of restricted Boltzmann machines, Communications Physics volume 3, Article number:105 (2020)
 
 ## Dynex Qiskit Package
 

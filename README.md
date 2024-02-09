@@ -41,8 +41,8 @@ Guides:
 - [Medium: Benchmarking the Dynex Neuromorphic Platform with the Q-Score](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)
 
 Dynex' Scientific Papers:
-- [Advancements in Unsupervised Learning: Mode-Assisted Quantum Restricted Boltzmann Machines Leveraging Neuromorphic Computing on the Dynex Platform](https://www.academia.edu/112834961/Advancements_in_Unsupervised_Learning_Mode_Assisted_Quantum_Restricted_Boltzmann_Machines_Leveraging_Neuromorphic_Computing_on_the_Dynex_Platform); Adam Neumann, Dynex Developers; 112834961; Academia.edu; 2024
-- [HUBO & QUBO and Prime Factorization](https://www.academia.edu/112871514/HUBO_and_QUBO_and_Prime_Factorization); Samer Rahmeh, Cali Technology Solutions, Dynex Developers; 112871514; Academia.edu; 2024
+- [Advancements in Unsupervised Learning: Mode-Assisted Quantum Restricted Boltzmann Machines Leveraging Neuromorphic Computing on the Dynex Platform](https://www.academia.edu/112834961/Advancements_in_Unsupervised_Learning_Mode_Assisted_Quantum_Restricted_Boltzmann_Machines_Leveraging_Neuromorphic_Computing_on_the_Dynex_Platform); Adam Neumann, Dynex Developers; International Journal of Bioinformatics Intelligent Computing. 2024; Volume 3(1):91- 103, ISSN 2816-8089
+- [HUBO & QUBO and Prime Factorization](https://www.academia.edu/112871514/HUBO_and_QUBO_and_Prime_Factorization); Samer Rahmeh, Cali Technology Solutions, Dynex Developers; 112871514; International Journal of Bioinformatics Intelligent Computing. 2024; Volume 3(1):91- 103, ISSN 2816-8089
 - [Framework for Solving Harrow-Hassidim-Lloyd Problems with Neuromorphic Computing using the Dynex Cloud Computing Platform](https://www.academia.edu/112871175/Framework_for_Solving_Harrow_Hassidim_Lloyd_Problems_with_Neuromorphic_Computing_using_the_Dynex_Cloud_Computing_Platform); Samer Rahmeh, Cali Technology Solutions, Dynex Developers; 112871175; Academia.edu; 2023
 
 ## Pricing

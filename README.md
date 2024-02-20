@@ -195,6 +195,12 @@ PyQUBO allows you to create QUBOs or Ising models from flexible mathematical exp
 
 [PyQUBO documentation](https://pyqubo.readthedocs.io/)
 
+## AutoQUBU: Automated Conversion from Python functions to QUBO
+AUTOmated QUBO Generator (by Fujitsu Research) is an automatic tool for converting a high-level description of an optimization problem, written in Python, into an equivalent QUBO representation. It is doing this by using a novel data driven translation method that can completely decouple the input and output representation. The QUBO framework provides a way to model, in principle, any combinatorial optimization problem and enables the use of Ising machines, like available on the Dynex Platform, to solve it. It introduces symbolic sampling, which provides QUBO formulations for entire problem classes.
+
+[AutoQUBO](https://github.com/dynexcoin/autoqubo)
+
+
 ## Further reading
 
 - [Dynex Website](https://dynexcoin.org/)

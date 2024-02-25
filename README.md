@@ -200,6 +200,11 @@ AUTOmated QUBO Generator (by Fujitsu Research) is an automatic tool for converti
 
 [AutoQUBO](https://github.com/dynexcoin/autoqubo)
 
+## Qubolite: light-weight toolbox for working with QUBO instances in NumPy
+Quantum Computing (QC) has ushered in a new era of computation, promising to solve problems that are practically infeasible for classical computers. One of the most exciting applications of quantum computing is its ability of solving combinatorial optimization problems, such as Quadratic Unconstrained Binary Optimization (QUBO). This problem class has regained significant attention with the advent of Quantum Computing. These hard-to-solve combinatorial problems appear in many different domains, including finance, logistics, Machine Learning and Data Mining. To harness the power of Quantum Computing for QUBO, The Lamarr Institute introduced qubolite, a Python package comprising utilities for creating, analyzing, and solving QUBO instances, which incorporates current research algorithms developed by scientists at the Lamarr Institute. Qubolite is a light-weight toolbox for working with QUBO instances in NumPy. This fork showcases the use of Qubolite to compute on the Dynex Neuromorphic computing platform.
+
+[Qubolite](https://github.com/dynexcoin/qubolite)
+
 
 ## Further reading
 

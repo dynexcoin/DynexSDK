@@ -198,12 +198,12 @@ PyQUBO allows you to create QUBOs or Ising models from flexible mathematical exp
 ## AutoQUBU: Automated Conversion from Python functions to QUBO
 AUTOmated QUBO Generator (by Fujitsu Research) is an automatic tool for converting a high-level description of an optimization problem, written in Python, into an equivalent QUBO representation. It is doing this by using a novel data driven translation method that can completely decouple the input and output representation. The QUBO framework provides a way to model, in principle, any combinatorial optimization problem and enables the use of Ising machines, like available on the Dynex Platform, to solve it. It introduces symbolic sampling, which provides QUBO formulations for entire problem classes.
 
-[AutoQUBO](https://github.com/dynexcoin/autoqubo)
+[AutoQUBO on the Dynex Platform](https://github.com/dynexcoin/autoqubo)
 
 ## Qubolite: light-weight toolbox for working with QUBO instances in NumPy
 Quantum Computing (QC) has ushered in a new era of computation, promising to solve problems that are practically infeasible for classical computers. One of the most exciting applications of quantum computing is its ability of solving combinatorial optimization problems, such as Quadratic Unconstrained Binary Optimization (QUBO). This problem class has regained significant attention with the advent of Quantum Computing. These hard-to-solve combinatorial problems appear in many different domains, including finance, logistics, Machine Learning and Data Mining. To harness the power of Quantum Computing for QUBO, The Lamarr Institute introduced qubolite, a Python package comprising utilities for creating, analyzing, and solving QUBO instances, which incorporates current research algorithms developed by scientists at the Lamarr Institute. Qubolite is a light-weight toolbox for working with QUBO instances in NumPy. This fork showcases the use of Qubolite to compute on the Dynex Neuromorphic computing platform.
 
-[Qubolite](https://github.com/dynexcoin/qubolite)
+[Qubolite on the Dynex Platform](https://github.com/dynexcoin/qubolite)
 
 
 ## Further reading

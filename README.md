@@ -49,6 +49,18 @@ Dynex' Scientific Papers:
 
 Using Dynex technology for computations on the local machine (mainnet=False) is free. It allows sampling of computing problems on the local machine before using the Dynex Neuromorphic Computing cloud and is mainly intended for prototyping and testing of code. Computing on the mainnet is being charged in DNX based on usage. Users can maintain their balances in the [Dynex Market Place](https://live.dynexcoin.org). The cost for compute on Dynex is based on supply & demand, whereas higher paid compute jobs are being prioritized by the workers. The value "CURRENT AVG BLOCK FEE" shows the current average price for compute. It defines the amount to be paid for each block, which is being produced every 2 minutes. Depending on the number of chips (num_reads), duration (annealing_time), size and complexity of your computational problem, only a fraction of the entire network is being used. The price charged for compute is being calculated as a fraction of the base "block fee" and is being displayed during computing in the Python interface as well as in the "Usage" section of the Dynex market place.
 
+The Dynex SDK provides the following method to estimate the actual costs for a computing job before sampling it on the main job:
+
+```
+model = dynex.BQM(bqm); 
+dynex.estimate_costs(model, num_reads=10000);
+
+[DYNEX] AVERAGE BLOCK FEE: 282.59 DNX
+[DYNEX] SUBMITTING COMPUTE FILE FOR COST ESTIMATION...
+[DYNEX] COST OF COMPUTE: 0.537993485 DNX PER BLOCK
+[DYNEX] COST OF COMPUTE: 0.268996742 DNX PER MINUTE
+```
+
 ## Beginners Guides
 
 To get familiar with the computing possibilities on the Dynex Platform, we have prepared a number of Python Jupyter Notebooks. Here are some of our beginner guides demonstrating the use of the Dynex SDK.

@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.12"
+__version__ = "0.1.13"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -70,7 +70,11 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # + new dnx encryption format 
 
 # Changelog 0.1.12:
-# Compression of compute file for mainnet sampling
+# + Compression of compute file for mainnet sampling
+
+# Changelog 0.1.13:
+# + new function: dynex.estimate_costs()
+# + fix sampling of model type sat
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -509,6 +513,107 @@ def _get_status_details_api(JOB_ID, annealing_time, all_stopped = False):
     retval = tabulate(table, headers="firstrow", tablefmt="rounded_grid", stralign="right", floatfmt=".2f")
 
     return LOC_MIN, ENERGY_MIN, CHIPS, retval;
+
+def estimate_costs(model, num_reads, block_fee=0):
+
+    """
+    Dynex API call to estimate costs for a given job by analysing its complexity, given the number of Dynex chips (num_reads) to be used by calculating its network participation.
+
+    :Parameters:
+x
+    - :model: Model to compute
+    - :num_reads: Number of Dynex chips to use
+    - :block_fee: (optional) block fee to override current network average fee
+
+    :Returns:
+
+    - :price_per_block: Effective price in nanoDNX (/1e9 for DNX) per block
+    - :price_per_minute: Effective price in nanoDNX (/1e9 for DNX) per minute
+    - :job_type: 1 = SAT, 3 = MAXSAT, 5 = ISING/QUBO
+
+    :Example:
+
+    .. code-block:: Python
+
+        model = dynex.BQM(bqm); 
+        dynex.estimate_costs(model, num_reads=10000);
+        [DYNEX] AVERAGE BLOCK FEE: 282.59 DNX
+        [DYNEX] SUBMITTING COMPUTE FILE FOR COST ESTIMATION...
+        [DYNEX] COST OF COMPUTE: 0.537993485 DNX PER BLOCK
+        [DYNEX] COST OF COMPUTE: 0.268996742 DNX PER MINUTE
+
+    """
+
+    _sampler = _DynexSampler(model, logging = False, mainnet=True, description='cost estimation', test=False, bnb=True);
+
+    price_per_block = -1;
+    price_per_minute = -1;
+    job_type = -1;
+    filename = '';
+    switchfraction = 0;
+    alpha = beta = gamma = delta = epsilon = zeta = minimum_stepsize = 0;
+    annealing_time = 100;
+    
+    # block fee
+    if block_fee==0:
+        block_fee=_price_oracle();
+
+    print('[DYNEX] AVERAGE BLOCK FEE:','{:,}'.format(block_fee/1000000000),'DNX')
+
+    # parameters:
+    url = API_ENDPOINT+'/v2/sdk/job/estimate?api_key='+API_KEY+'&api_secret='+API_SECRET;
+
+    # options:
+    opts = {
+            "opts": {
+                "annealing_time": annealing_time,
+                "switch_fraction": switchfraction,
+                "num_reads": num_reads,
+                "params":[alpha, beta, gamma, delta, epsilon, zeta],
+                "min_step_size": minimum_stepsize,
+                "description": _sampler.description,
+                "block_fee": block_fee
+                    }
+            };
+
+    # file:
+    file_path = _sampler.filepath+_sampler.filename;
+
+    # compress:
+    file_zip = _sampler.filepath+_sampler.filename+'.zip';
+    with zipfile.ZipFile(file_zip, 'w', zipfile.ZIP_DEFLATED) as f:
+        f.write(file_path, arcname=_sampler.filename)
+
+    try:
+        print('[DYNEX] SUBMITTING COMPUTE FILE FOR COST ESTIMATION...');
+        response = _post_request(url, opts, file_zip);
+        jsondata = response.json();
+        # error?
+        if 'error' in jsondata:
+            print("[ERROR]",jsondata['error']);
+            raise Exception(jsondata['error']);
+        # applicable block fee:
+        price_per_block = jsondata['price_per_block'];
+        price_per_minute = jsondata['price_per_minute'];
+        job_type = jsondata['job_type'];
+        print('[DYNEX] COST OF COMPUTE:','{:,}'.format(price_per_block/1000000000),'DNX PER BLOCK')
+        print('[DYNEX] COST OF COMPUTE:','{:,}'.format(price_per_minute/1000000000),'DNX PER MINUTE')
+
+    except requests.exceptions.HTTPError as errh:
+        print ("Http Error:",errh)
+        raise SystemExit(errh)
+    except requests.exceptions.ConnectionError as errc:
+        print ("Error Connecting:",errc)
+        raise SystemExit(errc)
+    except requests.exceptions.Timeout as errt:
+        print ("Timeout Error:",errt)
+        raise SystemExit(errt)
+    except requests.exceptions.RequestException as err:
+        print ("OOps: Something Else",err)
+        raise SystemExit(err)
+
+    return price_per_block, price_per_minute, job_type;
+
 
 ################################################################################################################################
 # TEST dynex.ini CONFIGURATION
@@ -1044,6 +1149,16 @@ class SAT():
 
     """
     def __init__(self, clauses, logging=False):
+
+        # validation clauses
+        validation_vars = [1,0,1,0,1,0,1,0];
+        num_variables = max(max(abs(lit) for lit in clause) for clause in clauses);
+        for i in  range(0, len(validation_vars)):
+            if validation_vars[i]==1:
+                clauses.append([num_variables+1+i]);
+            if validation_vars[i]==0:
+                clauses.append([(num_variables+1+i)*-1]);
+        
         self.clauses = clauses;
         self.type = 'cnf';
         self.bqm = "";
@@ -1402,7 +1517,7 @@ class DynexSampler:
         self.test = test;
         self.dimod_assignments = {};
         self.bnb = bnb; 
-        
+    
     def sample(self, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
         """
         The main sampling function:
@@ -1606,7 +1721,7 @@ class _DynexSampler:
                     self.clauses = model.clauses;
                 _save_cnf(self.clauses, self.filepath+self.filename, mainnet);
                 self.num_clauses = len(self.clauses);
-                self.num_variables = _max_value(self.clauses) - 1;
+                self.num_variables = max(max(abs(lit) for lit in clause) for clause in self.clauses);
             
             if model.type == 'wcnf':
                 self.clauses = model.clauses;
@@ -1869,6 +1984,9 @@ class _DynexSampler:
         Validates loc and energy provided in filename with voltages. File not matching will be deleted on FTP and locally.
         """
         valid = False;
+
+        if self.type=='cnf':
+            return True;
         
         # format: xxx.bin.32.1.0.0.000000
         # jobfile chips steps loc energy
@@ -2102,7 +2220,7 @@ class _DynexSampler:
                 sample[var] = 0;
             i = i + 1
         return sample;
-    
+
     # sampling entry point: =================================================================================================================
     def sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
         """
@@ -2131,12 +2249,12 @@ class _DynexSampler:
                     self.clauses = _ksat(self.model.clauses);
                 else:
                     self.clauses = self.model.clauses;
-                _save_cnf(self.clauses, self.filepath+self.filename);
+                _save_cnf(self.clauses, self.filepath+self.filename, self.mainnet);
             if self.model.type == 'wcnf':
                 _save_wcnf(self.clauses, self.filepath+self.filename, self.num_variables, self.num_clauses, self.mainnet); 
 
         # aggregate sampleset:
-        if len(retval)>0 and ('error' in retval) == False:
+        if self.type=='wcnf' and len(retval)>0 and ('error' in retval) == False:
             retval = retval.aggregate();
             
         return retval
@@ -2149,6 +2267,9 @@ class _DynexSampler:
         
         if self.multi_model_mode == True:
             raise Exception('ERROR: Multi-model parallel sampling is not implemented yet');
+
+        if self.mainnet==False and self.bnb == True:
+            raise Exception('ERROR: SAT jobs are only supported on mainnet');
 
         mainnet = self.mainnet;
         price_per_block = 0;
@@ -2236,15 +2357,22 @@ class _DynexSampler:
                     time.sleep(1);
 
                 for file in files:
-                    info = file[len(self.filename)+1:];
-                    chips = int(info.split(".")[0]);
-                    steps = int(info.split(".")[1]);
-                    loc = int(info.split(".")[2]);
-                    # energy can also be non decimal:
-                    if len(info.split("."))>4:
-                        energy = float(info.split(".")[3]+"."+info.split(".")[4]);
-                    else:
-                        energy = float(info.split(".")[3]);
+                    if self.type == 'cnf':
+                        info = file[len(self.filename)+1:];
+                        chips = -1;
+                        steps = -1;
+                        loc = 0;
+                        energy = 0;
+                    if self.type == 'wcnf':
+                        info = file[len(self.filename)+1:];
+                        chips = int(info.split(".")[0]);
+                        steps = int(info.split(".")[1]);
+                        loc = int(info.split(".")[2]);
+                        # energy can also be non decimal:
+                        if len(info.split("."))>4:
+                            energy = float(info.split(".")[3]+"."+info.split(".")[4]);
+                        else:
+                            energy = float(info.split(".")[3]);
                     total_chips = total_chips + chips;
                     total_steps = steps;
                     if energy < lowest_energy:
@@ -2334,18 +2462,25 @@ class _DynexSampler:
             lowest_set = [];
             dimod_sample = [];
             for file in files:
+                if self.type == 'cnf':
+                    info = file[len(self.filename)+1:];
+                    chips = -1;
+                    steps = -1;
+                    loc = 0;
+                    energy = 0;
                 # format: xxx.dnx.32.1.0.0.000000
                 # jobfile chips steps loc energy
-                info = file[len(self.filename)+1:];
-                chips = int(info.split(".")[0]);
-                steps = int(info.split(".")[1]);
-                loc = int(info.split(".")[2]);
+                if self.type == 'wcnf':
+                    info = file[len(self.filename)+1:];
+                    chips = int(info.split(".")[0]);
+                    steps = int(info.split(".")[1]);
+                    loc = int(info.split(".")[2]);
 
-                # energy can also be non decimal:
-                if len(info.split("."))>4:
-                    energy = float(info.split(".")[3]+"."+info.split(".")[4]);
-                else:
-                    energy = float(info.split(".")[3]);
+                    # energy can also be non decimal:
+                    if len(info.split("."))>4:
+                        energy = float(info.split(".")[3]+"."+info.split(".")[4]);
+                    else:
+                        energy = float(info.split(".")[3]);
                     
                 total_chips = total_chips + chips;
                 total_steps = steps;
@@ -2364,34 +2499,47 @@ class _DynexSampler:
                         voltages = data.split(", ")[:-1];
 
                 # valid result? ignore Nan values and other incorrect data
-                if len(voltages)>0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
-                    sampleset.append(['sample',voltages,'chips',chips,'steps',steps,'falsified softs',loc,'energy',energy]);
-                    if loc < lowest_loc:
-                        lowest_loc = loc;
-                    if energy < lowest_energy:
-                        lowest_energy = energy;
-                        lowest_set = voltages;
-                    # add voltages to dimod return sampleset:
-                    dimodsample = {};
-                    i = 0;
-                    for var in range(0, self.num_variables-8): # REMOVE VALIDATION VARS
-                        # mapped variable?
-                        if var in self.var_mappings:
-                            dimodsample[self.var_mappings[var]] = 1; 
-                            if (float(voltages[i])<0):
-                                dimodsample[self.var_mappings[var]] = 0;  
-                        else:
-                            dimodsample[i] = 1;  
-                            if (float(voltages[i])<0):
-                                dimodsample[i] = 0;  
-                        i = i + 1
-            
-                    dimod_sample.append(dimodsample); 
-
-                else:
-                    print('[DYNEX] OMITTED SOLUTION FILE:',file,' - INCORRECT DATA');
+                if self.type == 'cnf':
+                    if len(voltages)>0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
+                        self.dimod_assignments = {};
+                        for i in range(0,len(voltages)-8): # REMOVE VALIDATION VARS
+                            var = voltages[i];
+                            if int(var)>0:
+                                self.dimod_assignments[abs(int(var))]=1;
+                            else:
+                                self.dimod_assignments[abs(int(var))]=0;
+                        
+                if self.type == 'wcnf':
+                    if len(voltages)>0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
+                        sampleset.append(['sample',voltages,'chips',chips,'steps',steps,'falsified softs',loc,'energy',energy]);
+                        if loc < lowest_loc:
+                            lowest_loc = loc;
+                        if energy < lowest_energy:
+                            lowest_energy = energy;
+                            lowest_set = voltages;
+                        # add voltages to dimod return sampleset:
+                        dimodsample = {};
+                        i = 0;
+                        for var in range(0, self.num_variables-8): # REMOVE VALIDATION VARS
+                            # mapped variable?
+                            if var in self.var_mappings:
+                                dimodsample[self.var_mappings[var]] = 1; 
+                                if (float(voltages[i])<0):
+                                    dimodsample[self.var_mappings[var]] = 0;  
+                            else:
+                                dimodsample[i] = 1;  
+                                if (float(voltages[i])<0):
+                                    dimodsample[i] = 0;  
+                            i = i + 1
+                
+                        dimod_sample.append(dimodsample); 
+    
+                    else:
+                        print('[DYNEX] OMITTED SOLUTION FILE:',file,' - INCORRECT DATA');
                     
-            sampleset.append(['sample',lowest_set,'chips',total_chips,'steps',total_steps,'falsified softs',lowest_loc,'energy',lowest_energy]);
+            if self.type == 'wcnf':
+                sampleset.append(['sample',lowest_set,'chips',total_chips,'steps',total_steps,'falsified softs',lowest_loc,'energy',lowest_energy]);
+            
             elapsed_time = time.process_time() - t;
 
             # build sample dict "assignments" with 0/1 and dimod_sampleset ------------------------------------------------------------------

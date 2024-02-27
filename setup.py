@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='dynex',
-    version='0.1.6',    
+    version='0.1.13',    
     description='Dynex SDK Neuromorphic Computing',
     url='https://github.com/dynexcoin/DynexSDK',
     author='Dynex Developers',

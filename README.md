@@ -36,6 +36,7 @@ Dynex SDK Professional Community:
 - [Dynex Workspace on Slack](https://join.slack.com/t/dynex-workspace/shared_invite/zt-22eb1n4mo-aXS5zsUBoPs613Dofi8Q4A)
 
 Guides:
+- [Medium: Real World Use Case: Stock Portfolio Optimisation with Quantum Algorithms on the Dynex Platform](https://dynexcoin.medium.com/real-world-use-case-stock-portfolio-optimisation-with-quantum-algorithms-on-the-dynex-platform-3c6b2a6c559f)
 - [Medium: Computing on the Dynex Neuromorphic Platform: Image Classification](https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c)
 - [Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit](https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd)
 - [Medium: Benchmarking the Dynex Neuromorphic Platform with the Q-Score](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)

@@ -92,6 +92,8 @@ Here are some advanced code examples and notebooks to be used to compute them on
 - [Example: Quantum Integer Factorization](https://github.com/dynexcoin/DynexSDK/blob/main/example_integer_factorisation.ipynb) | Scientific background: Jiang, S., Britt, K.A., McCaskey, A.J. et al. Quantum Annealing for Prime Factorization. Sci Rep 8, 17667 (2018)
 
 - [Example: Enzyme Target Prediction](www.github.com/samgr55/Enzyme-TargetPrediction_QUBO-Ising) | Scientific background: Hoang M Ngo, My T Thai, Tamer Kahveci, QuTIE: Quantum optimization for Target Identification by Enzymes, Bioinformatics Advances, 2023;, vbad112
+
+- [Example: Aircraft Loading Optimisation](https://github.com/dynexcoin/DynexSDK/blob/main/aircraft-loading-optim.ipynb) | Airbus Quantum Computing Challenge; Problem Statement n°5
   
 - [Example: Optimal WiFi Hotspot Positioning Prediction](https://github.com/samgr55/OptimalWiFi-HotspotPositioning_QUBO-Ising)
 

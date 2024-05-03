@@ -45,6 +45,7 @@ Dynex' Scientific Papers:
 - [Advancements in Unsupervised Learning: Mode-Assisted Quantum Restricted Boltzmann Machines Leveraging Neuromorphic Computing on the Dynex Platform](https://doi.org/10.61797/ijbic.v3i1.300); Adam Neumann, Dynex Developers; International Journal of Bioinformatics & Intelligent Computing. 2024; Volume 3(1):91- 103, ISSN 2816-8089
 - [HUBO & QUBO and Prime Factorization](https://doi.org/10.61797/ijbic.v3i1.301); Samer Rahmeh, Cali Technology Solutions, Dynex Developers; International Journal of Bioinformatics & Intelligent Computing. 2024; Volume 3(1):45-69, ISSN 2816-8089
 - [Framework for Solving Harrow-Hassidim-Lloyd Problems with Neuromorphic Computing using the Dynex Cloud Computing Platform](https://www.academia.edu/112871175/Framework_for_Solving_Harrow_Hassidim_Lloyd_Problems_with_Neuromorphic_Computing_using_the_Dynex_Cloud_Computing_Platform); Samer Rahmeh, Cali Technology Solutions, Dynex Developers; 112871175; Academia.edu; 2023
+- [Quantum Frontiers on Dynex: Elevating Deep Restricted Boltzmann Machines with Quantum Mode-Assisted Training](https://www.academia.edu/116660843/Quantum_Frontiers_on_Dynex_Elevating_Deep_Restricted_Boltzmann_Machines_with_Quantum_Mode_Assisted_Training); Adam Neumann, Dynex Developers; 116660843, Academia.edu; 2024
 
 ## Pricing
 

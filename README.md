@@ -1,7 +1,6 @@
 # DynexSDK
-Dynex is the world’s first neuromorphic supercomputing blockchain based on the DynexSolve chip algorithm, a Proof-of-Useful-Work (PoUW) approach to solving real-world problems. The Dynex SDK is used to interact and compute on the Dynex Platform. All examples require the DynexSDK for Python as well as a valid API key. Our repositoriy is continously updated, come back to check on updates.
-
-- [Dynex SDK Repository in Chinese (Community contributed)](https://github.com/DynexCN/DynexCaseCollection)
+![Dynex SDK](https://github.com/dynexcoin/website/blob/main/dynexsdk.png)
+Customers can run computations on the decentralised Dynex n.quantum computing cloud, which is empowered by a growing number of contributing workers. These are miners who are running the proprietary Proof-of-Useful-Work (PoUW) algorithm DynexSolve. Dynex’s proprietary job management and scheduling system Dynex Mallob ensures that computing jobs are being distributed and computed in the fastest way possible. The Dynex SDK is a Python package which is used to compute on the Dynex platform.
 
 ## Videos
 

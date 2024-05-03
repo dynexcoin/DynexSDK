@@ -39,6 +39,7 @@ Guides:
 - [Medium: Computing on the Dynex Neuromorphic Platform: Image Classification](https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c)
 - [Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit](https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd)
 - [Medium: Benchmarking the Dynex Neuromorphic Platform with the Q-Score](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)
+- [Medium: Dynex Sets New Record for Quantum Computing, Breaking NVIDIA’s Previous Record]([https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd](https://dynexcoin.medium.com/dynex-sets-new-world-record-for-quantum-computing-breaking-nvidias-previous-record-0531cbba31cb))
 
 Dynex' Scientific Papers:
 - [Advancements in Unsupervised Learning: Mode-Assisted Quantum Restricted Boltzmann Machines Leveraging Neuromorphic Computing on the Dynex Platform](https://doi.org/10.61797/ijbic.v3i1.300); Adam Neumann, Dynex Developers; International Journal of Bioinformatics & Intelligent Computing. 2024; Volume 3(1):91- 103, ISSN 2816-8089

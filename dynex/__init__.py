@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.13"
+__version__ = "0.1.15"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -75,6 +75,16 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # Changelog 0.1.13:
 # + new function: dynex.estimate_costs()
 # + fix sampling of model type sat
+
+# Changelog 0.1.14:
+# + small testnet sampling bugfix
+
+# Changelog 0.1.15:
+# + Added support for subscription model
+# + Added support for n.quantum gates and qubits
+# + Updated 'chips' to 'circuits'
+# + Fixed elapsed time display bug
+# + Fixed minor typos
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -143,7 +153,7 @@ except:
 
 def account_status():
     """
-    Shows the status of the Dynex SDK account as well as the current (average) block fee for compute:
+    Shows the status of the Dynex SDK account as well as subscription information:
 
     .. code-block:: 
 
@@ -167,7 +177,7 @@ def _price_oracle(logging = False):
     """
     `Internal Function`
     
-    Dynex API call to output the current average price for compute on Dynex
+    Dynex API call to output the current average price for compute on Dynex. Only applicable when using pay-to-go pricing.
 
     :Returns:
 
@@ -205,26 +215,68 @@ def _check_api_status(logging = False):
         data = json.load(ret);
     retval = False;
     if 'error' not in data:
-        MAX_CHIPS = data['max_chips'];
-        MAX_ANNEALING_TIME = data['max_steps'];
-        MAX_DURATION = data['max_duration'];
-        TOTAL_USAGE = data['total_usage'];
-        CONFIRMED_BALANCE = data['confirmed_balance'];
-        ACCOUNT_NAME = data['account_name'];
-        if logging:
-            print('ACCOUNT:',ACCOUNT_NAME);
-            print('API SUCCESSFULLY CONNECTED TO DYNEX');
-            print('-----------------------------------');
-            print('ACCOUNT LIMITS:');
-            print('MAXIMUM NUM_READS:','{:,}'.format(MAX_CHIPS));
-            print('MAXIMUM ANNEALING_TIME:','{:,}'.format(MAX_ANNEALING_TIME));
-            print('MAXIMUM JOB DURATION:','{:,}'.format(MAX_DURATION),'MINUTES')
-            print('COMPUTE:');
-            print('CURRENT AVG BLOCK FEE:','{:,}'.format(AVG_BLOCK_FEE/1000000000),'DNX');
-            print('USAGE:');
-            print('AVAILABLE BALANCE:','{:,}'.format(CONFIRMED_BALANCE/1000000000),'DNX');
-            print('USAGE TOTAL:','{:,}'.format(TOTAL_USAGE/1000000000),'DNX');
-        retval = True;
+        if 'billing_type' not in data:
+            MAX_CHIPS = data['max_chips'];
+            MAX_ANNEALING_TIME = data['max_steps'];
+            MAX_DURATION = data['max_duration'];
+            TOTAL_USAGE = data['total_usage'];
+            CONFIRMED_BALANCE = data['confirmed_balance'];
+            ACCOUNT_NAME = data['account_name'];
+            if logging:
+                print('ACCOUNT:',ACCOUNT_NAME);
+                print('API SUCCESSFULLY CONNECTED TO DYNEX');
+                print('-----------------------------------');
+                print('ACCOUNT LIMITS:');
+                print('MAXIMUM NUM_READS:','{:,}'.format(MAX_CHIPS));
+                print('MAXIMUM ANNEALING_TIME:','{:,}'.format(MAX_ANNEALING_TIME));
+                print('MAXIMUM JOB DURATION:','{:,}'.format(MAX_DURATION),'MINUTES')
+                print('COMPUTE:');
+                print('CURRENT AVG BLOCK FEE:','{:,}'.format(AVG_BLOCK_FEE/1000000000),'DNX');
+                print('USAGE:');
+                print('AVAILABLE BALANCE:','{:,}'.format(CONFIRMED_BALANCE/1000000000),'DNX');
+                print('USAGE TOTAL:','{:,}'.format(TOTAL_USAGE/1000000000),'DNX');
+            retval = True;
+        else:
+            if data['billing_type']==2: # Subscription pricing
+                if logging:
+                    MAX_GATES = data['max_gates'];
+                    MAX_STEPS = data['max_steps'];
+                    MAX_DURATION = data['max_duration'];
+                    SUBSCRIBED_UNTIL = data['subscribed_until'];
+                    ACCOUNT_NAME = data['account_name'];
+                    print('ACCOUNT:',ACCOUNT_NAME);
+                    print('API SUCCESSFULLY CONNECTED TO DYNEX');
+                    print('-----------------------------------');
+                    print('*** SUBSCRIPTION PRICING ***');
+                    print('-----------------------------------');
+                    print('ACCOUNT LIMITS:');
+                    print('MAXIMUM GATES:','{:,}'.format(MAX_GATES));
+                    print('MAXIMUM ANNEALING_TIME:','{:,}'.format(MAX_STEPS));
+                    print('MAXIMUM JOB DURATION:','{:,}'.format(MAX_DURATION),'MINUTES');
+                    print('COMPUTE:');
+                    print('SUBSCRIPTION VALID UNTIL',SUBSCRIBED_UNTIL);
+                retval = True;
+            if data['billing_type']==1: # pay-per-use pricing
+                if logging:
+                    MAX_CHIPS = data['max_chips'];
+                    MAX_STEPS = data['max_steps'];
+                    MAX_DURATION = data['max_duration'];
+                    TOTAL_USAGE = data['total_usage'];
+                    CONFIRMED_BALANCE = data['confirmed_balance'];
+                    ACCOUNT_NAME = data['account_name'];
+                    print('ACCOUNT:',ACCOUNT_NAME);
+                    print('API SUCCESSFULLY CONNECTED TO DYNEX');
+                    print('-----------------------------------');
+                    print('*** PAY-PER-USE PRICING ***');
+                    print('-----------------------------------');
+                    print('ACCOUNT LIMITS:');
+                    print('MAXIMUM NUM_READS:','{:,}'.format(MAX_CHIPS));
+                    print('MAXIMUM ANNEALING_TIME:','{:,}'.format(MAX_STEPS));
+                    print('MAXIMUM JOB DURATION:','{:,}'.format(MAX_DURATION),'MINUTES');
+                    print('COMPUTE:');
+                    print('AVAILABLE BALANCE:','{:,}'.format(CONFIRMED_BALANCE/1000000000),'DNX');
+                retval = True;
+                
     else:
         raise Exception('INVALID API CREDENTIALS');
     return retval;
@@ -387,7 +439,7 @@ def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20
         f.write(file_path, arcname=sampler.filename)
 
     try:
-        print('[DYNEX] SUBMITTING FILE FOR WORLDIWDE DISTRIBUTION...');
+        print('[DYNEX] SUBMITTING FILE FOR WORLDWIDE DISTRIBUTION...');
         response = _post_request(url, opts, file_zip);
         jsondata = response.json();
         # error?
@@ -449,7 +501,7 @@ def _get_status_details_api(JOB_ID, annealing_time, all_stopped = False):
     except URLError as e:
         print('[ERROR] Reason: ', e.reason)
 
-    table = [['WORKER','VERSION','CHIPS','LOC','ENERGY','RUNTIME','LAST UPDATE','STEPS','STATUS']];
+    table = [['WORKER','VERSION','CIRCUITS','LOC','ENERGY','RUNTIME','LAST UPDATE','STEPS','STATUS']];
     
     LOC_MIN = 2147483647;
     ENERGY_MIN = 2147483647;
@@ -2268,7 +2320,7 @@ class _DynexSampler:
         if self.multi_model_mode == True:
             raise Exception('ERROR: Multi-model parallel sampling is not implemented yet');
 
-        if self.mainnet==False and self.bnb == True:
+        if self.type=='cnf' and self.mainnet==False and self.bnb == True:
             raise Exception('ERROR: SAT jobs are only supported on mainnet');
 
         mainnet = self.mainnet;
@@ -2332,8 +2384,8 @@ class _DynexSampler:
             # initialise display:
             if mainnet and debugging==False:
                 clear_output(wait=True);
-                table = ([['DYNEXJOB', 'BLOCK FEE', 'ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
-                table.append(['','','','*** WAITING FOR READS ***','','','']);
+                table = ([['DYNEXJOB','QUBITS','QUANTUM GATES','BLOCK FEE','ELAPSED','WORKERS READ','CIRCUITS','STEPS','GROUND STATE']]);
+                table.append(['',self.num_variables,self.num_clauses,'','','*** WAITING FOR READS ***','','','']);
                 ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                 print(ta+'\n');
 
@@ -2395,8 +2447,8 @@ class _DynexSampler:
                             details = "";
                         elapsed_time = time.process_time() - t;
                         # display:
-                        table = ([['DYNEXJOB','BLOCK FEE','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
-                        table.append([JOB_ID, price_per_block,'','*** WAITING FOR READS ***','','','']);
+                        table = ([['DYNEXJOB','QUBITS','QUANTUM GATES','BLOCK FEE','ELAPSED','WORKERS READ','CIRCUITS','STEPS','GROUND STATE']]);
+                        table.append([JOB_ID,self.num_variables,self.num_clauses,price_per_block,'','*** WAITING FOR READS ***','','','']);
                         ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                         print(ta+'\n'+details);
                         
@@ -2413,8 +2465,8 @@ class _DynexSampler:
                             details = "";
                         elapsed_time = time.process_time() - t;
                         # display:
-                        table = ([['DYNEXJOB','BLOCK FEE','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
-                        table.append([JOB_ID, price_per_block, elapsed_time, cnt_workers, total_chips, total_steps, lowest_energy]);
+                        table = ([['DYNEXJOB','QUBITS','QUANTUM GATES','BLOCK FEE','ELAPSED','WORKERS READ','CIRCUITS','STEPS','GROUND STATE']]);
+                        table.append([JOB_ID,self.num_variables,self.num_clauses,price_per_block,elapsed_time,cnt_workers,total_chips,total_steps,lowest_energy]);
                         
                         ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                         print(ta+'\n'+details);
@@ -2442,12 +2494,13 @@ class _DynexSampler:
                 elapsed_time = time.process_time() - t;
                 if mainnet:
                     # display:
-                    table = ([['DYNEXJOB','BLOCK FEE','ELAPSED','WORKERS READ','CHIPS','STEPS','GROUND STATE']]);
-                    table.append([JOB_ID, price_per_block, elapsed_time, cnt_workers, total_chips, total_steps, lowest_energy]);
+                    table = ([['DYNEXJOB','QUBITS','QUANTUM GATES','BLOCK FEE','ELAPSED','WORKERS READ','CIRCUITS','STEPS','GROUND STATE']]);
+                    table.append([JOB_ID,self.num_variables,self.num_clauses,price_per_block,elapsed_time,cnt_workers,total_chips,total_steps,lowest_energy]);
                     ta = tabulate(table, headers="firstrow", tablefmt='rounded_grid', floatfmt=".2f");
                     print(ta+'\n'+details);
                 
             elapsed_time = time.process_time() - t
+            elapsed_time *= 100;
             if self.logging:
                 print("[DYNEX] FINISHED READ AFTER","%.2f" % elapsed_time,"SECONDS");
 

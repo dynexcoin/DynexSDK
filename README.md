@@ -120,7 +120,7 @@ As quantum computing technology continues to mature, its application in the tele
   
 - [Example: Quantum Integer Factorization](https://github.com/dynexcoin/DynexSDK/blob/main/example_integer_factorisation.ipynb) | Scientific background: Jiang, S., Britt, K.A., McCaskey, A.J. et al. Quantum Annealing for Prime Factorization. Sci Rep 8, 17667 (2018)
 
-- [Example: Quantum Sudoku Algorithm](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSudoku.ipynb) 
+- [Example: Quantum Sudoku Algorithm](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSudoku.ipynb) | Scientific background: Timothy Resnick, Sudoku at the Intersection of Classical and Quantum Computing, University of Auckland, NZ, Centre for Discrete Mathematics and Theoretical Computer Science
 
 ## Advanced Examples (Machine Learning)
 

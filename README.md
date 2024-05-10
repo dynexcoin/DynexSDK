@@ -82,7 +82,9 @@ Here are some advanced code examples and notebooks to be used to compute them on
 
 - [Example: Quantum Computation of Fluid Dynamics (CFD](https://github.com/dynexcoin/QCFD) | Scientific background: An Introduction to Algorithms in Quantum Computation of Fluid Dynamics, Sachin S. Bharadwaj and Katepalli R. Sreenivasan, Department of Mechanical and Aerospace Engineering, STO - Educational Notes Paper, 2022
 
-- [Example: RNA Folding of the Tobacco Mild Green Mosaic Virus](https://github.com/dynexcoin/DynexSDK/blob/main/example_rna_folding.ipynb) | Scientific background: Fox DM, MacDermaid CM, Schreij AMA, Zwierzyna M, Walker RC. RNA folding using quantum computers,. PLoS Comput Biol. 2022 Apr 11;18(4):e1010032. doi: 10.1371/journal.pcbi.1010032. PMID: 35404931; PMCID: PMC9022793
+- [Example: Quantum Protein Folding](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumProteinFolding.ipynb) | Scientific background: Irbäck, Anders & Knuthson, Lucas & Mohanty, Sandipan & Peterson, Carsten. (2022). Folding lattice proteins with quantum annealing. 
+
+- [Example: Quantum RNA Folding of the Tobacco Mild Green Mosaic Virus](https://github.com/dynexcoin/DynexSDK/blob/main/example_rna_folding.ipynb) | Scientific background: Fox DM, MacDermaid CM, Schreij AMA, Zwierzyna M, Walker RC. RNA folding using quantum computers,. PLoS Comput Biol. 2022 Apr 11;18(4):e1010032. doi: 10.1371/journal.pcbi.1010032. PMID: 35404931; PMCID: PMC9022793
 
 - [Example: Efficient Exploration of Phenol Derivatives](https://github.com/dynexcoin/DynexSDK/blob/main/molecule_screening.ipynb) | Scientific background: Efficient Exploration of Phenol Derivatives Using QUBO Solvers with Group Contribution-Based Approaches; Chien-Hung Cho, Jheng-Wei Su, Lien-Po Yu, Ching-Ray Chang, Pin-Hong Chen, Tzu-Wei Lin, Shin-Hong Liu, Tsung-Hui Li, and Ying-Yuan Lee; Industrial & Engineering Chemistry Research 2024 63 (10), 4248-4256; DOI: 10.1021/acs.iecr.3c03331
 

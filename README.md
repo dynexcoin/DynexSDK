@@ -76,35 +76,51 @@ To get familiar with the computing possibilities on the Dynex Platform, we have 
 - [Example: Computing on the Dynex Platform with Python - SAT](https://github.com/dynexcoin/DynexSDK/blob/main/beginners_guide_example_SAT.ipynb)
 - [Example: Computing on the Dynex Platform with Python - NAE3SAT](https://github.com/dynexcoin/DynexSDK/blob/main/beginners_guide_example_random_nae3sat.ipynb)
 
-## Advanced Examples
+## Advanced Examples (Pharmaceutical)
 
-Here are some advanced code examples and notebooks to be used to compute them on the Dynex neuromorphic computing platform:
+As quantum computing technology matures and becomes more accessible, its integration into the pharmaceutical industry is poised to usher in a new era of medical innovation. The promise of faster, more efficient drug discovery and development, coupled with the potential for personalized treatments, positions quantum computing as a key driver of future advancements in healthcare and medicine, marking a significant leap forward in our ability to combat disease and improve human health.
 
-- [Example: Quantum Computation of Fluid Dynamics (CFD](https://github.com/dynexcoin/QCFD) | Scientific background: An Introduction to Algorithms in Quantum Computation of Fluid Dynamics, Sachin S. Bharadwaj and Katepalli R. Sreenivasan, Department of Mechanical and Aerospace Engineering, STO - Educational Notes Paper, 2022
-
-- [Example: Quantum Protein Folding](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumProteinFolding.ipynb) | Scientific background: Irbäck, Anders & Knuthson, Lucas & Mohanty, Sandipan & Peterson, Carsten. (2022). Folding lattice proteins with quantum annealing. 
+- [Example: Quantum Protein Folding](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumProteinFolding.ipynb) | Scientific background: Irbäck, Anders & Knuthson, Lucas & Mohanty, Sandipan & Peterson, Carsten. (2022). Folding lattice proteins with quantum annealing.
 
 - [Example: Quantum RNA Folding of the Tobacco Mild Green Mosaic Virus](https://github.com/dynexcoin/DynexSDK/blob/main/example_rna_folding.ipynb) | Scientific background: Fox DM, MacDermaid CM, Schreij AMA, Zwierzyna M, Walker RC. RNA folding using quantum computers,. PLoS Comput Biol. 2022 Apr 11;18(4):e1010032. doi: 10.1371/journal.pcbi.1010032. PMID: 35404931; PMCID: PMC9022793
 
 - [Example: Efficient Exploration of Phenol Derivatives](https://github.com/dynexcoin/DynexSDK/blob/main/molecule_screening.ipynb) | Scientific background: Efficient Exploration of Phenol Derivatives Using QUBO Solvers with Group Contribution-Based Approaches; Chien-Hung Cho, Jheng-Wei Su, Lien-Po Yu, Ching-Ray Chang, Pin-Hong Chen, Tzu-Wei Lin, Shin-Hong Liu, Tsung-Hui Li, and Ying-Yuan Lee; Industrial & Engineering Chemistry Research 2024 63 (10), 4248-4256; DOI: 10.1021/acs.iecr.3c03331
 
+- [Example: Enzyme Target Prediction](www.github.com/samgr55/Enzyme-TargetPrediction_QUBO-Ising) | Scientific background: Hoang M Ngo, My T Thai, Tamer Kahveci, QuTIE: Quantum optimization for Target Identification by Enzymes, Bioinformatics Advances, 2023;, vbad112
+
+- [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb) | Scientific background: Bhatia, H.S., Phillipson, F. (2021). Performance Analysis of Support Vector Machine Implementations on the D-Wave Quantum Annealer. In: Paszynski, M., Kranzlmüller, D., Krzhizhanovskaya, V.V., Dongarra, J.J., Sloot, P.M.A. (eds) Computational Science – ICCS 2021. ICCS 2021. Lecture Notes in Computer Science(), vol 12747. Springer, Cham
+
+## Advanced Examples (Automotive, Aerospace & Space)
+
+Quantum computing is set to revolutionize the automotive industry by accelerating advancements in design, safety, efficiency, and sustainability. Among its most promising applications is the enhancement of Computational Fluid Dynamics (CFD), a critical tool in vehicle design and optimization. With its unparalleled computational power, quantum computing can significantly speed up CFD simulations, enabling engineers to rapidly analyze and optimize the aerodynamic performance of vehicles.
+
+- [Example: Quantum Computation of Fluid Dynamics (CFD](https://github.com/dynexcoin/QCFD) | Scientific background: An Introduction to Algorithms in Quantum Computation of Fluid Dynamics, Sachin S. Bharadwaj and Katepalli R. Sreenivasan, Department of Mechanical and Aerospace Engineering, STO - Educational Notes Paper, 2022
+
 - [Example: Quantum Satellite Positioning](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSatellite.ipynb) | Scientific background: G. Bass, C. Tomlin, V. Kumar, P. Rihaczek, J. Dulny III. Heterogeneous Quantum Computing for Satellite Constellation Optimization: Solving the Weighted K-Clique Problem. 2018 Quantum Sci. Technol. 3 024010. https://arxiv.org/abs/1709.05381
 
-- [Example: Quantum Single Image Super-Resolution](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR) | Scientific background: Choong HY, Kumar S, Van Gool L. Quantum Annealing for Single Image Super-Resolution. InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 2023 (pp. 1150-1159).
+- [Example: Aircraft Loading Optimisation](https://github.com/dynexcoin/DynexSDK/blob/main/aircraft-loading-optim.ipynb) | Airbus Quantum Computing Challenge; Problem Statement n°5
 
 - [Example: Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb) | Scientific background: Pagany, Raphaela & Marquardt, Anna & Zink, Roland. (2019). Electric Charging Demand Location Model—A User-and Destination-Based Locating Approach for Electric Vehicle Charging Stations. Sustainability. 11. 2301. 10.3390/su11082301
 
-- [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb) | Scientific background: Bhatia, H.S., Phillipson, F. (2021). Performance Analysis of Support Vector Machine Implementations on the D-Wave Quantum Annealer. In: Paszynski, M., Kranzlmüller, D., Krzhizhanovskaya, V.V., Dongarra, J.J., Sloot, P.M.A. (eds) Computational Science – ICCS 2021. ICCS 2021. Lecture Notes in Computer Science(), vol 12747. Springer, Cham
+## Advanced Examples (Financial Services)
+
+Quantum computing represents a transformative leap forward for the financial services industry, poised to redefine the landscapes of risk management, fraud detection, portfolio optimization, and beyond with unparalleled computational power. By harnessing the principles of quantum mechanics, financial institutions can unlock new potentials in analyzing vast datasets, optimizing asset allocations, and executing transactions with groundbreaking speed and precision.
+
+- [Example: Quantum Portfolio Optimisation](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex_Portfolio_Optimisation.ipynb) | Scientific Background: Sakuler, Wolfgang & Oberreuter, Johannes & Aiolfi, Riccardo & Asproni, Luca & Roman, Branislav & Schiefer, Jürgen. (2023). A real world test of Portfolio Optimization with Quantum Annealing. 10.21203/rs.3.rs-3959774/v1. 
+
+## Advanced Examples (Telecommunication)
+
+As quantum computing technology continues to mature, its application in the telecommunications sector could usher in a new era of ultra-fast, secure, and efficient communication networks. This evolution will not only enhance the way we connect with each other but also enable the development of future technologies that depend on robust and secure communication infrastructures.
+
+- [Example: Optimal WiFi Hotspot Positioning Prediction](https://github.com/samgr55/OptimalWiFi-HotspotPositioning_QUBO-Ising)
+
+## Advanced Examples (Algorithms)
+
+- [Example: Quantum Single Image Super-Resolution](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR) | Scientific background: Choong HY, Kumar S, Van Gool L. Quantum Annealing for Single Image Super-Resolution. InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 2023 (pp. 1150-1159).
   
 - [Example: Quantum Integer Factorization](https://github.com/dynexcoin/DynexSDK/blob/main/example_integer_factorisation.ipynb) | Scientific background: Jiang, S., Britt, K.A., McCaskey, A.J. et al. Quantum Annealing for Prime Factorization. Sci Rep 8, 17667 (2018)
 
-- [Example: Enzyme Target Prediction](www.github.com/samgr55/Enzyme-TargetPrediction_QUBO-Ising) | Scientific background: Hoang M Ngo, My T Thai, Tamer Kahveci, QuTIE: Quantum optimization for Target Identification by Enzymes, Bioinformatics Advances, 2023;, vbad112
-
-- [Example: Aircraft Loading Optimisation](https://github.com/dynexcoin/DynexSDK/blob/main/aircraft-loading-optim.ipynb) | Airbus Quantum Computing Challenge; Problem Statement n°5
-  
-- [Example: Optimal WiFi Hotspot Positioning Prediction](https://github.com/samgr55/OptimalWiFi-HotspotPositioning_QUBO-Ising)
-
-## Machine Learning Examples
+## Advanced Axamples (Machine Learning)
 
 Quantum computing algorithms for machine learning harness the power of quantum mechanics to enhance various aspects of machine learning tasks. As both, quantum computing and neuromorphic computing are sharing similar features, these algorithms can also be computed efficiently on the Dynex platform – but without the limitations of limited qubits, error correction or availability:
 

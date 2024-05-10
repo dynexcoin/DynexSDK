@@ -96,8 +96,8 @@ Quantum computing is set to revolutionize the automotive industry by acceleratin
 
 - [Example: Quantum Computation of Fluid Dynamics (CFD](https://github.com/dynexcoin/QCFD) | Scientific background: An Introduction to Algorithms in Quantum Computation of Fluid Dynamics, Sachin S. Bharadwaj and Katepalli R. Sreenivasan, Department of Mechanical and Aerospace Engineering, STO - Educational Notes Paper, 2022
 
-- [Example: Quantum Satellite Positioning](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSatellite.ipynb) | Scientific background: G. Bass, C. Tomlin, V. Kumar, P. Rihaczek, J. Dulny III. Heterogeneous Quantum Computing for Satellite Constellation Optimization: Solving the Weighted K-Clique Problem. 2018 Quantum Sci. Technol. 3 024010. https://arxiv.org/abs/1709.05381
-
+- [Example: Quantum Satellite Positioning](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSatellite.ipynb) | Scientific background: G. Bass, C. Tomlin, V. Kumar, P. Rihaczek, J. Dulny III. Heterogeneous Quantum Computing for Satellite Constellation Optimization: Solving the Weighted K-Clique Problem. 2018 Quantum Sci. Technol. 3 024010.
+  
 - [Example: Aircraft Loading Optimisation](https://github.com/dynexcoin/DynexSDK/blob/main/aircraft-loading-optim.ipynb) | Airbus Quantum Computing Challenge; Problem Statement n°5
 
 - [Example: Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb) | Scientific background: Pagany, Raphaela & Marquardt, Anna & Zink, Roland. (2019). Electric Charging Demand Location Model—A User-and Destination-Based Locating Approach for Electric Vehicle Charging Stations. Sustainability. 11. 2301. 10.3390/su11082301

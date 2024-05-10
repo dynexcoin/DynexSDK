@@ -86,6 +86,8 @@ Here are some advanced code examples and notebooks to be used to compute them on
 
 - [Example: Efficient Exploration of Phenol Derivatives](https://github.com/dynexcoin/DynexSDK/blob/main/molecule_screening.ipynb) | Scientific background: Efficient Exploration of Phenol Derivatives Using QUBO Solvers with Group Contribution-Based Approaches; Chien-Hung Cho, Jheng-Wei Su, Lien-Po Yu, Ching-Ray Chang, Pin-Hong Chen, Tzu-Wei Lin, Shin-Hong Liu, Tsung-Hui Li, and Ying-Yuan Lee; Industrial & Engineering Chemistry Research 2024 63 (10), 4248-4256; DOI: 10.1021/acs.iecr.3c03331
 
+- [Example: Quantum Satellite Positioning](https://github.com/dynexcoin/DynexSDK/blob/main/QuantumSatellite.ipynb) | Scientific background: G. Bass, C. Tomlin, V. Kumar, P. Rihaczek, J. Dulny III. Heterogeneous Quantum Computing for Satellite Constellation Optimization: Solving the Weighted K-Clique Problem. 2018 Quantum Sci. Technol. 3 024010. https://arxiv.org/abs/1709.05381
+
 - [Example: Quantum Single Image Super-Resolution](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR) | Scientific background: Choong HY, Kumar S, Van Gool L. Quantum Annealing for Single Image Super-Resolution. InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 2023 (pp. 1150-1159).
 
 - [Example: Placement of Charging Stations](https://github.com/dynexcoin/DynexSDK/blob/main/example_placement_of_charging_stations.ipynb) | Scientific background: Pagany, Raphaela & Marquardt, Anna & Zink, Roland. (2019). Electric Charging Demand Location Model—A User-and Destination-Based Locating Approach for Electric Vehicle Charging Stations. Sustainability. 11. 2301. 10.3390/su11082301

@@ -4,7 +4,7 @@ We conducted an experiment on the G70 MaxCut problem, a complex unweighted MaxCu
 
 - [Jupyter Noteboook](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/G70_dynex.ipynb)
 
-# Dynex Sets New World Record for Quantum Computing, Breaking NVIDIA's Previous Record.
+# Dynex Sets New World Record for Quantum Computing, Breaking NVIDIA's Previous Record
 
 We are pleased to announce a significant breakthrough in the field of quantum computing, achieved through the Dynex neuromorphic quantum computing platform. By employing a sophisticated quantum algorithm, we successfully solved a graph containing 10,000 vertices, setting a new record that surpasses the previous benchmark by threefold. The prior record was established by NVIDIA using their cuQuantum software on the in-house supercomputer, Selene. NVIDIA's effort involved 896 GPUs to simulate 1,688 qubits, capable of resolving a graph with 3,375 vertices. This achievement, at the time, represented an eightfold increase in the number of qubits compared to the largest previous quantum simulation. Our recent accomplishment not only advances the capabilities of quantum algorithms but also significantly expands the potential applications of quantum computing in solving complex optimization problems.
 

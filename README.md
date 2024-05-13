@@ -119,6 +119,8 @@ As quantum computing technology continues to mature, its application in the tele
 
 ## Advanced Examples (Algorithms)
 
+- [Example: Enhancing MaxCut Solutions: Dynex’s Benchmark Performance on G70 Using Quantum Computing](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/G70_dynex.ipynb)
+
 - [Example: Quantum Single Image Super-Resolution](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR) | Scientific background: Choong HY, Kumar S, Van Gool L. Quantum Annealing for Single Image Super-Resolution. InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 2023 (pp. 1150-1159).
   
 - [Example: Quantum Integer Factorization](https://github.com/dynexcoin/DynexSDK/blob/main/example_integer_factorisation.ipynb) | Scientific background: Jiang, S., Britt, K.A., McCaskey, A.J. et al. Quantum Annealing for Prime Factorization. Sci Rep 8, 17667 (2018)

@@ -39,6 +39,7 @@ Guides:
 - [Medium: Computing on the Dynex Neuromorphic Platform: Image Classification](https://dynexcoin.medium.com/computing-on-the-dynex-neuromorphic-platform-image-classification-9b880d7ced9c)
 - [Medium: Computing on the Dynex Neuromorphic Platform: IBM Qiskit 4-Qubit Full Adder Circuit](https://medium.com/@dynexcoin/computing-on-the-dynex-neuromorphic-platform-ibm-qiskit-4-qubit-full-adder-circuit-7416084e19dd)
 - [Medium: Benchmarking the Dynex Neuromorphic Platform with the Q-Score](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)
+- [Medium: Enhancing MaxCut Solutions: Dynex’s Benchmark Performance on G70 Using Quantum Computing](https://dynexcoin.medium.com/enhancing-maxcut-solutions-dynexs-benchmark-performance-on-g70-using-quantum-computing-e5340b2197a6)
 - [Medium: Dynex Sets New Record for Quantum Computing, Breaking NVIDIA’s Previous Record](https://dynexcoin.medium.com/benchmarking-the-dynex-neuromorphic-platform-with-the-q-score-93402ca19bdd)
 
 Dynex' Scientific Papers:

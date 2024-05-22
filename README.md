@@ -170,6 +170,18 @@ Here are some example of these algorithms implemented on the Dynex Platform:
 
 - [Example: Breast Cancer Prediction using the Dynex scikit-learn Plugin](https://github.com/dynexcoin/DynexSDK/blob/main/Dynex%20Scikit-Learn%20Plugin.ipynb) | Scientific background: Bhatia, H.S., Phillipson, F. (2021). Performance Analysis of Support Vector Machine Implementations on the D-Wave Quantum Annealer. In: Paszynski, M., Kranzlmüller, D., Krzhizhanovskaya, V.V., Dongarra, J.J., Sloot, P.M.A. (eds) Computational Science – ICCS 2021. ICCS 2021. Lecture Notes in Computer Science(), vol 12747. Springer, Cham
 
+## Dynex Quantum-CFD Package
+
+Implementation of QC in Computational Fluid Dynamics (CFD) as QUBO/Ising Problem using DYNEX Neuromorphic Quantum Computing and OpenFoam importer.
+
+- [Dynex Q-CFD](https://github.com/dynexcoin/QCFD)
+
+## Dynex Quantum Single Image Super-Resolution Package
+
+This algorithm demonstrates formulating quantum SISR as a sparse coding optimization problem, which is solved using the Dynex Neuromorphic Computing Platform via the Dynex SDK. This AQC-based algorithm is demonstrated to achieve improved SISR accuracy.
+
+- [Dynex Q-SISR](https://github.com/dynexcoin/DynexSDK/tree/main/Quantum-SISR)
+
 ## Dynex Neuromorphic Torch Layers
 
 The Dynex Neuromorphic Torch layer can be used in any NN model. Welcome to hybrid models, neuromorphic-, transfer- and federated-learning with 

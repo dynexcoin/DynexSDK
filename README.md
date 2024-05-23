@@ -57,19 +57,13 @@ Dynex' Scientific Papers:
 
 ## Pricing
 
-Using Dynex technology for computations on the local machine (mainnet=False) is free. It allows sampling of computing problems on the local machine before using the Dynex Neuromorphic Computing cloud and is mainly intended for prototyping and testing of code. Computing on the mainnet is being charged in DNX based on usage. Users can maintain their balances in the [Dynex Market Place](https://live.dynexcoin.org). The cost for compute on Dynex is based on supply & demand, whereas higher paid compute jobs are being prioritized by the workers. The value "CURRENT AVG BLOCK FEE" shows the current average price for compute. It defines the amount to be paid for each block, which is being produced every 2 minutes. Depending on the number of chips (num_reads), duration (annealing_time), size and complexity of your computational problem, only a fraction of the entire network is being used. The price charged for compute is being calculated as a fraction of the base "block fee" and is being displayed during computing in the Python interface as well as in the "Usage" section of the Dynex market place.
+### Free prototyping and testing
+A free sampler designed for prototyping and testing, enabling users to sample computing problems locally on their machines before deploying to the Dynex Neuromorphic Computing cloud is available. This tool is particularly useful for developers and researchers who are in the initial stages of project development, allowing them to fine-tune and test their code in a controlled, cost-free environment. By providing this capability, we aim to facilitate seamless code development and ensure that your applications are fully optimized and error-free prior to scaling up operations on the cloud. This not only enhances development efficiency but also helps in significantly reducing potential overheads associated with live deployments.
 
-The Dynex SDK provides the following method to estimate the actual costs for a computing job before sampling it on the main job:
+Customers can also experience the power of Dynex n.quantum computing with just one click by trying out a variety of examples for free. Simply register an account to access these advanced computational capabilities. The user-friendly platform makes it easy to get started, allowing exploration of the potential of neuromorphic quantum computing through practical, real-world examples. 
 
-```
-model = dynex.BQM(bqm); 
-dynex.estimate_costs(model, num_reads=10000);
-
-[DYNEX] AVERAGE BLOCK FEE: 282.59 DNX
-[DYNEX] SUBMITTING COMPUTE FILE FOR COST ESTIMATION...
-[DYNEX] COST OF COMPUTE: 0.537993485 DNX PER BLOCK
-[DYNEX] COST OF COMPUTE: 0.268996742 DNX PER MINUTE
-```
+### Dynex subscription plans
+Dynex' subscription model is designed to provide users with continuous access to its advanced neuromorphic computing platform. This model allows businesses and researchers to leverage Dynex’s powerful computing capabilities through a recurring payment structure, offering a scalable and cost-effective solution for complex computational needs. Subscribers can choose from various tiers, each tailored to different usage requirements and budgets, ensuring that users only pay for the computing power they need. This subscription model not only simplifies budgeting and planning but also ensures that users can consistently rely on Dynex for high-performance computing resources without the need for large upfront investments. Each tier provides progressively more powerful computing capabilities and enhanced support features to meet the diverse needs of our users, from individual developers to large enterprises.
 
 ## Beginners Guides
 

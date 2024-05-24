@@ -3,3 +3,7 @@ Restricted Boltzmann machines (RBMs) are a powerful class of generative models, 
 
 ### References
 [Mode-assisted unsupervised learning of restricted Boltzmann machines](https://arxiv.org/pdf/2001.05559.pdf), Communications Physics volume 3, Article number:105 (2020)
+
+[Advancements in Unsupervised Learning: Mode-Assisted Quantum Restricted Boltzmann Machines Leveraging Neuromorphic Computing on the Dynex Platform](https://doi.org/10.61797/ijbic.v3i1.300); Adam Neumann, Dynex Developers; International Journal of Bioinformatics Intelligent Computing. 2024; Volume 3(1):91- 103, ISSN 2816-8089
+
+[Quantum Frontiers on Dynex: Elevating Deep Restricted Boltzmann Machines with Quantum Mode-Assisted Training](https://www.academia.edu/116660843/Quantum_Frontiers_on_Dynex_Elevating_Deep_Restricted_Boltzmann_Machines_with_Quantum_Mode_Assisted_Training); Adam Neumann, Dynex Developers; 116660843, Academia.edu; 2024

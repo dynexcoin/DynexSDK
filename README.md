@@ -26,7 +26,7 @@ The following videos are available to explain how to use the Dynex SDK:
 - [Amazon.co.uk](https://www.amazon.co.uk/dp/B0CRQQPBB5)
 - [Amazon.de](https://www.amazon.de/dp/B0CRQQPBB5)
 
-## Dynex SDK documentation:
+## Getting started and using the Dynex SDK:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
 - [Dynex SDK Documentation](https://docs.dynexcoin.org/)
 

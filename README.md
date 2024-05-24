@@ -40,14 +40,6 @@ Customers can also experience the power of Dynex n.quantum computing with just o
 ### Dynex subscription plans
 Dynex' subscription model is designed to provide users with continuous access to its advanced neuromorphic computing platform. This model allows businesses and researchers to leverage Dynex’s powerful computing capabilities through a recurring payment structure, offering a scalable and cost-effective solution for complex computational needs. Subscribers can choose from various tiers, each tailored to different usage requirements and budgets, ensuring that users only pay for the computing power they need. This subscription model not only simplifies budgeting and planning but also ensures that users can consistently rely on Dynex for high-performance computing resources without the need for large upfront investments. Each tier provides progressively more powerful computing capabilities and enhanced support features to meet the diverse needs of our users, from individual developers to large enterprises.
 
-## Further reading
-
-- [Dynex Website](https://dynexcoin.org/)
-- [Dynex for Enterprises](https://dynexcoin.org/learn/dynex-for-enterprises)
-- [Dynex SDK](https://dynexcoin.org/learn/dynex-sdk)
-- [Dynex SDK Beginner Guides](https://dynexcoin.org/learn/beginner-guides)
-- [Dynex SDK Advanced Examples](https://dynexcoin.org/learn/advanced-examples)
-
 ## License
 
 LICENSED UNDER GNU GENERAL PUBLIC LICENSE Version 3. SEE LICENSE FILE IN THE DYNEX PACKAGE

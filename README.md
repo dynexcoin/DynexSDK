@@ -9,8 +9,6 @@ The Dynex SDK is a collection of open-source Python tools designed to tackle dif
 
 Programmers already using tools like the Dimod framework, PyQUBO, or any other Qubo framework, will find it straightforward to run computations on the Dynex neuromorphic computing platform: Simply using the Dynex Sampler object in place of the usual sampler object typically used with systems like D-Wave, but without the typical constraints of regular quantum machines. 
 
-- [Dynex Benchmarks](https://dynexcoin.org/learn/dynex-benchmark-(q-score))
-
 ## Videos
 
 The following videos are available to explain how to use the Dynex SDK:

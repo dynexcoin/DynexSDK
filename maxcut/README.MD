@@ -1,3 +1,7 @@
+# Update with Dynex Enhanced Core Algorithm
+
+The Maximum Cut value was further improved to 9,543 on May 26th 2024 using the enhanced core algorithm..
+
 # Enhancing MaxCut Solutions: Dynex’s Benchmark Performance on G70 Using Quantum Computing
 
 We conducted an experiment on the G70 MaxCut problem, a complex unweighted MaxCut challenge with 10,000 nodes and 99,999 edges sourced from the publicly available Gset dataset provided by Stanford University. Various algorithms and solvers were evaluated, including commercial solvers like Gurobi and IBM CPLEX, and specialized algorithms such as the SDP solver DSDP, the graph neural network-based PI-GNN, and the tabu search-based KHLWG. Utilizing Dynex’s neuromorphic quantum computing cloud with a single Nvidia RTX3080 GPU, and without any MaxCut-specific enhancements, Dynex achieved a Maximum Cut value of 9,506 — outperforming other algorithms and demonstrating the potential of the Dynex platform. The experiment underscores that additional computational resources or bespoke algorithmic modifications could potentially lead to even higher performance, potentially setting new benchmarks for MaxCut solutions and showcasing the scalability and adaptability of the Dynex platform for tackling such optimization problems.

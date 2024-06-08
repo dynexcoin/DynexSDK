@@ -2,6 +2,39 @@
 
 The cut size [9,553](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9553.pkl) for G70 found by Dynex is the best-known MaxCut than previous reported results on June 8th 2024. The previous record of 9,541 was found using a special purpose algorithm designed for MaxCut ([Breakout Local Search for the Max-Cut problem](https://www.researchgate.net/publication/257392755_Breakout_Local_Search_for_the_Max-Cutproblem)) in 2013. It is worth noting that an increase of one better cut involves an exponentially increasing complexity. 
 
+## Validating the solution
+
+The solutions in this repository can be easily validated with the provided [Jupyter Notebook](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/g70solutionvalidator.ipynb) or by using the following lines of code:
+
+```
+import networkx as nx
+import pickle
+
+filename = 'G70.dat' # obtained from Standford website
+solution = 'maxcut_best_9553.pkl'
+
+# load g70 problem
+G = nx.Graph();
+f = open(filename, "r").readlines()
+for ele in f[1:]:
+    i, j, v = ele.split()
+    G.add_edges_from([(int(i),int(j))])
+
+# load solution
+with open(solution,'rb') as inp:
+    lut = pickle.load(inp)
+
+# Validate cut result:
+S0 = [node for node in G.nodes if not lut['X['+str(node)+']']]
+S1 = [node for node in G.nodes if lut['X['+str(node)+']']]
+cut_edges = [(u, v) for u, v in G.edges if lut['X['+str(u)+']'] != lut['X['+str(v)+']']]
+uncut_edges = [(u, v) for u, v in G.edges if lut['X['+str(u)+']'] == lut['X['+str(v)+']']]
+
+print('Maxcut result:',len(cut_edges))
+
+>> Maxcut result: 9553
+```
+
 # Update: Dynex Enhanced Core Algorithm
 
 The Maximum Cut value was further improved to [9,543](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9543.pkl) on May 26th 2024 using the enhanced core algorithm..

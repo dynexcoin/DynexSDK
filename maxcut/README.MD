@@ -39,15 +39,15 @@ print('Maxcut result:',len(cut_edges))
 
 The following table displays the previously known best MaxCut values for various Gset benchmarks, including the G70 dataset. Results for D-Wave have been computed using the D-Wave Cloud Platform using the Advantage™ quantum computer with 5,000 physical qubits. Improving the cut size by even one involves exponentially increasing complexity.
 
-| graph | #nodes| #edges | BLS | DWAVE | DSDP    | KHLWG   | RUN-CSP| PI-GNN| Gurobi (0.5 h)  | Gurobi (1 h)  | 
-|--- |------|----  |---        |------ |-----    |-----    |--------|-------|------           | ---           |
-|G14 | 800  | 4694 | 3064      |       |         | 2922    |  3061  | 2943  |3034             |3042           |
-|G15 | 800  | 4661 | 3050      |       | 2938    | 3050    |  2928  | 2990  | 3016            | 3033          | 
-|G22 | 2000 | 19990|13359      |       | 12960   |13359    | 13028  | 13181 |13062            |13129          | 
-|G49 | 3000 | 6000 | 6000      |       | 6000    | 6000    |  6000  | 5918  |  6000           |  6000         | 
-|G50 | 3000 | 6000 | 5880      |       | 5880    | 5880    |  5880  | 5820  |  5880           |  5880         | 
-|G55 | 5000 | 12468| 10294     |       | 9960    |10236    | 10116  | 10138 | 10103           | 10103         | 
-|G70 | 10000| 9999 |__9541__   | 9546  | 9456    | 9458    | -      | 9421  | 9489            | 9490          | 
+| graph | #nodes| #edges | DYNEX | BLS | DWAVE | DSDP    | KHLWG   | RUN-CSP| PI-GNN| Gurobi (0.5 h)  | Gurobi (1 h)  | 
+|--- |------|----  |---  |------ |------ |-----    |-----    |--------|-------|------           | ---           |
+|G14 | 800  | 4694 |        | 3064      |       |         | 2922    |  3061  | 2943  | 3034            |3042           |
+|G15 | 800  | 4661 |        | 3050      |       |  2938   | 3050    |  2928  | 2990  | 3016            | 3033          | 
+|G22 | 2000 | 19990|        |13359      |       | 12960   |13359    | 13028  | 13181 |13062            |13129          | 
+|G49 | 3000 | 6000 |        | 6000      |       |  6000   | 6000    |  6000  | 5918  | 6000            |  6000         | 
+|G50 | 3000 | 6000 |        | 5880      |       |  5880   | 5880    |  5880  | 5820  | 5880            |  5880         | 
+|G55 | 5000 | 12468|        |10294      |       |  9960   |10236    | 10116  | 10138 |10103            | 10103         | 
+|G70 | 10000| 9999 |__9553__| 9541      | 9546  |  9456   | 9458    |        | 9421  | 9489            | 9490          | 
 
 Sources: 
 - https://github.com/zhumingpassional/Maxcut_CSCI

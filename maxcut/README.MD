@@ -10,7 +10,7 @@ The solutions in this repository can be easily validated with the provided [Jupy
 import networkx as nx
 import pickle
 
-filename = 'G70.dat' # obtained from Standford website
+filename = 'G70.dat' # obtained from Stanford website: https://web.stanford.edu/~yyye/yyye/Gset/
 solution = 'maxcut_best_9553.pkl'
 
 # load g70 problem

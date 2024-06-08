@@ -53,7 +53,7 @@ Source: https://github.com/zhumingpassional/Maxcut_CSCI
 
 # Update: Dynex Enhanced Core Algorithm
 
-The Maximum Cut value was further improved to [9,543](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9543.pkl) on May 26th 2024 using the enhanced core algorithm..
+The Maximum Cut value was further improved to [9,543](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9543.pkl) on May 26th 2024 using the enhanced core algorithm.
 
 # Enhancing MaxCut Solutions: Dynex’s Benchmark Performance on G70 Using Quantum Computing
 

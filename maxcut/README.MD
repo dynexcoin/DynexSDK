@@ -49,10 +49,6 @@ The following table displays the previously known best MaxCut values for various
 |G55 | 5000 | 12468|        |10294      |       |  9960   |10236    | 10116  | 10138 |10103            | 10103         | 
 |G70 | 10000| 9999 |__9553__| 9541      | 9546  |  9456   | 9458    |        | 9421  | 9489            | 9490          | 
 
-Sources: 
-- https://github.com/zhumingpassional/Maxcut_CSCI
-- https://www.dwavesys.com/solutions-and-products/cloud-platform/
-
 # Update: Dynex Enhanced Core Algorithm
 
 The Maximum Cut value was further improved to [9,543](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9543.pkl) on May 26th 2024 using the enhanced core algorithm.

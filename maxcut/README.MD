@@ -35,6 +35,20 @@ print('Maxcut result:',len(cut_edges))
 >> Maxcut result: 9553
 ```
 
+## Previously known best results
+
+| graph | #nodes| #edges | BLS | DSDP    | KHLWG   | RUN-CSP| PI-GNN| Gurobi (0.5 h)  | Gurobi (1 h)  | 
+|--- |------|----  |---        |-----    |-----    |--------|-------|------           | ---           |
+|G14 | 800  | 4694 | __3064__  |         | 2922    | 3061   | 2943  |3034             |3042           |
+|G15 | 800  | 4661 | __3050__  | 2938    |__3050__ | 2928   | 2990  | 3016            | 3033          | 
+|G22 | 2000 | 19990|__13359__  | 12960   |__13359__| 13028  | 13181 |13062            |13129          | 
+|G49 | 3000 | 6000 | __6000__  | __6000__|__6000__ |__6000__| 5918  |__6000__         |__6000__       | 
+|G50 | 3000 | 6000 | __5880__  | __5880__|__5880__ |__5880__| 5820  |__5880__         |__5880__       | 
+|G55 | 5000 | 12468| 10294     | 9960    | 10236   | 10116  | 10138 | 10103           | 10103         | 
+|G70 | 10000| 9999 |9541       | 9456    | 9458    | -      | 9421  | 9489            | 9490          | 
+
+Source: https://github.com/zhumingpassional/Maxcut_CSCI
+
 # Update: Dynex Enhanced Core Algorithm
 
 The Maximum Cut value was further improved to [9,543](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9543.pkl) on May 26th 2024 using the enhanced core algorithm..

@@ -1,4 +1,8 @@
-# Update with Dynex Enhanced Core Algorithm
+# Update: Dynex finds best-known MaxCut for the Stanford G70 benchmark
+
+The cut size 9,553 for G70 found by Dynex is the best-known MaxCut than previous reported results. The previous record of 9,541 was found using a special purpose algorithm designed for MaxCut ([Breakout Local Search for the Max-Cutproblem](https://www.researchgate.net/publication/257392755_Breakout_Local_Search_for_the_Max-Cutproblem)) in 2013. It is worth noting that an increase of one better cut involves an exponentially increasing complexity. 
+
+# Update: Dynex Enhanced Core Algorithm
 
 The Maximum Cut value was further improved to 9,543 on May 26th 2024 using the enhanced core algorithm..
 

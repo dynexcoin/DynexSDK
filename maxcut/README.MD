@@ -37,7 +37,7 @@ print('Maxcut result:',len(cut_edges))
 
 ## Previously known best MaxCuts
 
-The following table displays the previously known best MaxCut values for various Gset benchmarks, including the G70 dataset. Improving the cut size by even one involves exponentially increasing complexity:
+The following table displays the previously known best MaxCut values for various Gset benchmarks, including the G70 dataset. Results for D-Wave have been computed using the D-Wave Cloud Platform using the Advantage™ quantum computer with 5,000 physical qubits. Improving the cut size by even one involves exponentially increasing complexity.
 
 | graph | #nodes| #edges | BLS | DWAVE | DSDP    | KHLWG   | RUN-CSP| PI-GNN| Gurobi (0.5 h)  | Gurobi (1 h)  | 
 |--- |------|----  |---        |------ |-----    |-----    |--------|-------|------           | ---           |

@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.15"
+__version__ = "0.1.16"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -85,6 +85,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # + Updated 'chips' to 'circuits'
 # + Fixed elapsed time display bug
 # + Fixed minor typos
+
+# Changelog 0.1.16:
+# + added Dynex cluster support
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -392,7 +395,7 @@ def _post_request(url, opts, file_path):
     return response
 
 
-def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0):
+def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0, is_cluster=False):
 
     """
     `Internal Function`
@@ -426,7 +429,8 @@ def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20
                 "params":[alpha, beta, gamma, delta, epsilon, zeta],
                 "min_step_size": minimum_stepsize,
                 "description": sampler.description,
-                "block_fee": block_fee
+                "block_fee": block_fee,
+                "is_cluster": is_cluster
                     }
             };
 
@@ -624,7 +628,8 @@ x
                 "params":[alpha, beta, gamma, delta, epsilon, zeta],
                 "min_step_size": minimum_stepsize,
                 "description": _sampler.description,
-                "block_fee": block_fee
+                "block_fee": block_fee,
+                "is_cluster": False
                     }
             };
 
@@ -1302,14 +1307,14 @@ class CQM():
 ################################################################################################################################
 # Thread runner: sample clones
 ################################################################################################################################
-def _sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, block_fee):
+def _sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, block_fee, is_cluster):
     """
     `Internal Function` which creates a thread for clone sampling
     """
     if logging:
         print('[DYNEX] Clone '+str(x)+' started...'); 
     _sampler = _DynexSampler(model, False, True, description, False);
-    _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, False, block_fee);
+    _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, False, block_fee, is_cluster);
     if logging:
         print('[DYNEX] Clone '+str(x)+' finished'); 
     q.put(_sampleset);
@@ -1318,7 +1323,7 @@ def _sample_thread(q, x, model, logging, mainnet, description, num_reads, anneal
 ################################################################################################################################
 # Dynex sampling functions
 ################################################################################################################################
-def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
     """
     Samples a Qubo problem.
     
@@ -1393,10 +1398,10 @@ def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, descripti
     bqm = dimod.BinaryQuadraticModel.from_qubo(Q, offset)
     model = BQM(bqm, logging=logging, formula=formula);
     sampler = DynexSampler(model,  mainnet=mainnet, logging=logging, description=description, bnb=bnb);
-    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee);
+    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee, is_cluster=is_cluster);
     return sampleset
     
-def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
     """
     Samples an Ising problem.
     
@@ -1448,10 +1453,10 @@ def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dyne
     bqm = dimod.BinaryQuadraticModel.from_ising(h, j)
     model = BQM(bqm, logging=logging, formula=formula);
     sampler = DynexSampler(model,  mainnet=mainnet, logging=logging, description=description, bnb=bnb);
-    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee);
+    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee, is_cluster=is_cluster);
     return sampleset
 
-def sample(bqm, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+def sample(bqm, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
     """
     Samples a Binary Quadratic Model (bqm).
     
@@ -1524,7 +1529,7 @@ def sample(bqm, logging=True, formula=2, mainnet=False, description='Dynex SDK J
     """
     model = BQM(bqm, logging=logging, formula=formula);
     sampler = DynexSampler(model,  mainnet=mainnet, logging=logging, description=description, bnb=bnb);
-    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee);
+    sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, block_fee=block_fee, is_cluster=is_cluster);
     return sampleset
 
         
@@ -1570,7 +1575,7 @@ class DynexSampler:
         self.dimod_assignments = {};
         self.bnb = bnb; 
     
-    def sample(self, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+    def sample(self, num_reads = 32, annealing_time = 10, clones = 1, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
         """
         The main sampling function:
 
@@ -1660,7 +1665,7 @@ class DynexSampler:
         # sampling without clones: -------------------------------------------------------------------------------------------
         if clones == 1:
             _sampler = _DynexSampler(self.model, self.logging, self.mainnet, self.description, self.test, self.bnb);
-            _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging, block_fee);
+            _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging, block_fee, is_cluster);
             return _sampleset;
         
         # sampling with clones: ----------------------------------------------------------------------------------------------
@@ -1679,7 +1684,7 @@ class DynexSampler:
             for i in range(clones):
                 q = Queue()
                 results.append(q)
-                p = multiprocessing.Process(target=_sample_thread, args=(q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, block_fee))
+                p = multiprocessing.Process(target=_sample_thread, args=(q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, block_fee, is_cluster))
                 jobs.append(p)
                 p.start()
 
@@ -2274,7 +2279,7 @@ class _DynexSampler:
         return sample;
 
     # sampling entry point: =================================================================================================================
-    def sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+    def sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
         """
         `Internal Function` which is called by public function `DynexSampler.sample` 
         """
@@ -2286,7 +2291,7 @@ class _DynexSampler:
         # a keyboard interrupt was triggered, the return value is a dict containing key 'error'
         
         for i in range(0, NUM_RETRIES):
-            retval = self._sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging, block_fee);
+            retval = self._sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, debugging, block_fee, is_cluster);
             if len(retval)>0:
                 break;
             
@@ -2312,7 +2317,7 @@ class _DynexSampler:
         return retval
     
     # main sampling function =================================================================================================================
-    def _sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0):
+    def _sample(self, num_reads = 32, annealing_time = 10, switchfraction = 0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, debugging=False, block_fee=0, is_cluster=False):
         """
         `Internal Function` which is called by private function `DynexSampler.sample`. This functions performs the sampling. 
         """
@@ -2331,7 +2336,7 @@ class _DynexSampler:
             # step 1: upload problem file to Dynex Platform: ---------------------------------------------------------------------------------
             if mainnet:
                 # create job on mallob system:
-                JOB_ID, self.filename, price_per_block = _upload_job_api(self, annealing_time, switchfraction, num_reads, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, self.logging, block_fee);
+                JOB_ID, self.filename, price_per_block = _upload_job_api(self, annealing_time, switchfraction, num_reads, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, self.logging, block_fee, is_cluster);
 
                 # show effective price in DNX:
                 price_per_block = price_per_block/1000000000;

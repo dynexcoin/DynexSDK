@@ -1,6 +1,6 @@
 # Update: Dynex finds new best-known MaxCut for the Stanford G70 benchmark
 
-The cut size [9,555](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9555.pkl) for 
+The better cut size of [9,555](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/maxcut_best_9555.pkl) for [G70](https://web.stanford.edu/~yyye/yyye/Gset/) found by [Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/G70_dynex.ipynb) was found on June 24th, 2024 on the Dynex n.quantum computing cloud.
 
 # Update: Dynex finds best-known MaxCut for the Stanford G70 benchmark [G70](https://web.stanford.edu/~yyye/yyye/Gset/) found by [Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/maxcut/G70_dynex.ipynb) was found on June 24th, 2024.
 

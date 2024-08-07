@@ -9,9 +9,7 @@ This technology is exciting because it leads to computer systems that are faster
 
 # DynexSDK
 ![Dynex SDK](https://github.com/dynexcoin/website/blob/main/dynexsdk.png)
-The Dynex SDK is a collection of open-source Python tools designed to tackle difficult problems using n.quantum computing. It helps adapt your application's challenges for resolution on the Dynex platform and manages the communication between your application code and the n.quantum system seamlessly. Easy to use and access through seamless integration with the Python development environment, and support for a large number of commonly used libraries.
-
-Programmers already using tools like the Dimod framework, PyQUBO, or any other Qubo framework, will find it straightforward to run computations on the Dynex neuromorphic computing platform: Simply using the Dynex Sampler object in place of the usual sampler object typically used with systems like D-Wave, but without the typical constraints of regular quantum machines. 
+The Dynex SDK natively supports both n.quantum gate-based circuits and n.quantum annealing-based sampling, seamlessly integrating with any Python code. Programmers who are familiar with quantum gate circuit languages such as Qiskit, Cirq, Pennylane, OpenQASM, or quantum annealing tools like the Dimod framework, PyQUBO, and other QUBO frameworks, will find it easy to run computations on the Dynex neuromorphic computing platform. The Dynex SDK supports both quantum circuits and quantum annealing, but without the typical constraints associated with conventional quantum machines. The Dynex SDK is a suite of open-source Python tools for solving hard problems with neuromorphic computing which helps reformulate your application’s problem for solution by the Dynex computing platform. It also handles communication between your application code and the Dynex neuromorphic computing platform automatically.
 
 ## Getting started and using the Dynex SDK:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)

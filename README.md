@@ -13,7 +13,6 @@ The Dynex SDK natively supports both n.quantum gate-based circuits and n.quantum
 
 ## Getting started and using the Dynex SDK:
 - [Dynex SDK Wiki](https://github.com/dynexcoin/DynexSDK/wiki)
-- [Dynex SDK Documentation](https://docs.dynexcoin.org/)
 
 ## Videos
 

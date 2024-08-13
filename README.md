@@ -1,4 +1,4 @@
-![](https://github.com/dynexcoin/DynexSDK/blob/main/img/dynexsdk4.png)
+![](https://github.com/dynexcoin/DynexSDK/blob/main/img/dynexsdk4.jpg)
 
 # Neuromorphic Quantum Computing in Simple Terms 
 Neuromorphic quantum computing is a special type of computing that combines ideas from brain-like computing with quantum technology to solve problems. It works differently from regular quantum computing by using a network of connected components that can quickly react to changes, helping the system to swiftly find the best solutions. 

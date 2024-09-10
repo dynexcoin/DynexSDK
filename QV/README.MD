@@ -1,6 +1,8 @@
 ## Quantum Volume Measurement on Dynex
 Quantum Volume (QV) is a metric designed to quantify the performance of a quantum computer. It considers several factors including the number of qubits, gate fidelity, connectivity, measurement errors, and the ability to execute quantum circuits successfully. The QV metric attempts to capture both the quantity (number of qubits) and quality (fidelity and error rates) of a quantum processor.
 
+[Jupyter Notebook: QV Measurement on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/QV/QuantumVolume.ipynb)
+
 Reference: https://en.wikipedia.org/wiki/Quantum_volume
 
 ## Circuit Depth and Width

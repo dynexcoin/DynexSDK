@@ -4,7 +4,8 @@ Quantum Volume (QV) is a metric designed to quantify the performance of a quantu
 - [Jupyter Notebook: QV Measurement on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/QV/QuantumVolume.ipynb)
 - [Youtube Video](https://youtu.be/md6xPnQJcF0)
 
-Reference: https://en.wikipedia.org/wiki/Quantum_volume
+Reference: 
+- https://en.wikipedia.org/wiki/Quantum_volume
 
 ## Circuit Depth and Width
 Quantum Volume measures the largest random circuit that a quantum computer can implement successfully. For a circuit, the width is the number of qubits 𝑛, and the depth is the number of layers of gates applied, which is also set to 𝑛 to ensure a balanced evaluation of both qubit number and coherence.

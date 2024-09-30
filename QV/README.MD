@@ -1,8 +1,43 @@
-## Quantum Volume Measurement on Dynex
-Quantum Volume (QV) is a metric designed to quantify the performance of a quantum computer. It considers several factors including the number of qubits, gate fidelity, connectivity, measurement errors, and the ability to execute quantum circuits successfully. The QV metric attempts to capture both the quantity (number of qubits) and quality (fidelity and error rates) of a quantum processor.
+# Quantum Volume Measurement on Dynex
+Quantum Volume (QV) is a holistic benchmark that measures the performance of quantum computers, accounting for both gate fidelity and circuit complexity. Achieving a high QV is essential for demonstrating quantum advantage over classical systems. In this paper, we present a detailed account of computing a Quantum Volume of 2119 using the Dynex neuromorphic quantum computing platform. We describe the methodologies employed, the modifications made to standard QV testing protocols to accommodate the Dynex architecture, and the results obtained. Our work showcases the scalability and computational capabilities of the Dynex platform in handling large-scale quantum computations.
 
-- [Jupyter Notebook: QV Measurement on Dynex](https://github.com/dynexcoin/DynexSDK/blob/main/QV/QuantumVolume.ipynb)
-- [Youtube: Real-time screen recording of the measurement](https://youtu.be/md6xPnQJcF0)
+- Paper: [Computing a Quantum Volume of 2^119 Using the Dynex Neuromorphic Quantum Computing Platform](https://www.academia.edu/124276903/Computing_a_Quantum_Volume_of_2_119_Using_the_Dynex_Neuromorphic_Quantum_Computing_Platform); Samer Rahmeh, Head of Quantum Solutions Architecture, Dynex; Adam Neumann, Dynex Developers; 124276903; Academia.edu; 2024
+- [Youtube: Real-time screen recording of the measurement](https://youtu.be/eEiu8e8xlMo) *updated
+
+# Quantum Volume Measurement Approach (updated)
+#### Samer Rahmeh | Global Head of Quantum Solutions Architecture | Dynex Development Est.
+In this modified Quantum Volume (QV) testing, we will attempt to compute QV with *qubits = 119* (i.e., a Quantum Volume of $2^{119}$. The modified changes here are:
+
+- *Use of SU(4) Unitaries on Random Qubit Pairs*:
+  - We generate random SU(4) unitaries and apply them to random pairs of qubits.
+  - This introduces entanglement and increases circuit complexity, adhering to the proper QV test requirements.
+
+- *Separate Computation of Ideal Outputs*:
+  - We compute the ideal output probabilities using the 'probs' method in dynex_circuit.execute.
+  - This allows us to obtain the full probability distribution over all $2^{119}$ possible outputs for proper comparison.
+
+- *Correct Calculation of Heavy Outputs*:
+  - Heavy outputs are identified based on the combined $2^N$ output probabilities, not on individual qubit probabilities.
+  - We calculate the median of the ideal probabilities and define heavy outputs as those exceeding this median.
+
+- *Utilization of Dynex Neuromorphic Quantum Computing Platform*:
+  - We use dynex_circuit that is compatible with pennylane and qasm circuits at scale.
+
+- *Handling Large-Scale Quantum Simulations*:
+  - The code is adjusted to handle a high number of qubits (n_wires = 119), demonstrating the scalability of the Dynex platform.
+  - Parameters like num_reads and integration_steps are set to ensure accurate simulation of the memristor dynamics.
+
+- *Sample Processing and Error Handling*:
+  - Implemented error handling and data processing steps to correctly handle outputs from dynex_circuit.execute.
+  - This includes handling various data formats and ensuring correct conversion of samples to integer indices.
+
+- *Compliance with Standard QV Testing Methodology*:
+  - The code aligns with the standard Quantum Volume testing methodology, incorporating feedback from experts to ensure accuracy.
+  - Adjustments were made to address previous shortcomings, such as using proper unitaries and correct heavy output calculations.
+
+- *Number of Shots*:
+  - Using a small number of shots (shots = 50) for experimental runs, balancing resource availability with the need for statistical data.
+  - The num_reads parameter is set higher (num_reads = 10000) to compensate and gather sufficient statistics.
 
 Reference: 
 - https://en.wikipedia.org/wiki/Quantum_volume

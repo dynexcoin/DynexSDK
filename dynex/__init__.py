@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.19"
+__version__ = "0.1.20"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -101,6 +101,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 # Changelog 0.1.19:
 # + support for Dynex Quantum nodes: new parameters cluster_type (detault 1) and is_cluster (default True)
 # + energy ground state display: now showing underlying model energy
+
+# Changelog 0.1.20:
+# + circuit bug fix
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -3015,4 +3018,3 @@ class _DynexSampler:
             self.dimod_assignments = dimod.SampleSet.from_samples(dimod.as_samples(dqm_sample), 'DISCRETE', 0)
 
         return self.dimod_assignments;
-

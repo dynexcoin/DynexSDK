@@ -224,6 +224,8 @@ class _dnx_circuit:
         self.typestr = 'QASM';
         self.bqm = None;
         self.clauses = [];
+        self.wcnf_offset = 0;
+        self.precision = 1;
 
 ################################################################################################################################
 # Measurement parsing functions
@@ -272,7 +274,7 @@ def SOL2STATE(sample, wires, isQPE, isGrover, isCQU):
 def execute(circuit, params, wires, mainnet=False, num_reads=1000, integration_steps=256, description='Dynex SDK Job', 
                     method='measure', logging=True, debugging=False, bnb=True, switchfraction = 0.0,
                     alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1, minimum_stepsize = 0.00000006, 
-                    block_fee=0, is_cluster=False, shots=1):
+                    block_fee=0, is_cluster=False, cluster_type=1, shots=1):
     """
     Function to execute quantum gate based circuits natively on the Dynex Neuromorphic Computing Platform.
 
@@ -415,7 +417,7 @@ def execute(circuit, params, wires, mainnet=False, num_reads=1000, integration_s
     
     sampleset = sampler.sample(num_reads=num_reads, annealing_time=integration_steps, switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma,
                                delta=delta, epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging, 
-                               block_fee=block_fee, is_cluster=is_cluster, shots=shots);
+                               block_fee=block_fee, is_cluster=is_cluster, cluster_type=cluster_type, shots=shots);
    
     # decode solution:
     if method not in ['measure', 'probs','all','sampleset']:

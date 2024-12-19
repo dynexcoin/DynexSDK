@@ -2,6 +2,8 @@
 
 Dynex has conducted comprehensive head-to-head comparisons by running the same quantum gate circuits on multiple platforms (Dynex, IBM AER and IBM QPU), with increasing circuit complexity. As the complexity of the quantum gate circuits increases, Dynex remains the only platform able to compute these circuits efficiently, while the other tested solutions struggle to handle the same level of complexity. This reinforces Dynex's position as the leading quantum-computing-as-a-service (QaaS) provider for scalable, large-scale quantum circuit computations.
 
+- [Overview video](https://youtu.be/npyaB4hl4zc)
+
 ## Benchmark Results
 
 | Complexity    |     Dynex[1]  |    IBM AER[2] |    IBM QPU[3] |      

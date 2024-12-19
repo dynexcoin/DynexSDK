@@ -2,7 +2,7 @@
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | 2^8           | CORRECT       | CORRECT       | FAILED        |               |               |
 | 2^16          | CORRECT       | CORRECT       | FAILED        |               |               |
-| 2^32          | CORRECT       | CORRECT       | FAILED        |               |               |
+| 2^32          | CORRECT       | FAILED        | FAILED        |               |               |
 | 2^64          | CORRECT       | FAILED        | FAILED        |               |               |
 | 2^72          | CORRECT       | FAILED        | FAILED        |               |               |
 | 2^80          | CORRECT       | FAILED        | FAILED        |               |               |

@@ -60,5 +60,5 @@ def FullAdder(params, state=True):
 
 The following IBM dashboard screen displays the results of executing the benchmark's 8-bit adder quantum gate circuit on IBM's Eagle r3 QPU. The probabilistically determined best result was "10010011" (147), observed with a frequency of 12, while the expected, correct outcome, "11001000" (58 + 124 = 200), was reported with a frequency of only 5. This discrepancy can be attributed to error correction issues inherent in hardware quantum-mechanical based systems, which is a major disadvantage compared to Dynex. In contrast, Dynex experiences significantly fewer error correction challenges, ensuring more reliable and accurate results.
 
-![](https://github.com/dynexcoin/DynexSDK/blob/main/circuit_scaling_benchmark/ibm_aer_8bit.png)
+![](https://github.com/dynexcoin/DynexSDK/blob/main/circuit_scaling_benchmark/ibm_qpu_8bit.png)
 

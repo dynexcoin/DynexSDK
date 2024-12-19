@@ -24,9 +24,11 @@ In the performed benchmarks, Dynex has successfully computed quantum gate circui
 
 ## Methodology
 
+A n-bit adder quantum gate circuit has been used to perform the benchmark tests, with an increasing level of complexity:
+
 ![](https://github.com/dynexcoin/DynexSDK/blob/main/circuit_scaling_benchmark/circuits.png)
 
-A n-bit adder quantum gate circuit has been used to perform the benchmark tests, with an increasing level of complexity:
+We applied the following n-bit adder circuit definition:
 
 ```
 params = [58, 142] # two numbers to add

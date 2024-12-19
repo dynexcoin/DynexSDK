@@ -26,4 +26,30 @@ In the performed benchmarks, Dynex has successfully computed quantum gate circui
 
 A n-bit adder quantum gate circuit has been used to perform the benchmark tests, with an increasing level of complexity:
 
+```
+params = [58, 142] # two numbers to add
+
+def Nqubits(a, b):
+    mxVal = a + b
+    return mxVal.bit_length()
+
+wires = Nqubits(*params)
+
+def Kfourier(k, wires):
+    for j in range(len(wires)):
+        qml.RZ(k * np.pi / (2**j), wires=wires[j])
+
+def FullAdder(params, state=True):
+    a, b = params
+    wires = Nqubits(a, b)
+    qml.BasisEmbedding(a, wires=range(wires))
+    qml.QFT(wires=range(wires))
+    Kfourier(b, range(wires))
+    qml.adjoint(qml.QFT)(wires=range(wires))
+    if state:
+        return qml.state()
+    else:
+        return qml.sample()
+```
+
 

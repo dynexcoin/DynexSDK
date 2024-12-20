@@ -4,6 +4,8 @@ To ensure reproducibility and facilitate further research in this area, we have 
 
 ## Cite
 
+[Approaching Google Willow Chip’s Beyond-Classical Random Circuit Sampling Benchmarks Using Dynex](https://www.academia.edu/126456331/Approaching_Google_Willow_Chip_s_Beyond_Classical_Random_Circuit_Sampling_Benchmarks_Using_Dynex)
+
 ```
 @article{article,
 author = {Neumann, Adam},

@@ -4,6 +4,7 @@ To ensure reproducibility and facilitate further research in this area, we have 
 
 ## Cite
 
+```
 @article{article,
 author = {Neumann, Adam},
 year = {2024},
@@ -13,3 +14,4 @@ title = {Approaching Google Willow Chip’s Beyond-Classical Random Circuit Samp
 journal = {currently in peer-review},
 doi = {}
 }
+```

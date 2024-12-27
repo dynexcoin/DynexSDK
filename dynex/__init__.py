@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.20"
+__version__ = "0.1.21"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -104,6 +104,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 
 # Changelog 0.1.20:
 # + circuit bug fix
+
+# Changelog 0.1.21:
+# + native q.node support for "shots"
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -409,6 +412,41 @@ def _update_job_api(JOB_ID, logging=False):
 
     return retval;
 
+def _report_invalid(filename, reason):
+    """
+    `Internal Function`
+    
+    Dynex API call to report invalid solution file
+
+    :Returns:
+
+    - TRUE if the API call was successful, FALSE if the API call was not successful (`bool`)
+    """
+
+    retval = False;
+    url = API_ENDPOINT + '/v2/sdk/job/invalidate_solution?api_key=' + API_KEY + '&api_secret=' + API_SECRET;
+    payload = json.dumps({"filename": filename, "reason": reason});
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    try:
+        response = requests.post(url, headers=headers, data=payload);
+        jsondata = response.json();
+        if 'error' in jsondata:
+            print('ERROR', jsondata['error']);
+            raise Exception(jsondata['error']);
+        retval = True;
+
+    except HTTPError as e:
+        print('[ERROR] Error code: ', e.code)
+    except URLError as e:
+        print('[ERROR] Reason: ', e.reason)
+
+    return retval;
+
+
 
 def _post_request(url, opts, file_path):
     opts_json = json.dumps(opts)
@@ -423,7 +461,7 @@ def _post_request(url, opts, file_path):
 
 
 def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1,
-                    zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0, is_cluster=False, cluster_type=1):
+                    zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0, is_cluster=False, cluster_type=1, shots=1):
     """
     `Internal Function`
     
@@ -459,10 +497,11 @@ def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20
             "description": sampler.description,
             "block_fee": block_fee,
             "is_cluster": is_cluster,
-            "cluster_type": cluster_type
+            "cluster_type": cluster_type,
+            "shots": shots
         }
     };
-    
+
     # file:
     file_path = sampler.filepath + sampler.filename;
     # compress:
@@ -2391,6 +2430,7 @@ class _DynexSampler:
                                       '(WRONG ENERGY REPORTED OR INCORRECT VOLTAGES)');
                             os.remove(local_path);
                             ftp.delete(name);
+                            _report_invalid(name, 'wrong enerty reported');
                         else:
                             # correctly downloaded?
                             cnt = 0;
@@ -2407,6 +2447,7 @@ class _DynexSampler:
                                         print('[DYNEX] REMOVING SOLUTION FILE', name,
                                               '(WRONG ENERGY REPORTED OR INCORRECT VOLTAGES)');
                                     os.remove(local_path);
+                                    report_invalid(name, 'wrong enerty reported');
                                     break;
                                 cnt += 1;
                                 if cnt >= 10:
@@ -2603,7 +2644,7 @@ class _DynexSampler:
                                                                                num_reads, alpha, beta, gamma, delta,
                                                                                epsilon, zeta, minimum_stepsize,
                                                                                self.logging, block_fee, is_cluster,
-                                                                               cluster_type);
+                                                                               cluster_type, shots);
 
                 # show effective price in DNX:
                 price_per_block = price_per_block / 1000000000;
@@ -3018,3 +3059,4 @@ class _DynexSampler:
             self.dimod_assignments = dimod.SampleSet.from_samples(dimod.as_samples(dqm_sample), 'DISCRETE', 0)
 
         return self.dimod_assignments;
+

@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.22"
+__version__ = "0.1.23"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -110,6 +110,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 
 # Changelog 0.1.22:
 # + bugfix 
+
+# Changelog 0.1.23:
+# + support for quantum algorithm v2
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -464,7 +467,7 @@ def _post_request(url, opts, file_path):
 
 
 def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20, beta=20, gamma=1, delta=1, epsilon=1,
-                    zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0, is_cluster=False, cluster_type=1, shots=1):
+                    zeta=1, minimum_stepsize=0.00000006, logging=True, block_fee=0, is_cluster=False, cluster_type=1, shots=1, v2=False, target_energy=0):
     """
     `Internal Function`
     
@@ -490,20 +493,41 @@ def _upload_job_api(sampler, annealing_time, switchfraction, num_reads, alpha=20
     url = API_ENDPOINT + '/v2/sdk/job/create?api_key=' + API_KEY + '&api_secret=' + API_SECRET;
 
     # options:
-    opts = {
-        "opts": {
-            "annealing_time": annealing_time,
-            "switch_fraction": switchfraction,
-            "num_reads": num_reads,
-            "params": [alpha, beta, gamma, delta, epsilon, zeta],
-            "min_step_size": minimum_stepsize,
-            "description": sampler.description,
-            "block_fee": block_fee,
-            "is_cluster": is_cluster,
-            "cluster_type": cluster_type,
-            "shots": shots
-        }
-    };
+    if not v2:
+        opts = {
+            "opts": {
+                "annealing_time": annealing_time,
+                "switch_fraction": switchfraction,
+                "num_reads": num_reads,
+                "params": [alpha, beta, gamma, delta, epsilon, zeta],
+                "min_step_size": minimum_stepsize,
+                "description": sampler.description,
+                "block_fee": block_fee,
+                "is_cluster": is_cluster,
+                "cluster_type": cluster_type,
+                "shots": shots,
+                "solver_family": 0,
+                "target_energy": target_energy
+            }
+        };
+    else:
+        opts = {
+            "opts": {
+                "annealing_time": annealing_time,
+                "switch_fraction": switchfraction,
+                "num_reads": num_reads,
+                "params": [alpha, beta, gamma, delta, epsilon, zeta],
+                "min_step_size": minimum_stepsize,
+                "description": sampler.description,
+                "block_fee": block_fee,
+                "is_cluster": is_cluster,
+                "cluster_type": cluster_type,
+                "shots": shots,
+                "solver_family": 1,
+                "target_energy": target_energy,
+                "population_size": annealing_time
+            }
+        };
 
     # file:
     file_path = sampler.filepath + sampler.filename;
@@ -1018,26 +1042,36 @@ def _save_cnf(clauses, filename, mainnet):
 # save wcnf file
 ################################################################################################################################
 
-def _save_wcnf(clauses, filename, num_variables, num_clauses, mainnet):
+def _save_wcnf(clauses, filename, num_variables, num_clauses, mainnet, v2, var_mappings):
     """
     `Internal Function`
 
     Saves the model as an encrypted .bin file locally in /tmp as defined in dynex.ini 
     """
 
-    with open(filename, 'w') as f:
-        line = "p wcnf %d %d" % (num_variables, num_clauses);
-
-        line_enc = line;
-        f.write(line_enc + "\n");
-
-        for clause in clauses:
-            line = ' '.join(str(int(lit)) for lit in clause) + ' 0';
+    if not v2:
+        with open(filename, 'w') as f:
+            line = "p wcnf %d %d" % (num_variables, num_clauses);
 
             line_enc = line;
             f.write(line_enc + "\n");
 
+            for clause in clauses:
+                line = ' '.join(str(int(lit)) for lit in clause) + ' 0';
 
+                line_enc = line;
+                f.write(line_enc + "\n");
+    else:
+        with open(filename, 'w') as f:
+            line = "p qubo %d %d %f" % (num_variables, num_clauses, clauses[1]);
+            f.write(line + "\n");
+            for (i, j), value in clauses[0].items():
+                if var_mappings:
+                    i = next((k for k, v in var_mappings.items() if v == i), i); # i if not mapped
+                    j = next((k for k, v in var_mappings.items() if v == j), j); # j if not mapped
+                line = "%d %d %f" % (i, j, value);
+                f.write(line + "\n");
+        
 def to_wcnf_string(clauses, num_variables, num_clauses):
     """
     `Internal Function`
@@ -1519,13 +1553,13 @@ class DQM():
 # Thread runner: sample clones
 ################################################################################################################################
 def _sample_thread(q, x, model, logging, mainnet, description, num_reads, annealing_time, switchfraction, alpha, beta,
-                   gamma, delta, epsilon, zeta, minimum_stepsize, block_fee, is_cluster, shots, cluster_type):
+                   gamma, delta, epsilon, zeta, minimum_stepsize, block_fee, is_cluster, shots, cluster_type, v2):
     """
     `Internal Function` which creates a thread for clone sampling
     """
     if logging:
         print('[DYNEX] Clone ' + str(x) + ' started...');
-    _sampler = _DynexSampler(model, False, True, description, False);
+    _sampler = _DynexSampler(model, False, True, description, False, v2);
     _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon, zeta,
                                  minimum_stepsize, False, block_fee, is_cluster, shots, cluster_type);
     if logging:
@@ -1540,7 +1574,7 @@ def _sample_thread(q, x, model, logging, mainnet, description, num_reads, anneal
 def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False,
                 bnb=True, num_reads=32, annealing_time=10, clones=1, switchfraction=0.0, alpha=20, beta=20, gamma=1,
                 delta=1, epsilon=1, zeta=1, minimum_stepsize=0.00000006, debugging=False, block_fee=0, is_cluster=False, cluster_type=1,
-                shots=1):
+                shots=1, v2=False):
     """
     Samples a Qubo problem.
     
@@ -1616,7 +1650,7 @@ def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, descripti
     """
     bqm = dimod.BinaryQuadraticModel.from_qubo(Q, offset)
     model = BQM(bqm, logging=logging, formula=formula);
-    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb);
+    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb, v2=v2);
     sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones,
                                switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta,
                                epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging,
@@ -1627,7 +1661,7 @@ def sample_qubo(Q, offset=0.0, logging=True, formula=2, mainnet=False, descripti
 def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True,
                  num_reads=32, annealing_time=10, clones=1, switchfraction=0.0, alpha=20, beta=20, gamma=1, delta=1,
                  epsilon=1, zeta=1, minimum_stepsize=0.00000006, debugging=False, block_fee=0, is_cluster=False,
-                 shots=1, cluster_type=1):
+                 shots=1, cluster_type=1, v2=False):
     """
     Samples an Ising problem.
     
@@ -1680,7 +1714,7 @@ def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dyne
     """
     bqm = dimod.BinaryQuadraticModel.from_ising(h, j)
     model = BQM(bqm, logging=logging, formula=formula);
-    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb);
+    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb, v2=v2);
     sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones,
                                switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta,
                                epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging,
@@ -1690,7 +1724,7 @@ def sample_ising(h, j, logging=True, formula=2, mainnet=False, description='Dyne
 
 def sample(bqm, logging=True, formula=2, mainnet=False, description='Dynex SDK Job', test=False, bnb=True, num_reads=32,
            annealing_time=10, clones=1, switchfraction=0.0, alpha=20, beta=20, gamma=1, delta=1, epsilon=1, zeta=1,
-           minimum_stepsize=0.00000006, debugging=False, block_fee=0, is_cluster=False, shots=1, cluster_type=1):
+           minimum_stepsize=0.00000006, debugging=False, block_fee=0, is_cluster=False, shots=1, cluster_type=1, v2=False):
     """
     Samples a Binary Quadratic Model (bqm).
     
@@ -1764,7 +1798,7 @@ def sample(bqm, logging=True, formula=2, mainnet=False, description='Dynex SDK J
     
     """
     model = BQM(bqm, logging=logging, formula=formula);
-    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb);
+    sampler = DynexSampler(model, mainnet=mainnet, logging=logging, description=description, bnb=bnb, v2=v2);
     sampleset = sampler.sample(num_reads=num_reads, annealing_time=annealing_time, clones=clones,
                                switchfraction=switchfraction, alpha=alpha, beta=beta, gamma=gamma, delta=delta,
                                epsilon=epsilon, zeta=zeta, minimum_stepsize=minimum_stepsize, debugging=debugging,
@@ -1797,7 +1831,7 @@ class DynexSampler:
 
     """
 
-    def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False, bnb=True):
+    def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False, bnb=True, v2=False):
 
         # multi-model parallel sampling
         if isinstance(model, list):
@@ -1814,6 +1848,7 @@ class DynexSampler:
         self.test = test;
         self.dimod_assignments = {};
         self.bnb = bnb;
+        self.v2 = v2;
 
     def sample(self, num_reads=32, annealing_time=10, clones=1, switchfraction=0.0, alpha=20, beta=20, gamma=1, delta=1,
                epsilon=1, zeta=1, minimum_stepsize=0.00000006, debugging=False, block_fee=0, is_cluster=False, shots=1,
@@ -1908,7 +1943,7 @@ class DynexSampler:
 
         # sampling without clones: -------------------------------------------------------------------------------------------
         if clones == 1:
-            _sampler = _DynexSampler(self.model, self.logging, self.mainnet, self.description, self.test, self.bnb);
+            _sampler = _DynexSampler(self.model, self.logging, self.mainnet, self.description, self.test, self.bnb, self.v2);
             _sampleset = _sampler.sample(num_reads, annealing_time, switchfraction, alpha, beta, gamma, delta, epsilon,
                                          zeta, minimum_stepsize, debugging, block_fee, is_cluster, shots, cluster_type);
             return _sampleset;
@@ -1933,7 +1968,7 @@ class DynexSampler:
                 p = multiprocessing.Process(target=_sample_thread, args=(
                 q, i, self.model, self.logging, self.mainnet, self.description, num_reads, annealing_time,
                 switchfraction, alpha, beta, gamma, delta, epsilon, zeta, minimum_stepsize, block_fee, is_cluster,
-                shots, cluster_type))
+                shots, cluster_type, self.v2))
                 jobs.append(p)
                 p.start()
 
@@ -1974,7 +2009,7 @@ class _DynexSampler:
     """
 
     def __init__(self, model, logging=True, mainnet=True, description='Dynex SDK Job', test=False,
-                 bnb=True, filename_override=''):
+                 bnb=True, v2=False, filename_override=''):
 
         if not test and not _test_completed():
             raise Exception("CONFIGURATION TEST NOT COMPLETED. PLEASE RUN 'dynex.test()'");
@@ -2004,6 +2039,9 @@ class _DynexSampler:
         # path to testnet
         self.solverpath = 'testnet/';
         self.bnb = bnb;
+
+        #v2
+        self.v2 = v2;
 
         # multi-model parallel sampling?
         multi_model_mode = False;
@@ -2043,12 +2081,17 @@ class _DynexSampler:
                 self.num_variables = max(max(abs(lit) for lit in clause) for clause in self.clauses);
 
             if model.type == 'wcnf':
-                self.clauses = model.clauses;
-                self.num_variables = model.num_variables;
-                self.num_clauses = model.num_clauses;
+                if not v2:
+                    self.clauses = model.clauses;
+                    self.num_variables = model.num_variables;
+                    self.num_clauses = model.num_clauses;
+                else:
+                    self.num_variables = model.bqm.num_variables;
+                    self.num_clauses = len(model.bqm.to_qubo()[0]);
+                    self.clauses = model.bqm.to_qubo();
                 self.var_mappings = model.var_mappings;
                 self.precision = model.precision;
-                _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses, mainnet);
+                _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses, mainnet, v2, self.var_mappings);
 
             if model.type == 'qasm':
                 self.clauses = None;
@@ -2084,13 +2127,18 @@ class _DynexSampler:
                     raise Exception(
                         "[ÐYNEX] ERROR: Multi model parallel sampling is currently not implemented for SAT");
                 if m.type == 'wcnf':
-                    _clauses.append(m.clauses);
-                    _num_clauses.append(m.num_clauses);
-                    _num_variables.append(m.num_variables);
+                    if not v2:
+                        _num_clauses.append(m.num_clauses);
+                        _num_variables.append(m.num_variables);
+                        _clauses.append(m.clauses);
+                    else:
+                        _num_variables.append(m.bqm.num_variables);
+                        _num_clauses.append(len(m.bqm.to_qubo()[0]));
+                        _clauses.append(m.bqm.to_qubo());
                     _var_mappings.append(m.var_mappings);
                     _precision.append(m.precision);
                     _save_wcnf(_clauses[-1], self.filepath + _filename[-1], _num_variables[-1], _num_clauses[-1],
-                               mainnet);
+                               mainnet, v2, _var_mappings[-1]);
                 _type.append(m.type);
                 _assignments.append({});
                 _dimod_assignments.append({});
@@ -2334,6 +2382,11 @@ class _DynexSampler:
         
         Validates loc and energy provided in filename with voltages. File not matching will be deleted on FTP and locally.
         """
+
+        # v2 has a different format
+        if self.v2:
+            return True;
+
         valid = False;
 
         if self.type == 'cnf':
@@ -2506,12 +2559,17 @@ class _DynexSampler:
             _save_cnf(self.clauses, self.filepath + self.filename);
 
         if model.type == 'wcnf':
-            self.clauses = model.clauses;
-            self.num_variables = model.num_variables;
-            self.num_clauses = model.num_clauses;
+            if not self.v2:
+                self.clauses = model.clauses;
+                self.num_variables = model.num_variables;
+                self.num_clauses = model.num_clauses;
+            else:
+                self.num_variables = model.bqm.num_variables;
+                self.num_clauses = len(model.bqm.to_qubo()[0]);
+                self.clauses = model.to_qubo();
             self.var_mappings = model.var_mappings;
             self.precision = model.precision;
-            _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses, self.mainnet);
+            _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses, self.mainnet, self.v2);
 
         self.type = model.type;
         self.assignments = {};
@@ -2612,7 +2670,7 @@ class _DynexSampler:
                 _save_cnf(self.clauses, self.filepath + self.filename, self.mainnet);
             if self.model.type == 'wcnf':
                 _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses,
-                           self.mainnet);
+                           self.mainnet, self.v2, self.model.var_mappings);
 
                 # aggregate sampleset:
         if self.type == 'wcnf' and len(retval) > 0 and ('error' in retval) == False:
@@ -2643,11 +2701,18 @@ class _DynexSampler:
             # step 1: upload problem file to Dynex Platform: ---------------------------------------------------------------------------------
             if mainnet:
                 # create job on mallob system:
-                JOB_ID, self.filename, price_per_block, qasm = _upload_job_api(self, annealing_time, switchfraction,
+                if not self.v2:
+                    JOB_ID, self.filename, price_per_block, qasm = _upload_job_api(self, annealing_time, switchfraction,
                                                                                num_reads, alpha, beta, gamma, delta,
                                                                                epsilon, zeta, minimum_stepsize,
                                                                                self.logging, block_fee, is_cluster,
                                                                                cluster_type, shots);
+                else:
+                    JOB_ID, self.filename, price_per_block, qasm = _upload_job_api(self, annealing_time, switchfraction,
+                                                                               num_reads, alpha, beta, gamma, delta,
+                                                                               epsilon, zeta, minimum_stepsize,
+                                                                               self.logging, block_fee, is_cluster,
+                                                                               cluster_type, shots, self.v2, 0.0-self.clauses[1]);
 
                 # show effective price in DNX:
                 price_per_block = price_per_block / 1000000000;
@@ -2668,13 +2733,18 @@ class _DynexSampler:
                     bqm = dimod.BinaryQuadraticModel.from_qubo(ast.literal_eval(q), offset);
                     _model = BQM(bqm);
                     self.bqm = bqm;
-                    self.clauses = _model.clauses;
-                    self.num_variables = _model.num_variables;
-                    self.num_clauses = _model.num_clauses;
+                    if not self.v2:
+                        self.clauses = _model.clauses;
+                        self.num_variables = _model.num_variables;
+                        self.num_clauses = _model.num_clauses;
+                    else:
+                        self.num_variables = model.bqm.num_variables;
+                        self.num_clauses = len(model.bqm.to_qubo()[0]);
+                        self.clauses = model.bqm.to_qubo();
                     self.var_mappings = _model.var_mappings;
                     self.precision = _model.precision;
                     _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses,
-                               self.mainnet);
+                               self.mainnet, self.v2);
                     self.model.clauses = self.clauses
                     self.model.num_variables = self.num_variables
                     self.model.num_clauses = self.num_clauses
@@ -2720,20 +2790,25 @@ class _DynexSampler:
                     bqm = dimod.BinaryQuadraticModel.from_qubo(ast.literal_eval(q), offset);
                     _model = BQM(bqm);
                     self.bqm = bqm;
-                    self.clauses = _model.clauses;
-                    self.num_variables = _model.num_variables;
-                    self.num_clauses = _model.num_clauses;
+                    if not self.v2:
+                        self.clauses = _model.clauses;
+                        self.num_variables = _model.num_variables;
+                        self.num_clauses = _model.num_clauses;
+                    else:
+                        self.num_variables = model.bqm.num_variables;
+                        self.num_clauses = len(model.bqm.to_qubo()[0]);
+                        self.clauses = model.bqm.to_qubo();
                     self.var_mappings = _model.var_mappings;
                     self.precision = _model.precision;
                     _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses,
-                               self.mainnet);
+                               self.mainnet, self.v2, self.var_mappings);
 
                 JOB_ID = -1;
                 command = self.solverpath + "np -t=" + str(localtype) + " -ms=" + str(
                     annealing_time) + " -st=1 -msz=" + str(minimum_stepsize) + " -c=" + str(
                     num_reads) + " --file='" + self.filepath_full + "/" + self.filename + "'";
                 # in test-net, it cannot guaranteed that all requested chips are fitting:
-                num_reads = 0;
+                # num_reads = 0;
 
                 if alpha != 0:
                     command = command + " --alpha=" + str(alpha);
@@ -2751,6 +2826,21 @@ class _DynexSampler:
                 # use branch-and-bound (testnet) sampler instead?:
                 if self.bnb:
                     command = self.solverpath + "dynex-testnet-bnb " + self.filepath_full + "/" + self.filename;
+
+                # use v2?
+                if self.v2:
+                    command = self.solverpath + "dynexcore"; 
+                    command += " file=" + self.filepath_full + "/" + self.filename;
+                    command += " num_steps=" + str(annealing_time);
+                    command += " population_size=" + str(annealing_time);
+                    command += " max_iterations=" + str(num_reads);
+                    command += " target_energy=" + str(0.0-self.clauses[1]);
+                    #command += " ode_steps=" + str(annealing_time);
+                    #command += " search_steps=" + str(annealing_time);
+                    #command += " mutation_rate=10";
+                    command += " init_dt=" + str(minimum_stepsize);
+                    #command += " gpu_index=0";
+                    print("[DYNEX DEBUG] Solver command:", command);
 
                 for shot in range(0, shots):
                     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
@@ -2973,10 +3063,39 @@ class _DynexSampler:
                                 self.dimod_assignments[abs(int(var))] = 0;
 
                 if self.type == 'wcnf' or self.type == 'qasm':
-                    if len(voltages) > 0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
+                    if not self.v2:
+                        if len(voltages) > 0 and voltages[0] != 'NaN' and self.num_variables == len(voltages):
+                            sampleset.append(
+                                ['sample', voltages, 'chips', chips, 'steps', steps, 'falsified softs', loc, 'energy',
+                                 energy]);
+                            if loc < lowest_loc:
+                                lowest_loc = loc;
+                            if energy < lowest_energy:
+                                lowest_energy = energy;
+                                lowest_set = voltages;
+                            # add voltages to dimod return sampleset:
+                            dimodsample = {};
+                            i = 0;
+                            for var in range(0, self.num_variables - 8):  # REMOVE VALIDATION VARS
+                                # mapped variable?
+                                if var in self.var_mappings:
+                                    dimodsample[self.var_mappings[var]] = 1;
+                                    if (float(voltages[i]) < 0):
+                                        dimodsample[self.var_mappings[var]] = 0;
+                                else:
+                                    dimodsample[i] = 1;
+                                    if (float(voltages[i]) < 0):
+                                        dimodsample[i] = 0;
+                                i = i + 1
+
+                            dimod_sample.append(dimodsample);
+
+                        else:
+                            print('[DYNEX] OMITTED SOLUTION FILE:', file, ' - INCORRECT DATA');
+                    else:
                         sampleset.append(
-                            ['sample', voltages, 'chips', chips, 'steps', steps, 'falsified softs', loc, 'energy',
-                             energy]);
+                                ['sample', voltages, 'chips', chips, 'steps', steps, 'falsified softs', loc, 'energy',
+                                 energy]);
                         if loc < lowest_loc:
                             lowest_loc = loc;
                         if energy < lowest_energy:
@@ -2985,7 +3104,7 @@ class _DynexSampler:
                         # add voltages to dimod return sampleset:
                         dimodsample = {};
                         i = 0;
-                        for var in range(0, self.num_variables - 8):  # REMOVE VALIDATION VARS
+                        for var in range(0, self.num_variables):
                             # mapped variable?
                             if var in self.var_mappings:
                                 dimodsample[self.var_mappings[var]] = 1;
@@ -2998,10 +3117,7 @@ class _DynexSampler:
                             i = i + 1
 
                         dimod_sample.append(dimodsample);
-
-                    else:
-                        print('[DYNEX] OMITTED SOLUTION FILE:', file, ' - INCORRECT DATA');
-
+                        
             if self.type == 'wcnf' or self.type == 'qasm':
                 sampleset.append(
                     ['sample', lowest_set, 'chips', total_chips, 'steps', total_steps, 'falsified softs', lowest_loc,
@@ -3014,6 +3130,7 @@ class _DynexSampler:
                 sample = {};
                 i = 0;
                 for var in self.var_mappings:
+                    #_var = self.var_mappings[var];
                     sample[var] = 1;
                     if (float(lowest_set[i]) < 0):
                         sample[var] = 0;
@@ -3062,3 +3179,4 @@ class _DynexSampler:
             self.dimod_assignments = dimod.SampleSet.from_samples(dimod.as_samples(dqm_sample), 'DISCRETE', 0)
 
         return self.dimod_assignments;
+

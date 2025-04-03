@@ -1,6 +1,6 @@
 """
 Dynex SDK (beta) Neuromorphic Computing Library
-Copyright (c) 2021-2024, Dynex Developers
+Copyright (c) 2021-2025, Dynex Developers
 
 All rights reserved.
 
@@ -26,7 +26,7 @@ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-__version__ = "0.1.23"
+__version__ = "0.1.24"
 __author__ = 'Dynex Developers'
 __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Community'
 
@@ -113,6 +113,9 @@ __credits__ = 'Dynex Developers, Contributors, Supporters and the Dynex Communit
 
 # Changelog 0.1.23:
 # + support for quantum algorithm v2
+
+# Changelog 0.1.24:
+# + bugfix native circuit execution
 
 # Upcoming:
 # - Multi-model parallel sampling (f.e. for parameter tuning jobs, etc.)
@@ -2744,7 +2747,7 @@ class _DynexSampler:
                     self.var_mappings = _model.var_mappings;
                     self.precision = _model.precision;
                     _save_wcnf(self.clauses, self.filepath + self.filename, self.num_variables, self.num_clauses,
-                               self.mainnet, self.v2);
+                               self.mainnet, self.v2, self.var_mappings);
                     self.model.clauses = self.clauses
                     self.model.num_variables = self.num_variables
                     self.model.num_clauses = self.num_clauses

@@ -1,3 +1,7 @@
+###########################################################################################################################
+This repository is no longer maintained. Please use the production Dynex SDK on https://github.com/Dynex-Development/py-sdk
+###########################################################################################################################
+
 ![](https://github.com/dynexcoin/DynexSDK/blob/main/img/dynexsdk4.jpg)
 
 # Neuromorphic Quantum Computing in Simple Terms 
